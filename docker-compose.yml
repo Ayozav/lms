@@ -1,0 +1,86 @@
+volumes:
+    postgres_data:
+        # Создаём том для данных Postgres.
+    sso_data:
+        # Создаём том для данных Dex'у
+
+services:
+    postgres:
+        image: postgres:18
+        container_name: "LMS.Postgres"
+        restart: no
+
+        environment:
+            POSTGRES_DB: ${DATABASE_NAME}
+            DATABASE_SCHEMA: ${DATABASE_SCHEMA}
+            POSTGRES_USER: ${DATABASE_USERNAME}
+            POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+        ports:
+            - "${DATABASE_PORT}:5432"
+
+        # Для прод. версии следует убрать!
+        command: ["postgres", "-c", "log_statement=all"]
+
+        volumes:
+            # - ./postgres/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+            - ./postgres/init-scripts:/docker-entrypoint-initdb.d:ro   # Запуск собственных инит. скрипта.
+            - postgres_data:/var/lib/postgresql  # Определяем, где будет лежать вся СУБД
+
+        healthcheck: # Тестовый запуск после инициализации.
+            test: [ "CMD-SHELL", "pg_isready -d $${DATABASE_NAME} -p $${DATABASE_PORT} -U $${DATABASE_USERNAME} " ]
+            interval: 3s
+            retries: 5
+            start_period: 15s
+            timeout: 5s
+
+        deploy:
+            resources:
+                limits:
+                    cpus: 1
+                    memory: 512M
+    logto:
+        image: svhd/logto:latest
+        container_name: "LMS.LogTo"
+        entrypoint: [ "sh", "-c", "npm run cli db seed -- --swe && npm start" ]
+        depends_on:
+            postgres:
+                condition: service_started
+        extra_hosts:
+            - "admin.auth.localhost:host-gateway"
+            - "auth.localhost:host-gateway"
+        environment:
+            - TRUST_PROXY_HEADER=1
+            - DB_URL=${LOGTO_DB_URL}
+            - PASSWORD_POLICY_CHECK_ON_PWNED=false
+            # Для localhost без HTTPS, используем http
+            - ENDPOINT=${LOGTO_ENDPOINT}
+            - ADMIN_ENDPOINT=${LOGTO_ADMIN_ENDPOINT}
+            - PORT=${LOGTO_ALL_PORT}
+            - ADMIN_PORT=${LOGTO_ADMIN_PORT}
+        ports:
+            # Пробрасываем порты на хост, чтобы при необходимости можно было обратиться напрямую
+            - "${LOGTO_ADMIN_PORT}:${LOGTO_ADMIN_PORT}"
+            - "${LOGTO_ALL_PORT}:${LOGTO_ALL_PORT}"
+        deploy:
+            resources:
+                limits:
+                    cpus: 1
+                    memory: 512M
+        restart: no
+
+    nginx:
+        image: nginx:latest
+        container_name: "LMS.Nginx"
+        volumes:
+            - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+        ports:
+            - "${NGINX_PORT}:${NGINX_PORT}"
+        depends_on:
+            logto:
+                condition: service_started
+        deploy:
+            resources:
+                limits:
+                    cpus: 1
+                    memory: 512M
+        restart: no

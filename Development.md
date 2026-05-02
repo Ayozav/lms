@@ -1,17 +1,18 @@
 ## Архитектура для MVP
-LMS представляет собой множество созависимых сервисов:
-
-- Сервис аутентификации “Ключ”
-- Сервис расписания “Часы 11.15”
-- Сервис курсов “Знание”
+LMS представляет два основных сервиса:
 - Сервис заметок “Перо”
+- Основной сервис LMS
 
 Первая реализация будет предполагать монолитную структуру
 
 ## Техническая реализация
 
-1. Back-end: Java + Spring Boot + WebFlux
-2. Front=end: React + TypeScript + Tailwind
+1. Front-end: React + TypeScript + Material
+2. Back-end: Java + Javalin 
+3. Logto - SSO
+4. Postgres - РСУБД
+5. Nginx - web server/proxy
+
 
 ## Полезные ссылки
 - https://github.com/ayozav/lms

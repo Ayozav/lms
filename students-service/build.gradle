@@ -1,0 +1,37 @@
+plugins {
+    id "java"
+    id "application"
+}
+
+group = "ru.ayozav"
+version = "0.0.1"
+
+repositories {
+    mavenCentral()
+}
+
+application {
+    mainClass.set("ru.ayozav.Main")
+}
+
+
+
+dependencies {
+    // For Unit-tests
+    testImplementation platform("org.junit:junit-bom:5.10.0")
+    testImplementation "org.junit.jupiter:junit-jupiter"
+    // Javalin for web
+    implementation "io.javalin:javalin:7.0.0"
+    // Extra dependency from Javalin for JSON answers.
+    implementation "com.fasterxml.jackson.core:jackson-databind:2.20.1"
+    implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.2"
+    // For logging
+    implementation "org.slf4j:slf4j-simple:2.0.17"
+    // For Database
+    implementation "org.postgresql:postgresql:42.7.10"
+
+}
+
+test {
+    useJUnitPlatform()
+}
