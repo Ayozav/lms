@@ -5,7 +5,7 @@ volumes:
 
 services:
     # Он нам нужен для хранения вообще всей информации по LMS!
-    # Бизнесовая часть в том числе.
+    # Часть бизнеса тоже.
     postgres:
         image: postgres:18
         container_name: "LMS.Postgres"
@@ -76,8 +76,10 @@ services:
         restart: no
 
     lms:
+        image: ayozav-lms:0.0.1
         build:
             context: ./students-service
+
 
         container_name: "LMS"
         ports:
