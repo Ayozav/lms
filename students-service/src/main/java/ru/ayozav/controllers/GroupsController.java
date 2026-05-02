@@ -35,6 +35,6 @@ public class GroupsController {
         //
         // ctx.status(200).json(group);
 
-        ctx.status(200);
+        ctx.status(200).json(Map.of("msg", "I AM OK!"));
     }
 }

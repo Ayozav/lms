@@ -1,10 +1,11 @@
 volumes:
     postgres_data:
         # Создаём том для данных Postgres.
-    sso_data:
-        # Создаём том для данных Dex'у
+
 
 services:
+    # Он нам нужен для хранения вообще всей информации по LMS!
+    # Бизнесовая часть в том числе.
     postgres:
         image: postgres:18
         container_name: "LMS.Postgres"
@@ -13,6 +14,7 @@ services:
         environment:
             POSTGRES_DB: ${DATABASE_NAME}
             DATABASE_SCHEMA: ${DATABASE_SCHEMA}
+            DATABASE_NAME: ${DATABASE_NAME}
             POSTGRES_USER: ${DATABASE_USERNAME}
             POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
         ports:
@@ -26,8 +28,11 @@ services:
             - ./postgres/init-scripts:/docker-entrypoint-initdb.d:ro   # Запуск собственных инит. скрипта.
             - postgres_data:/var/lib/postgresql  # Определяем, где будет лежать вся СУБД
 
-        healthcheck: # Тестовый запуск после инициализации.
-            test: [ "CMD-SHELL", "pg_isready -d $${DATABASE_NAME} -p $${DATABASE_PORT} -U $${DATABASE_USERNAME} " ]
+        # Задаём чёткий скрипт, который позволяет нам убедится, что сервис живой.
+        healthcheck:
+            # Внутри мы указываем порт в Докере.
+            # А товарищ Postgres по умолчанию на порту 5432 живёт.
+            test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB} -p 5432"]
             interval: 3s
             retries: 5
             start_period: 15s
@@ -38,29 +43,31 @@ services:
                 limits:
                     cpus: 1
                     memory: 512M
-    logto:
-        image: svhd/logto:latest
-        container_name: "LMS.LogTo"
-        entrypoint: [ "sh", "-c", "npm run cli db seed -- --swe && npm start" ]
+
+    # Он нам нужен, чтобы красиво и грамотно агрегировать все запросы
+    # извне вовнутрь (с переходом в Докер, соответственно).
+    nginx:
+        image: nginx:1.29.8
+        container_name: "LMS.Nginx"
+        volumes:
+            # Явно указываем, что настройки лежат в проектной папке
+            - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+        ports:
+            # Пробрасываем 80 порт в контейнер.
+            - "80:80"
+        # Прежде чем поднять Nginx - все сервисы должны подняться.
+        # Тогда пользователи гарантированно получат рабочие ответы!
         depends_on:
             postgres:
-                condition: service_started
+                condition: service_healthy
+
+        # Во время домашней разработке, мы вынуждены пробрасывать своё решение на основную машину.
+        # Чтобы Джавалин мог ловить происходящее.
         extra_hosts:
-            - "admin.auth.localhost:host-gateway"
-            - "auth.localhost:host-gateway"
-        environment:
-            - TRUST_PROXY_HEADER=1
-            - DB_URL=${LOGTO_DB_URL}
-            - PASSWORD_POLICY_CHECK_ON_PWNED=false
-            # Для localhost без HTTPS, используем http
-            - ENDPOINT=${LOGTO_ENDPOINT}
-            - ADMIN_ENDPOINT=${LOGTO_ADMIN_ENDPOINT}
-            - PORT=${LOGTO_ALL_PORT}
-            - ADMIN_PORT=${LOGTO_ADMIN_PORT}
-        ports:
-            # Пробрасываем порты на хост, чтобы при необходимости можно было обратиться напрямую
-            - "${LOGTO_ADMIN_PORT}:${LOGTO_ADMIN_PORT}"
-            - "${LOGTO_ALL_PORT}:${LOGTO_ALL_PORT}"
+            - "host.docker.internal:host-gateway"   # позволяет резолвить имя хоста
+
+        # Жёстко-жёстко ограничиваем (мы бедные студенты,
+        # у нас кремний не такой крутой, как на больших серверах)
         deploy:
             resources:
                 limits:
@@ -68,19 +75,13 @@ services:
                     memory: 512M
         restart: no
 
-    nginx:
-        image: nginx:latest
-        container_name: "LMS.Nginx"
-        volumes:
-            - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    lms:
+        build:
+            context: ./students-service
+
+        container_name: "LMS"
         ports:
-            - "${NGINX_PORT}:${NGINX_PORT}"
-        depends_on:
-            logto:
-                condition: service_started
-        deploy:
-            resources:
-                limits:
-                    cpus: 1
-                    memory: 512M
-        restart: no
+            - "4040:4040"
+
+        env_file:
+            -   .env

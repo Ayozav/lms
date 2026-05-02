@@ -25,6 +25,6 @@ public class WebController {
     }
 
     public void run(int port) {
-        this.app.start(port);
+        this.app.start("0.0.0.0", port);
     }
 }
