@@ -15,13 +15,10 @@ public class WebController {
 
         this.app = Javalin.create(
                 javalinConfig -> {
-
                     javalinConfig.routes.get("/echo", this.groupsController::echo);
-
-                    // javalinConfig.routes.post("/api/v1/groups", this.studentController::test);
+                    javalinConfig.routes.get("/app", this.groupsController::app);
                 }
         );
-
     }
 
     public void run(int port) {

@@ -75,8 +75,33 @@ services:
                     memory: 512M
         restart: no
 
+    logto:
+        image: ghcr.io/logto-io/logto
+        container_name: "LMS.LogTo"
+        restart: no
+        ports:
+            - "3001:3001"      # API
+            - "3002:3002"      # Админ-панель
+        environment:
+            # --- Обязательные параметры ---
+            # URL вашего сервиса аутентификации (обязателен для корректной работы OIDC)
+            - ENDPOINT=http://auth.localhost
+            # URL для доступа к админ-панели (обязателен)
+            - ADMIN_ENDPOINT=http://admin.auth.localhost
+            # Строка подключения к вашей базе данных PostgreSQL
+            - DB_URL=postgres://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@postgres:5432/logto
+            # --- Рекомендованные параметры ---
+            # Обязательно для работы за Nginx
+            - TRUST_PROXY_HEADER=1
+
+        entrypoint: ["sh", "-c", "npx @logto/cli db seed -- --swe && npm start"]
+
+        depends_on:
+            postgres:
+                condition: service_healthy
+
     lms:
-        image: ayozav-lms:0.0.1
+        image: ayozav-lms:0.0.0.1
         build:
             context: ./students-service
 

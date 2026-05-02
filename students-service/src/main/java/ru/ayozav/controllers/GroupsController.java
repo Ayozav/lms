@@ -37,4 +37,9 @@ public class GroupsController {
 
         ctx.status(200).json(Map.of("msg", "I AM OK!"));
     }
+
+
+    public void app(Context ctx) {
+        ctx.status(200).json(Map.of("msg", "Ye!"));
+    }
 }
