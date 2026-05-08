@@ -185,14 +185,35 @@
 
 
 :root {
-/* 
-  --bg: #16171d; */
+ 
+  --bg: #dadef5; */
   
   .contained {
   background-color: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
-.custom-text {
-  color: aliceblue;
-  background-color: aliceblue;
-}}
+.app-wrapper {
+  max-width: 1126px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.app-title {
+  font-size: 56px;
+  color: var(--primary);
+}
+
+.app-button-group {
+  /* display: flex; */
+  gap: 160px;
+  justify-content: center;
+}
+
+.im-still-want-custom-button {
+    background-color: #aa3bff !important;
+  border-radius: 20px !important;
+  padding: 12px 32px !important;
+  font-size: 18px !important;
+  transition: all 0.3s !important;
+}
+} 
