@@ -1,8 +1,6 @@
 volumes:
     postgres_data:
         # Создаём том для данных Postgres.
-    logto_data:
-       #  Создаём том для хранения настроек LogTo
 
 
 services:
@@ -56,7 +54,7 @@ services:
         volumes:
             # Явно указываем, что настройки лежат в проектной папке
             - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-            - ./nginx/build:/usr/share/nginx/html:ro
+            - ./lms-frontend/dist/:/usr/share/nginx/html:ro
         ports:
             # Пробрасываем 80 порт в контейнер.
             - "80:80"
@@ -64,8 +62,6 @@ services:
         # Тогда пользователи гарантированно получат рабочие ответы!
         depends_on:
             postgres:
-                condition: service_healthy
-            logto:
                 condition: service_healthy
             students-service:
                 condition: service_healthy
