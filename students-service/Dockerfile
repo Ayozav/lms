@@ -7,6 +7,10 @@ COPY gradlew .
 COPY gradle gradle
 COPY build.gradle settings.gradle ./
 
+# Используем китайское зеркало для Gradle distribution
+RUN mkdir -p /root/.gradle/wrapper/dists && \
+    echo "distributionUrl=https://mirrors.cloud.tencent.com/gradle/gradle-8.13-bin.zip" > gradle/wrapper/gradle-wrapper.properties
+
 # Копируем исходники
 COPY src ./src
 
@@ -20,8 +24,9 @@ WORKDIR /app
 # Копируем shadowJar (обычно имя заканчивается на '-all.jar')
 COPY --from=builder /app/build/libs/*-all.jar app.jar
 
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 CMD wget --no-verbose --tries=1 --spider http://127.0.0.1:4040/echo || exit 1
+
 # Порт, который слушает ваше приложение (по умолчанию 4040)
 EXPOSE 4040
-
 # Точка входа
 CMD ["java", "-jar", "app.jar"]

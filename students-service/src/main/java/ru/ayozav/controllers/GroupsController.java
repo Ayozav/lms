@@ -40,6 +40,6 @@ public class GroupsController {
 
 
     public void app(Context ctx) {
-        ctx.status(200).json(Map.of("msg", "Ye!"));
+        ctx.status(200).json(Map.of("msg", "YeН!"));
     }
 }
