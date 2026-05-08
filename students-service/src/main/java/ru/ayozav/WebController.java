@@ -16,7 +16,7 @@ public class WebController {
         this.app = Javalin.create(
                 javalinConfig -> {
                     javalinConfig.routes.get("/echo", this.groupsController::echo);
-                    javalinConfig.routes.get("/app", this.groupsController::app);
+                    javalinConfig.routes.get("/v1", this.groupsController::app);
                 }
         );
     }

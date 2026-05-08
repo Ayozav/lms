@@ -1,6 +1,8 @@
 volumes:
     postgres_data:
         # Создаём том для данных Postgres.
+    logto_data:
+       #  Создаём том для хранения настроек LogTo
 
 
 services:
@@ -24,11 +26,11 @@ services:
         command: ["postgres", "-c", "log_statement=all"]
 
         volumes:
-            # - ./postgres/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
             - ./postgres/init-scripts:/docker-entrypoint-initdb.d:ro   # Запуск собственных инит. скрипта.
             - postgres_data:/var/lib/postgresql  # Определяем, где будет лежать вся СУБД
 
-        # Задаём чёткий скрипт, который позволяет нам убедится, что сервис живой.
+        # Задаём чёткий скрипт, который позволяет нам
+        # убедится, что сервис живой.
         healthcheck:
             # Внутри мы указываем порт в Докере.
             # А товарищ Postgres по умолчанию на порту 5432 живёт.
@@ -44,14 +46,17 @@ services:
                     cpus: 1
                     memory: 512M
 
-    # Он нам нужен, чтобы красиво и грамотно агрегировать все запросы
-    # извне вовнутрь (с переходом в Докер, соответственно).
+    # Он нам нужен, чтобы запросы агрегировать и переадресовывать туда,
+    # куда следует: проверять авторизацию через LogTo, отправлять
+    # нужные запросы нужным сервисам.
+    # Подгружать статику: для React-приложения, в частности.
     nginx:
         image: nginx:1.29.8
         container_name: "LMS.Nginx"
         volumes:
             # Явно указываем, что настройки лежат в проектной папке
             - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+            - ./nginx/build:/usr/share/nginx/html:ro
         ports:
             # Пробрасываем 80 порт в контейнер.
             - "80:80"
@@ -60,14 +65,11 @@ services:
         depends_on:
             postgres:
                 condition: service_healthy
+            logto:
+                condition: service_healthy
+            students-service:
+                condition: service_healthy
 
-        # Во время домашней разработке, мы вынуждены пробрасывать своё решение на основную машину.
-        # Чтобы Джавалин мог ловить происходящее.
-        extra_hosts:
-            - "host.docker.internal:host-gateway"   # позволяет резолвить имя хоста
-
-        # Жёстко-жёстко ограничиваем (мы бедные студенты,
-        # у нас кремний не такой крутой, как на больших серверах)
         deploy:
             resources:
                 limits:
@@ -75,38 +77,28 @@ services:
                     memory: 512M
         restart: no
 
-    logto:
-        image: ghcr.io/logto-io/logto
-        container_name: "LMS.LogTo"
-        restart: no
-        ports:
-            - "3001:3001"      # API
-            - "3002:3002"      # Админ-панель
-        environment:
-            # --- Обязательные параметры ---
-            # URL вашего сервиса аутентификации (обязателен для корректной работы OIDC)
-            - ENDPOINT=http://auth.localhost
-            # URL для доступа к админ-панели (обязателен)
-            - ADMIN_ENDPOINT=http://admin.auth.localhost
-            # Строка подключения к вашей базе данных PostgreSQL
-            - DB_URL=postgres://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@postgres:5432/logto
-            # --- Рекомендованные параметры ---
-            # Обязательно для работы за Nginx
-            - TRUST_PROXY_HEADER=1
+    students-service:
+        # Оказывается, во время разработки можно использовать утилиту:
+        # docker compose watch
+        # Но, чтобы её настроить следует её подложить в описании к devlop'у.
+        # Поскольку все изменения обычно лежат в /src'шнике, то и путь я укажу туда
+        develop:
+            watch:
+                # LMS собирается в jar'ник, поэтому надо каждый раз пересобирать...
+                -   path: ./students-service/src/
+                    action: rebuild
 
-        entrypoint: ["sh", "-c", "npx @logto/cli db seed -- --swe && npm start"]
+        deploy:
+            resources:
+                limits:
+                    cpus: 1
+                    memory: 512M
 
-        depends_on:
-            postgres:
-                condition: service_healthy
-
-    lms:
-        image: ayozav-lms:0.0.0.1
+        image: ayozav-students-service:0.0.1
         build:
             context: ./students-service
 
-
-        container_name: "LMS"
+        container_name: "LMS.student-service"
         ports:
             - "4040:4040"
 
