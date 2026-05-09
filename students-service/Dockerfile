@@ -24,7 +24,8 @@ WORKDIR /app
 # Копируем shadowJar (обычно имя заканчивается на '-all.jar')
 COPY --from=builder /app/build/libs/*-all.jar app.jar
 
-HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 CMD wget --no-verbose --tries=1 --spider http://127.0.0.1:4040/echo || exit 1
+HEALTHCHECK --interval=60s --timeout=15s --start-period=90s --retries=5 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:4040/echo || exit 1
 
 # Порт, который слушает ваше приложение (по умолчанию 4040)
 EXPOSE 4040

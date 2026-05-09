@@ -1,0 +1,15 @@
+type: workspace
+model: workspace
+id: wk_TsG5TkW2Jb
+createdAt: 2026-05-09T08:09:34.346335800
+updatedAt: 2026-05-09T08:09:34.346336800
+authentication: {}
+authenticationType: null
+description: ''
+headers: []
+name: LMS-test-requests
+encryptionKeyChallenge: null
+settingValidateCertificates: true
+settingFollowRedirects: true
+settingRequestTimeout: 0
+settingDnsOverrides: []

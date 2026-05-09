@@ -1,6 +1,8 @@
 package ru.ayozav;
 
 
+import ru.ayozav.database.DatabaseMigrator;
+
 public class Main {
 
     public static void main(String[] args) {

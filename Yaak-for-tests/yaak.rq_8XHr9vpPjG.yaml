@@ -1,0 +1,26 @@
+type: http_request
+model: http_request
+id: rq_8XHr9vpPjG
+createdAt: 2026-05-09T08:09:37.612154100
+updatedAt: 2026-05-09T08:12:04.963484100
+workspaceId: wk_TsG5TkW2Jb
+folderId: null
+authentication: {}
+authenticationType: null
+body: {}
+bodyType: null
+description: ''
+headers: []
+method: POST
+name: ''
+sortPriority: -1778314177609.0
+url: 127.0.0.1:4040/api/v1/user
+urlParameters:
+- enabled: true
+  name: name
+  value: myVal
+  id: RkpeHGhTh6
+- enabled: true
+  name: ''
+  value: ''
+  id: eaQB0jS4u7

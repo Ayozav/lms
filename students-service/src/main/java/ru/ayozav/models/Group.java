@@ -8,7 +8,7 @@ import java.util.List;
 public class Group {
     private int id;
     private String name;
-    private List<Student> students;
+    private List<User> users;
 
     public Group() {}
 
@@ -28,11 +28,11 @@ public class Group {
         this.name = name;
     }
 
-    public List<Student> getStudents() {
-        return students;
+    public List<User> getStudents() {
+        return users;
     }
 
-    public void setStudents(List<Student> students) {
-        this.students = students;
+    public void setStudents(List<User> users) {
+        this.users = users;
     }
 }

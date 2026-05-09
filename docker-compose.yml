@@ -2,6 +2,10 @@ volumes:
     postgres_data:
         # Создаём том для данных Postgres.
 
+networks:
+    lms-network:
+        driver: bridge
+
 
 services:
     # Он нам нужен для хранения вообще всей информации по LMS!
@@ -38,6 +42,9 @@ services:
             start_period: 15s
             timeout: 5s
 
+        networks:
+            - lms-network
+
         deploy:
             resources:
                 limits:
@@ -66,11 +73,15 @@ services:
             students-service:
                 condition: service_healthy
 
+        networks:
+            - lms-network
+
         deploy:
             resources:
                 limits:
                     cpus: 1
                     memory: 512M
+
         restart: no
 
     students-service:
@@ -83,6 +94,7 @@ services:
                 # LMS собирается в jar'ник, поэтому надо каждый раз пересобирать...
                 -   path: ./students-service/src/
                     action: rebuild
+        restart: on-failure
 
         deploy:
             resources:
@@ -90,13 +102,20 @@ services:
                     cpus: 1
                     memory: 512M
 
-        image: ayozav-students-service:0.0.1
+        depends_on:
+            postgres:
+                condition: service_healthy
+
+        image: ayozav-students-service:0.0.2
         build:
             context: ./students-service
 
-        container_name: "LMS.student-service"
+        container_name: "LMS.students-service"
         ports:
             - "4040:4040"
+
+        networks:
+            - lms-network
 
         env_file:
             -   .env
