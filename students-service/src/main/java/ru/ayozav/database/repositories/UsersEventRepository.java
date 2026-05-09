@@ -31,13 +31,16 @@ public class UsersEventRepository {
 
     public int addUser(UUID openID, String firstName, String lastName, String patronymic, LocalDate birthDate) throws DatabaseException {
         try {
+            log.info("Trying to add new user: {} (name: {} {})", openID, firstName, lastName);
             return this.dao.insert(openID, firstName, lastName, patronymic, birthDate);
         } catch (Exception e) {
+            log.warn("[FAILED to insert user]: {} (user: {}, {} {}", e, openID, firstName, lastName);
             throw new DatabaseException("Добавить пользователя (openID=" + openID + ") не вышло.");
         }
     }
 
     public List<User> getUsers(int page) {
+        log.info("Trying to get page of users, page={}", page);
         return this.dao.getPageOfUsers(
                 this.USERS_PER_PAGE,
                 (page - 1) * this.USERS_PER_PAGE
@@ -45,10 +48,12 @@ public class UsersEventRepository {
     }
 
     public Optional<User> getUserById(int id) {
+        log.info("Trying to get user by id={}", id);
         return this.dao.getUserById(id);
     }
 
     public void deleteUserById(int id)  {
+        log.info("Trying to delete user id={}", id);
         this.dao.deleteUserById(id);
     }
 }

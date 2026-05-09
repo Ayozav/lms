@@ -10,5 +10,6 @@
     </changeSet>
 
     <include relativeToChangelogFile="true" file="ddl/first.xml"/>
+    <include relativeToChangelogFile="true" file="ddl/code-to-unique.xml"/>
 
 </databaseChangeLog>

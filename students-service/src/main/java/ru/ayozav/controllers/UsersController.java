@@ -9,7 +9,6 @@ import ru.ayozav.database.exceptions.DatabaseException;
 import ru.ayozav.database.repositories.UsersEventRepository;
 import ru.ayozav.models.User;
 
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -21,12 +20,6 @@ public class UsersController {
 
     public UsersController(HikariConnectionFactory factory) {
         this.usersEventRepository = new UsersEventRepository(factory);
-    }
-
-    public void echo(Context ctx) {
-        ctx.status(200).json(
-                new EchoAnswer()
-        );
     }
 
     public void addUser(Context ctx) {

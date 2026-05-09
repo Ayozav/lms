@@ -3,7 +3,6 @@ package ru.ayozav.database;
 import liquibase.Liquibase;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.resource.ClassLoaderResourceAccessor;
-import ru.ayozav.database.HikariConnectionFactory;
 
 import java.sql.Connection;
 

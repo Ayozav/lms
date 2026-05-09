@@ -5,6 +5,7 @@
 
 
 ```
+// Пользователи ИС
 Table users {
   id int [pk]
   open_id uuid [unique]  // Для logto
@@ -19,6 +20,7 @@ Table users {
   }
 }
 
+// Уровни подготовки (бакалавариат 09.03.02)
 Table grades {
   id int [pk]
   code varchar(8)
@@ -33,6 +35,7 @@ Table grades {
 }
 Ref: grades.supervisor_id > users.id
 
+// Дисциплины
 Table disciplines {
   id int [pk]
   discipline_name varchar(50)
@@ -49,6 +52,7 @@ Table disciplines {
 }
 Ref: disciplines.supervisor_id > users.id
 
+// Занятия
 Table lessons {
   id int [pk]
   discipline_id int
@@ -66,7 +70,7 @@ Table lessons {
   }
 }
 Ref: lessons.discipline_id > disciplines.id
-
+// Группы студентов
 Table groups {
   id int [pk]
   group_name varchar(15) [unique]
@@ -84,6 +88,7 @@ Table groups {
 Ref: groups.headman_id > users.id
 Ref: groups.grade_id > grades.id
 
+// Шаблон расписания на неделю чётную/нечётную для преподавателя
 Table timetables {
   id int [pk]
   semester_id int
@@ -106,6 +111,7 @@ Table timetables {
 Ref: timetables.discipline_id > disciplines.id
 Ref: timetables.teacher_id > users.id
 
+// Расписание групп (таблица на случай пар "на всём потоке")
 Table timetables_groups {
   timetable_id int [pk]
   group_id int [pk]
@@ -117,6 +123,7 @@ Table timetables_groups {
 Ref: timetables_groups.group_id > groups.id
 Ref: timetables_groups.timetable_id > timetables.id
 
+// Отметка готовности преподавателя вести ту или иную дисциплину.
 Table teachers_abilities {
   teacher_id int [pk]
   discipline_id int [pk]
@@ -128,7 +135,7 @@ Table teachers_abilities {
 Ref: teachers_abilities.teacher_id > users.id
 Ref: teachers_abilities.discipline_id > disciplines.id
 
-
+// Отметки (и по посещаемости в том числе) студентов по прошедшему занятию.
 Table marks {
   id int [pk]
   timetable_id int
@@ -151,7 +158,7 @@ Table marks {
 Ref: marks.timetable_id > timetables.id
 Ref: marks.student_id > users.id
 
-
+// Перечень семестров: для того, чтобы удобно ссылаться в датах
 Table semesters {
   id int [pk]
   semester_name varchar(35)
@@ -166,6 +173,7 @@ Table semesters {
 Ref: groups.first_semester_id > semesters.id
 Ref: timetables.semester_id > semesters.id
 
+// Домашние задания к проведённому занятию.
 Table homeworks {
   id int [pk]
   lesson_id int
@@ -183,6 +191,7 @@ Table homeworks {
 Ref: homeworks.lesson_id > lessons.id
 Ref: homeworks.semester_id > semesters.id
 
+// Прикреплённое ДЗ студентами.
 Table attached_homeworks {
   id int [pk]
   homework_id int
@@ -199,6 +208,7 @@ Table attached_homeworks {
 Ref: attached_homeworks.student_id > users.id
 Ref: attached_homeworks.homework_id > homeworks.id
 
+// Комментарии к ДЗ: "чат"
 Table comments {
   id int [pk]
   attached_homework_id int
@@ -214,6 +224,7 @@ Table comments {
 Ref: comments.attached_homework_id > attached_homeworks.id
 Ref: comments.from_id > users.id
 
+// История перевода студентов / Привязка студента к группе.
 Table enrollments {
   id int [pk]
   student_id int
