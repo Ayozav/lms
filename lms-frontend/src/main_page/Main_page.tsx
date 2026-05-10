@@ -1,4 +1,4 @@
-// import React, { useState } from 'react';
+// import React, { useState } from 'react'; НУ И БОЛЬНО ХОТЕЛОСЬ
 import { useState } from 'react';
 import {
   AppBar,
@@ -113,21 +113,7 @@ function Main_page() {
         component="nav"
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
       >
-        {/* Мобильная версия
-        <Drawer
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{ keepMounted: true }}
-          sx={{
-            display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-          }}
-        >
-          {drawer}
-        </Drawer> */}
 
-        {/* Компьютерная версия */}
         <Drawer
           variant="permanent"
           sx={{
@@ -150,12 +136,6 @@ function Main_page() {
           minHeight: '100vh',
         }}
       >
-        {/* Отступ для мобильной версии
-        <Toolbar sx={{ display: { xs: 'block', sm: 'none' } }} />
-        
-        <Typography variant="h4" gutterBottom sx={{ mb: 3 }}>
-          {menuItems.find(item => item.id === selectedTab)?.text || 'Главная'}
-        </Typography> */}
 
         {/* квадраты с Grid */}
         <Grid container spacing={3}>
