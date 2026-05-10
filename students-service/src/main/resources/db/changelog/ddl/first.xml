@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="create-all-tables" author="Ayozav">
+
+        <!-- Таблица users -->
+        <createTable tableName="users">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="open_id" type="uuid">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="first_name" type="varchar(100)"/>
+            <column name="last_name" type="varchar(100)"/>
+            <column name="patronymic" type="varchar(100)"/>
+            <column name="birth_date" type="date"/>
+        </createTable>
+
+        <createIndex tableName="users" indexName="idx_users_open_id">
+            <column name="open_id"/>
+        </createIndex>
+
+        <createIndex tableName="users" indexName="idx_users_full_name">
+            <column name="last_name"/>
+            <column name="first_name"/>
+            <column name="patronymic"/>
+        </createIndex>
+
+        <!-- Таблица semesters (должна быть до групп) -->
+        <createTable tableName="semesters">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="semester_name" type="varchar(35)"/>
+            <column name="start" type="date"/>
+            <column name="end" type="date"/>
+        </createTable>
+
+        <createIndex tableName="semesters" indexName="idx_semesters_dates">
+            <column name="start"/>
+            <column name="end"/>
+        </createIndex>
+
+        <createIndex tableName="semesters" indexName="idx_semesters_name">
+            <column name="semester_name"/>
+        </createIndex>
+
+        <!-- Таблица grades -->
+        <createTable tableName="grades">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="code" type="varchar(8)"/>
+            <column name="grade_name" type="varchar(50)"/>
+            <column name="grade_type" type="varchar(20)"/>
+            <column name="supervisor_id" type="int"/>
+        </createTable>
+
+        <createIndex tableName="grades" indexName="idx_grades_supervisor">
+            <column name="supervisor_id"/>
+        </createIndex>
+
+        <createIndex tableName="grades" indexName="idx_grades_name">
+            <column name="grade_name"/>
+        </createIndex>
+
+        <!-- Таблица groups (ссылается на semesters и grades) -->
+        <createTable tableName="groups">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="group_name" type="varchar(15)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="headman_id" type="int"/>
+            <column name="first_semester_id" type="int"/>
+            <column name="course_level" type="int"/>
+            <column name="grade_id" type="int"/>
+        </createTable>
+
+        <createIndex tableName="groups" indexName="idx_groups_headman">
+            <column name="headman_id"/>
+        </createIndex>
+
+        <createIndex tableName="groups" indexName="idx_groups_course_level">
+            <column name="course_level"/>
+        </createIndex>
+
+        <createIndex tableName="groups" indexName="idx_groups_name">
+            <column name="group_name"/>
+        </createIndex>
+
+        <!-- Таблица disciplines -->
+        <createTable tableName="disciplines">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="discipline_name" type="varchar(50)"/>
+            <column name="supervisor_id" type="int"/>
+            <column name="description" type="text"/>
+            <column name="semester_id" type="int"/>
+            <column name="grade_id" type="int"/>
+        </createTable>
+
+        <createIndex tableName="disciplines" indexName="idx_disciplines_supervisor">
+            <column name="supervisor_id"/>
+        </createIndex>
+
+        <createIndex tableName="disciplines" indexName="idx_disciplines_semester">
+            <column name="semester_id"/>
+        </createIndex>
+
+        <createIndex tableName="disciplines" indexName="idx_disciplines_name">
+            <column name="discipline_name"/>
+        </createIndex>
+
+        <!-- Таблица lessons -->
+        <createTable tableName="lessons">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="discipline_id" type="int"/>
+            <column name="ordered_number" type="int"/>
+            <column name="main_theme" type="varchar(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="teacher_file_link" type="text"/>
+            <column name="students_file_link" type="text"/>
+            <column name="type" type="varchar(50)"/>
+            <column name="format" type="varchar(50)"/>
+            <column name="recommend_room" type="varchar(20)"/>
+        </createTable>
+
+        <createIndex tableName="lessons" indexName="idx_lessons_discipline_order">
+            <column name="discipline_id"/>
+            <column name="ordered_number"/>
+        </createIndex>
+
+        <!-- Таблица timetables -->
+        <createTable tableName="timetables">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="semester_id" type="int"/>
+            <column name="discipline_id" type="int"/>
+            <column name="teacher_id" type="int"/>
+            <column name="day_of_week" type="int"/>
+            <column name="week_parity" type="int"/>
+            <column name="room" type="varchar(10)"/>
+            <column name="start_time" type="time">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_time" type="time">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex tableName="timetables" indexName="idx_timetables_semester">
+            <column name="semester_id"/>
+        </createIndex>
+
+        <createIndex tableName="timetables" indexName="idx_timetables_teacher">
+            <column name="teacher_id"/>
+        </createIndex>
+
+        <createIndex tableName="timetables" indexName="idx_timetables_discipline">
+            <column name="discipline_id"/>
+        </createIndex>
+
+        <createIndex tableName="timetables" indexName="idx_timetables_day_parity">
+            <column name="day_of_week"/>
+            <column name="week_parity"/>
+        </createIndex>
+
+        <createIndex tableName="timetables" indexName="idx_timetables_room">
+            <column name="room"/>
+        </createIndex>
+
+        <!-- Таблица timetables_groups (составной первичный ключ) -->
+        <createTable tableName="timetables_groups">
+            <column name="timetable_id" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="group_id" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex tableName="timetables_groups" indexName="idx_timetables_groups_group">
+            <column name="group_id"/>
+        </createIndex>
+
+        <!-- Таблица teachers_abilities (составной первичный ключ) -->
+        <createTable tableName="teachers_abilities">
+            <column name="teacher_id" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="discipline_id" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex tableName="teachers_abilities" indexName="idx_teachers_abilities_discipline">
+            <column name="discipline_id"/>
+        </createIndex>
+
+        <!-- Таблица marks -->
+        <createTable tableName="marks">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="timetable_id" type="int"/>
+            <column name="student_id" type="int"/>
+            <column name="lesson_real_date" type="date"/>
+            <column name="updated_at" type="datetime"/>
+            <column name="attendance_status" type="varchar(20)"/>
+            <column name="mark" type="int"/>
+        </createTable>
+
+        <createIndex tableName="marks" indexName="idx_marks_unique_timetable_student_date" unique="true">
+            <column name="timetable_id"/>
+            <column name="student_id"/>
+            <column name="lesson_real_date"/>
+        </createIndex>
+
+        <createIndex tableName="marks" indexName="idx_marks_student">
+            <column name="student_id"/>
+        </createIndex>
+
+        <createIndex tableName="marks" indexName="idx_marks_timetable_date">
+            <column name="timetable_id"/>
+            <column name="lesson_real_date"/>
+        </createIndex>
+
+        <createIndex tableName="marks" indexName="idx_marks_attendance">
+            <column name="attendance_status"/>
+        </createIndex>
+
+        <!-- Таблица homeworks -->
+        <createTable tableName="homeworks">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="lesson_id" type="int"/>
+            <column name="semester_id" type="int"/>
+            <column name="deadline" type="datetime"/>
+            <column name="description" type="text"/>
+            <column name="file_link" type="text"/>
+        </createTable>
+
+        <createIndex tableName="homeworks" indexName="idx_homeworks_lesson">
+            <column name="lesson_id"/>
+        </createIndex>
+
+        <createIndex tableName="homeworks" indexName="idx_homeworks_semester">
+            <column name="semester_id"/>
+        </createIndex>
+
+        <createIndex tableName="homeworks" indexName="idx_homeworks_deadline">
+            <column name="deadline"/>
+        </createIndex>
+
+        <!-- Таблица attached_homeworks -->
+        <createTable tableName="attached_homeworks">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="homework_id" type="int"/>
+            <column name="student_id" type="int"/>
+            <column name="mark" type="int"/>
+            <column name="attach_date" type="datetime"/>
+        </createTable>
+
+        <createIndex tableName="attached_homeworks" indexName="idx_attached_homeworks_homework">
+            <column name="homework_id"/>
+        </createIndex>
+
+        <createIndex tableName="attached_homeworks" indexName="idx_attached_homeworks_student">
+            <column name="student_id"/>
+        </createIndex>
+
+        <createIndex tableName="attached_homeworks" indexName="idx_attached_homeworks_date">
+            <column name="attach_date"/>
+        </createIndex>
+
+        <!-- Таблица comments -->
+        <createTable tableName="comments">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="attached_homework_id" type="int"/>
+            <column name="from_id" type="int"/>
+            <column name="send_time" type="datetime"/>
+            <column name="message" type="text"/>
+        </createTable>
+
+        <createIndex tableName="comments" indexName="idx_comments_attached_homework">
+            <column name="attached_homework_id"/>
+        </createIndex>
+
+        <createIndex tableName="comments" indexName="idx_comments_send_time">
+            <column name="send_time"/>
+        </createIndex>
+
+        <!-- Таблица enrollments -->
+        <createTable tableName="enrollments">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="student_id" type="int"/>
+            <column name="group_id" type="int"/>
+            <column name="start_semester_id" type="int"/>
+            <column name="end_semester_id" type="int"/>
+        </createTable>
+
+        <createIndex tableName="enrollments" indexName="idx_enrollments_student">
+            <column name="student_id"/>
+        </createIndex>
+
+        <createIndex tableName="enrollments" indexName="idx_enrollments_group">
+            <column name="group_id"/>
+        </createIndex>
+
+        <createIndex tableName="enrollments" indexName="idx_enrollments_start_semester">
+            <column name="start_semester_id"/>
+        </createIndex>
+
+        <createIndex tableName="enrollments" indexName="idx_enrollments_end_semester">
+            <column name="end_semester_id"/>
+        </createIndex>
+
+        <createIndex tableName="enrollments" indexName="idx_enrollments_active_student">
+            <column name="student_id"/>
+            <column name="end_semester_id"/>
+        </createIndex>
+
+        <!-- Внешние ключи -->
+        <addForeignKeyConstraint
+                constraintName="fk_grades_supervisor"
+                baseTableName="grades" baseColumnNames="supervisor_id"
+                referencedTableName="users" referencedColumnNames="id"
+                onDelete="SET NULL"/>
+
+        <addForeignKeyConstraint
+                constraintName="fk_groups_headman"
+                baseTableName="groups" baseColumnNames="headman_id"
+                referencedTableName="users" referencedColumnNames="id"
+                onDelete="SET NULL"/>
+
+        <addForeignKeyConstraint
+                constraintName="fk_groups_first_semester"
+                baseTableName="groups" baseColumnNames="first_semester_id"
+                referencedTableName="semesters" referencedColumnNames="id"
+                onDelete="SET NULL"/>
+
+        <addForeignKeyConstraint
+                constraintName="fk_groups_grade"
+                baseTableName="groups" baseColumnNames="grade_id"
+                referencedTableName="grades" referencedColumnNames="id"
+                onDelete="SET NULL"/>
+
+        <addForeignKeyConstraint
+                constraintName="fk_disciplines_supervisor"
+                baseTableName="disciplines" baseColumnNames="supervisor_id"
+                referencedTableName="users" referencedColumnNames="id"
+                onDelete="SET NULL"/>
+
+        <addForeignKeyConstraint
+                constraintName="fk_disciplines_semester"
+                baseTableName="disciplines" baseColumnNames="semester_id"
+                referencedTableName="semesters" referencedColumnNames="id"
+                onDelete="SET NULL"/>
+
+        <addForeignKeyConstraint
+                constraintName="fk_disciplines_grade"
+                baseTableName="disciplines" baseColumnNames="grade_id"
+                referencedTableName="grades" referencedColumnNames="id"
+                onDelete="SET NULL"/>
+
+        <addForeignKeyConstraint
+                constraintName="fk_lessons_discipline"
+                baseTableName="lessons" baseColumnNames="discipline_id"
+                referencedTableName="disciplines" referencedColumnNames="id"
+                onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint
+                constraintName="fk_timetables_semester"
+                baseTableName="timetables" baseColumnNames="semester_id"
+                referencedTableName="semesters" referencedColumnNames="id"
+                onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint
+                constraintName="fk_timetables_discipline"
+                baseTableName="timetables" baseColumnNames="discipline_id"
+                referencedTableName="disciplines" referencedColumnNames="id"
+                onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint
+                constraintName="fk_timetables_teacher"
+                baseTableName="timetables" baseColumnNames="teacher_id"
+                referencedTableName="users" referencedColumnNames="id"
+                onDelete="SET NULL"/>
+
+        <addForeignKeyConstraint
+                constraintName="fk_timetables_groups_timetable"
+                baseTableName="timetables_groups" baseColumnNames="timetable_id"
+                referencedTableName="timetables" referencedColumnNames="id"
+                onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint
+                constraintName="fk_timetables_groups_group"
+                baseTableName="timetables_groups" baseColumnNames="group_id"
+                referencedTableName="groups" referencedColumnNames="id"
+                onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint
+                constraintName="fk_teachers_abilities_teacher"
+                baseTableName="teachers_abilities" baseColumnNames="teacher_id"
+                referencedTableName="users" referencedColumnNames="id"
+                onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint
+                constraintName="fk_teachers_abilities_discipline"
+                baseTableName="teachers_abilities" baseColumnNames="discipline_id"
+                referencedTableName="disciplines" referencedColumnNames="id"
+                onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint
+                constraintName="fk_marks_timetable"
+                baseTableName="marks" baseColumnNames="timetable_id"
+                referencedTableName="timetables" referencedColumnNames="id"
+                onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint
+                constraintName="fk_marks_student"
+                baseTableName="marks" baseColumnNames="student_id"
+                referencedTableName="users" referencedColumnNames="id"
+                onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint
+                constraintName="fk_homeworks_lesson"
+                baseTableName="homeworks" baseColumnNames="lesson_id"
+                referencedTableName="lessons" referencedColumnNames="id"
+                onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint
+                constraintName="fk_homeworks_semester"
+                baseTableName="homeworks" baseColumnNames="semester_id"
+                referencedTableName="semesters" referencedColumnNames="id"
+                onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint
+                constraintName="fk_attached_homeworks_homework"
+                baseTableName="attached_homeworks" baseColumnNames="homework_id"
+                referencedTableName="homeworks" referencedColumnNames="id"
+                onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint
+                constraintName="fk_attached_homeworks_student"
+                baseTableName="attached_homeworks" baseColumnNames="student_id"
+                referencedTableName="users" referencedColumnNames="id"
+                onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint
+                constraintName="fk_comments_attached_homework"
+                baseTableName="comments" baseColumnNames="attached_homework_id"
+                referencedTableName="attached_homeworks" referencedColumnNames="id"
+                onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint
+                constraintName="fk_comments_from"
+                baseTableName="comments" baseColumnNames="from_id"
+                referencedTableName="users" referencedColumnNames="id"
+                onDelete="SET NULL"/>
+
+        <addForeignKeyConstraint
+                constraintName="fk_enrollments_student"
+                baseTableName="enrollments" baseColumnNames="student_id"
+                referencedTableName="users" referencedColumnNames="id"
+                onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint
+                constraintName="fk_enrollments_group"
+                baseTableName="enrollments" baseColumnNames="group_id"
+                referencedTableName="groups" referencedColumnNames="id"
+                onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint
+                constraintName="fk_enrollments_start_semester"
+                baseTableName="enrollments" baseColumnNames="start_semester_id"
+                referencedTableName="semesters" referencedColumnNames="id"
+                onDelete="SET NULL"/>
+
+        <addForeignKeyConstraint
+                constraintName="fk_enrollments_end_semester"
+                baseTableName="enrollments" baseColumnNames="end_semester_id"
+                referencedTableName="semesters" referencedColumnNames="id"
+                onDelete="SET NULL"/>
+
+    </changeSet>
+</databaseChangeLog>

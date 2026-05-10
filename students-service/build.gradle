@@ -15,6 +15,11 @@ application {
     mainClass.set("ru.ayozav.Main")
 }
 
+tasks.named('run') {
+    systemProperty 'file.encoding', 'UTF-8'
+    systemProperty 'sun.stdout.encoding', 'UTF-8'
+    systemProperty 'sun.stderr.encoding', 'UTF-8'
+}
 
 dependencies {
     // For Unit-tests
@@ -27,8 +32,16 @@ dependencies {
     implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.2"
     // For logging
     implementation "org.slf4j:slf4j-simple:2.0.17"
-    // For Database
+    // Database driver
     implementation "org.postgresql:postgresql:42.7.10"
+    // For Connection pools
+    implementation 'com.zaxxer:HikariCP:7.0.2'
+    // For easy queries
+    implementation platform("org.jdbi:jdbi3-bom:3.46.0")
+    implementation "org.jdbi:jdbi3-core:3.46.0"
+    implementation "org.jdbi:jdbi3-sqlobject"
+    // For easy migrations and controlling database.
+    implementation "org.liquibase:liquibase-core:4.31.1"
 
 }
 
