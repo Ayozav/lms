@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+// import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   AppBar,
   Box,
@@ -159,7 +160,7 @@ function Main_page() {
         {/* квадраты с Grid */}
         <Grid container spacing={3}>
           {squares.map((square) => (
-            <Grid item xs={12} sm={6} md={3} key={square.id}>
+            <Grid key={square.id} size={{xs: 12, sm:8, md:3}}>
               <Paper
                 elevation={3}
                 sx={{
@@ -169,7 +170,7 @@ function Main_page() {
                   flexDirection: 'column',
                   justifyContent: 'center',
                   alignItems: 'center',
-                  borderRadius: 4, // Закругление углов
+                  borderRadius: 4, // Закругление!
                   backgroundColor: square.color,
                   color: 'white',
                   transition: 'transform 0.2s, box-shadow 0.2s',
@@ -191,7 +192,6 @@ function Main_page() {
           ))}
         </Grid>
 
-        {/* Дополнительный контент, может меняться в зависимости от выбранного раздела */}
         <Box sx={{ mt: 4, p: 2, backgroundColor: 'white', borderRadius: 2 }}>
           <Typography variant="body1" color="text.secondary">
             Здесь дополнительная информация для раздела "{menu_items.find(item => item.id === selectedTab)?.text}"
