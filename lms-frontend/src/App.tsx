@@ -8,7 +8,7 @@ function App() {
     <div>
       <Button variant="contained" size="medium" color="primary">Привет я кнопка</Button>
       <Button variant="outlined" color="secondary" size="large">Привет я тоже кнопка, но с подвохом</Button> 
-      <Button variant="contained" className='im-still-want-custom-button'>А я абортыш</Button>
+      <Button variant="contained" className='im-still-want-custom-button'>А я изгой, зато красивый</Button>
 '
 
       <TextField variant="filled" label="Введите хоть что-то"/>
