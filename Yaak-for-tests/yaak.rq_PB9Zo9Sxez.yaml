@@ -1,0 +1,54 @@
+type: http_request
+model: http_request
+id: rq_PB9Zo9Sxez
+createdAt: 2026-05-16T08:17:36.303129300
+updatedAt: 2026-05-16T08:27:02.561410100
+workspaceId: wk_TsG5TkW2Jb
+folderId: null
+authentication: {}
+authenticationType: null
+body: {}
+bodyType: null
+description: ''
+headers: []
+method: POST
+name: 127.0.0.1:4040/v1/timetable
+sortPriority: 11555.556555555557
+url: 127.0.0.1:4040/v1/timetable
+urlParameters:
+- enabled: true
+  name: semester_id
+  value: '1'
+  id: rjN8emBhCx
+- enabled: true
+  name: discipline_id
+  value: '2'
+  id: xErrjEwyHs
+- enabled: true
+  name: teacher_id
+  value: '1'
+  id: ZTY00dnaxE
+- enabled: true
+  name: day_of_week
+  value: '1'
+  id: Fvn82AcS07
+- enabled: true
+  name: week_parity
+  value: '1'
+  id: 3CHumx8T5Y
+- enabled: true
+  name: start_time
+  value: 09:00
+  id: vXgtRDrHwx
+- enabled: true
+  name: end_time
+  value: 10:45
+  id: Qpiw8BhxyG
+- enabled: true
+  name: room
+  value: 2-505
+  id: NcfeYC8kc2
+- enabled: true
+  name: ''
+  value: ''
+  id: PGKzDzGiQp

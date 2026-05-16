@@ -1,6 +1,7 @@
 package ru.ayozav.controllers;
 
 import io.javalin.http.Context;
+import org.apache.commons.lang3.ObjectUtils;
 import ru.ayozav.answers.BadArgumentsAnswer;
 import ru.ayozav.answers.EchoAnswer;
 import ru.ayozav.answers.SuccessObjectInsertAnswer;
@@ -33,7 +34,7 @@ public class UsersController {
                     DateTimeFormatter.ofPattern("dd.MM.yyyy")
             );
         }
-        catch (DateTimeParseException | NumberFormatException exc) {
+        catch (DateTimeParseException | NumberFormatException | NullPointerException exc) {
             ctx.status(400).json(new BadArgumentsAnswer("'birth_date' должен быть в формате ДД.ММ.ГГГГ"));
             return;
         }

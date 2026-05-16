@@ -15,6 +15,7 @@ public class WebController {
     private SemestersController semestersController;
     private DisciplinesController disciplinesController;
     private GroupsController groupsController;
+    private TimetablesController timetablesController;
 
     public void initialize() {
 
@@ -38,6 +39,7 @@ public class WebController {
         this.semestersController = new SemestersController(factory);
         this.disciplinesController = new DisciplinesController(factory);
         this.groupsController = new GroupsController(factory);
+        this.timetablesController = new TimetablesController(factory);
 
         this.app = Javalin.create(
                 javalinConfig -> {
@@ -71,6 +73,11 @@ public class WebController {
                     javalinConfig.routes.delete("/v1/group", this.groupsController::deleteGroup);
                     javalinConfig.routes.get("/v1/group", this.groupsController::getGroupById);
                     javalinConfig.routes.get("/v1/groups", this.groupsController::getAllGroups);
+
+                    javalinConfig.routes.post("/v1/timetable", this.timetablesController::addTimetable);
+                    javalinConfig.routes.delete("/v1/timetable", this.timetablesController::deleteTimetable);
+                    javalinConfig.routes.get("/v1/timetable", this.timetablesController::getTimetableById);
+                    javalinConfig.routes.get("/v1/timetables", this.timetablesController::getAllTimetables);
 
                 }
         );

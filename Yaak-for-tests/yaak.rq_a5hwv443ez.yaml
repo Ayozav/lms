@@ -1,0 +1,26 @@
+type: http_request
+model: http_request
+id: rq_a5hwv443ez
+createdAt: 2026-05-16T08:17:36.298947900
+updatedAt: 2026-05-16T08:22:52.280324400
+workspaceId: wk_TsG5TkW2Jb
+folderId: null
+authentication: {}
+authenticationType: null
+body: {}
+bodyType: null
+description: ''
+headers: []
+method: DELETE
+name: 127.0.0.1:4040/v1/timetable
+sortPriority: 12000.001
+url: 127.0.0.1:4040/v1/timetable?id=1
+urlParameters:
+- enabled: true
+  name: id
+  value: '1'
+  id: iW0P4P6eQn
+- enabled: true
+  name: ''
+  value: ''
+  id: by3k9cwdi6

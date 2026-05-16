@@ -93,7 +93,7 @@ public class GroupsController {
         int id;
         try {
             id = Integer.parseInt(Objects.requireNonNull(ctx.queryParam("id")));
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException | NullPointerException e) {
             ctx.status(400).json(new BadArgumentsAnswer("'id' должен быть целым положительным"));
             return;
         }
@@ -115,7 +115,7 @@ public class GroupsController {
         int id;
         try {
             id = Integer.parseInt(Objects.requireNonNull(ctx.queryParam("id")));
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException | NullPointerException e) {
             ctx.status(400).json(new BadArgumentsAnswer("'id' должен быть целым положительным"));
             return;
         }
