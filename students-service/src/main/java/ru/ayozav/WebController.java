@@ -5,6 +5,7 @@ import ru.ayozav.answers.EchoAnswer;
 import ru.ayozav.controllers.*;
 import ru.ayozav.database.DatabaseMigrator;
 import ru.ayozav.database.HikariConnectionFactory;
+import ru.ayozav.models.Comment;
 
 public class WebController {
 
@@ -23,6 +24,7 @@ public class WebController {
     private MarksController marksController;
     private HomeworksController homeworksController;
     private AttachedHomeworksController attachedHomeworksController;
+    private CommentsController commentsController;
 
     public void initialize() {
 
@@ -54,6 +56,7 @@ public class WebController {
         this.marksController = new MarksController(factory);
         this.homeworksController = new HomeworksController(factory);
         this.attachedHomeworksController = new AttachedHomeworksController(factory);
+        this.commentsController = new CommentsController(factory);
 
         this.app = Javalin.create(
                 javalinConfig -> {
@@ -140,6 +143,12 @@ public class WebController {
                     javalinConfig.routes.get("/v1/attached_homework", this.attachedHomeworksController::getAttachedHomeworkById);
                     javalinConfig.routes.get("/v1/attached_homeworks", this.attachedHomeworksController::getAllAttachedHomeworks);
                     javalinConfig.routes.put("/v1/attached_homework", this.attachedHomeworksController::updateAttachedHomework);
+
+                    javalinConfig.routes.post("/v1/comment", this.commentsController::addComment);
+                    javalinConfig.routes.delete("/v1/comment", this.commentsController::deleteComment);
+                    javalinConfig.routes.get("/v1/comment", this.commentsController::getCommentById);
+                    javalinConfig.routes.get("/v1/comments", this.commentsController::getAllComments);
+                    javalinConfig.routes.put("/v1/comment", this.commentsController::updateComment);
                 }
         );
     }
