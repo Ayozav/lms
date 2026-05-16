@@ -51,4 +51,28 @@ public interface TimetablesDAO {
             "DELETE FROM timetables WHERE id = :id"
     )
     void deleteById(@Bind("id") int id);
+
+    @SqlUpdate(
+            "UPDATE timetables SET " +
+                    "semester_id = :semester_id, " +
+                    "discipline_id = :discipline_id, " +
+                    "teacher_id = :teacher_id, " +
+                    "day_of_week = :day_of_week, " +
+                    "week_parity = :week_parity, " +
+                    "room = :room, " +
+                    "start_time = :start_time, " +
+                    "end_time = :end_time " +
+                    "WHERE id = :id"
+    )
+    int update(
+            @Bind("id") int id,
+            @Bind("semester_id") int semesterId,
+            @Bind("discipline_id") int disciplineId,
+            @Bind("teacher_id") int teacherId,
+            @Bind("day_of_week") int dayOfWeek,
+            @Bind("week_parity") int weekParity,
+            @Bind("room") String room,
+            @Bind("start_time") LocalTime startTime,
+            @Bind("end_time") LocalTime endTime
+    );
 }

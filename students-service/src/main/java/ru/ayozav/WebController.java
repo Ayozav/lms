@@ -78,6 +78,7 @@ public class WebController {
                     javalinConfig.routes.delete("/v1/timetable", this.timetablesController::deleteTimetable);
                     javalinConfig.routes.get("/v1/timetable", this.timetablesController::getTimetableById);
                     javalinConfig.routes.get("/v1/timetables", this.timetablesController::getAllTimetables);
+                    javalinConfig.routes.put("/v1/timetable", this.timetablesController::updateTimetable);
 
                 }
         );

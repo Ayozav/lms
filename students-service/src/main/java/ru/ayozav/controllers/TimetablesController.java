@@ -3,6 +3,7 @@ package ru.ayozav.controllers;
 import io.javalin.http.Context;
 import ru.ayozav.answers.BadArgumentsAnswer;
 import ru.ayozav.answers.SuccessObjectInsertAnswer;
+import ru.ayozav.answers.SuccessUpdateAnswer;
 import ru.ayozav.database.HikariConnectionFactory;
 import ru.ayozav.database.exceptions.DatabaseException;
 import ru.ayozav.database.repositories.TimetablesEventRepository;
@@ -149,6 +150,63 @@ public class TimetablesController {
         } catch (DateTimeParseException | NullPointerException e) {
             ctx.status(400).json(new BadArgumentsAnswer("'" + paramName + "' должен быть в формате HH:MM[:SS]"));
             return null;
+        }
+    }
+
+    public void updateTimetable(Context ctx) {
+        try {
+            int id = parsePositiveInt(ctx, "id");
+            if (id == -1) return;
+
+            int semesterId = parsePositiveInt(ctx, "semester_id");
+            if (semesterId == -1) return;
+
+            int disciplineId = parsePositiveInt(ctx, "discipline_id");
+            if (disciplineId == -1) return;
+
+            int teacherId = parsePositiveInt(ctx, "teacher_id");
+            if (teacherId == -1) return;
+
+            int dayOfWeek = parsePositiveInt(ctx, "day_of_week");
+            if (dayOfWeek == -1) return;
+            if (dayOfWeek < 1 || dayOfWeek > 7) {
+                ctx.status(400).json(new BadArgumentsAnswer("'day_of_week' должен быть от 1 (пн) до 7 (вс)"));
+                return;
+            }
+
+            int weekParity = parsePositiveInt(ctx, "week_parity");
+            if (weekParity == -1) return;
+            if (weekParity != 0 && weekParity != 1) {
+                ctx.status(400).json(new BadArgumentsAnswer("'week_parity' должен быть 0 (чётная) или 1 (нечётная)"));
+                return;
+            }
+
+            String room = ctx.queryParam("room");
+
+            LocalTime startTime = parseTime(ctx, "start_time");
+            if (startTime == null) return;
+
+            LocalTime endTime = parseTime(ctx, "end_time");
+            if (endTime == null) return;
+
+            if (startTime.isAfter(endTime)) {
+                ctx.status(400).json(new BadArgumentsAnswer("'start_time' не может быть позже 'end_time'"));
+                return;
+            }
+
+            // Optionally check existence before update
+            Optional<Timetable> existing = this.timetablesEventRepository.getById(id);
+            if (existing.isEmpty()) {
+                ctx.status(404).json(new BadArgumentsAnswer("Запись расписания с id=" + id + " не найдена"));
+                return;
+            }
+
+            this.timetablesEventRepository.update(id, semesterId, disciplineId, teacherId,
+                    dayOfWeek, weekParity, room, startTime, endTime);
+            ctx.status(200).json(new SuccessUpdateAnswer("Расписание", id));
+
+        } catch (DatabaseException e) {
+            ctx.status(400).json(new BadArgumentsAnswer("Не удалось обновить расписание."));
         }
     }
 }

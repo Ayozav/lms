@@ -55,4 +55,21 @@ public class TimetablesEventRepository {
         log.info("Trying to delete timetable id={}", id);
         this.dao.deleteById(id);
     }
+
+    public void update(int id, int semesterId, int disciplineId, int teacherId,
+                       int dayOfWeek, int weekParity, String room,
+                       LocalTime startTime, LocalTime endTime) throws DatabaseException {
+        try {
+            log.info("Trying to update timetable id={}: semester={}, discipline={}, teacher={}, day={}, parity={}",
+                    id, semesterId, disciplineId, teacherId, dayOfWeek, weekParity);
+            int rowsUpdated = this.dao.update(id, semesterId, disciplineId, teacherId,
+                    dayOfWeek, weekParity, room, startTime, endTime);
+            if (rowsUpdated == 0) {
+                throw new DatabaseException("Расписание с id=" + id + " не найдено.");
+            }
+        } catch (Exception e) {
+            log.warn("[FAILED to update timetable id={}]: {}", id, e.getMessage());
+            throw new DatabaseException("Обновить запись расписания с id=" + id + " не вышло: " + e.getMessage());
+        }
+    }
 }
