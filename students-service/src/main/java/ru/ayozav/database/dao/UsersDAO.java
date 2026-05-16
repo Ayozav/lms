@@ -5,7 +5,7 @@ import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.statement.GetGeneratedKeys;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
-import ru.ayozav.database.mappers.UsersMapper;
+import ru.ayozav.database.mappers.UserMapper;
 import ru.ayozav.models.User;
 
 import java.time.LocalDate;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@RegisterRowMapper(UsersMapper.class)
+@RegisterRowMapper(UserMapper.class)
 public interface UsersDAO {
 
     @SqlUpdate(

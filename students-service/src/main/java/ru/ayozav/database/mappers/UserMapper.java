@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.UUID;
 
-public class UsersMapper implements RowMapper<User> {
+public class UserMapper implements RowMapper<User> {
     @Override
     public User map(ResultSet rs, StatementContext ctx) throws SQLException {
         int id = rs.getInt("id");

@@ -105,6 +105,11 @@ public class UsersController {
             ctx.status(400).json(new BadArgumentsAnswer("'id' должен быть целым положительным"));
             return;
         }
+        catch (NullPointerException e) {
+            ctx.status(400).json(new BadArgumentsAnswer("Должен быть параметр 'id'"));
+            return;
+        }
+
         if (id <= 0) {
             ctx.status(404);
             return;

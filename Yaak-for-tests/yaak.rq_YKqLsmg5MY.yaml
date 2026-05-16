@@ -1,0 +1,38 @@
+type: http_request
+model: http_request
+id: rq_YKqLsmg5MY
+createdAt: 2026-05-09T15:20:57.942322400
+updatedAt: 2026-05-10T14:15:02.928387100
+workspaceId: wk_TsG5TkW2Jb
+folderId: null
+authentication: {}
+authenticationType: null
+body: {}
+bodyType: null
+description: ''
+headers: []
+method: POST
+name: ''
+sortPriority: -1185542785072.6665
+url: 127.0.0.1/api/v1/grade
+urlParameters:
+- enabled: true
+  name: code
+  value: 09.03.01
+  id: G2KUat5IGn
+- enabled: true
+  name: grade_name
+  value: Информатика и вычислительная техника
+  id: P7AXz2yHpH
+- enabled: true
+  name: grade_type
+  value: BACHELOR
+  id: nfcC0Q5jDy
+- enabled: true
+  name: supervisor_id
+  value: '3'
+  id: AH87YxrnsV
+- enabled: true
+  name: ''
+  value: ''
+  id: djj7JvMPd0

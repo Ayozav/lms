@@ -1,0 +1,34 @@
+type: http_request
+model: http_request
+id: rq_YCcMnvTevr
+createdAt: 2026-05-16T05:50:08.317480700
+updatedAt: 2026-05-16T05:56:02.178500200
+workspaceId: wk_TsG5TkW2Jb
+folderId: null
+authentication: {}
+authenticationType: null
+body: {}
+bodyType: null
+description: ''
+headers: []
+method: POST
+name: 127.0.0.1:4040/v1/semester
+sortPriority: -1778314177608.999
+url: 127.0.0.1:4040/v1/semester
+urlParameters:
+- enabled: true
+  name: name
+  value: MySemName2
+  id: MfSEUrACIS
+- enabled: true
+  name: start
+  value: 2008-02-01
+  id: 3PB6HuBaiR
+- enabled: true
+  name: end
+  value: 2008-07-31
+  id: eY47CYwUXT
+- enabled: true
+  name: ''
+  value: ''
+  id: TI3KGWMPNJ

@@ -5,13 +5,13 @@ import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.statement.GetGeneratedKeys;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
-import ru.ayozav.database.mappers.GradesMapper;
+import ru.ayozav.database.mappers.GradeMapper;
 import ru.ayozav.models.Grade;
 
 import java.util.List;
 import java.util.Optional;
 
-@RegisterRowMapper(GradesMapper.class)
+@RegisterRowMapper(GradeMapper.class)
 public interface GradesDAO {
     @SqlUpdate(
             "INSERT INTO grades " +
@@ -32,17 +32,17 @@ public interface GradesDAO {
                     "FROM grades " +
                     "LIMIT :limit OFFSET :offset"
     )
-    List<Grade> getPageOfGrades(@Bind("limit") int limit, @Bind("offset") int offset);
+    List<Grade> getPage(@Bind("limit") int limit, @Bind("offset") int offset);
 
     @SqlQuery(
             "SELECT id, code, grade_name, grade_type, supervisor_id " +
                     "FROM grades " +
                     "WHERE id = :id"
     )
-    Optional<Grade> getGradeById(@Bind("id") int id);
+    Optional<Grade> getById(@Bind("id") int id);
 
     @SqlUpdate(
             "DELETE FROM grades WHERE id = :id"
     )
-    void deleteGradeById(@Bind("id") int id);
+    void deleteById(@Bind("id") int id);
 }

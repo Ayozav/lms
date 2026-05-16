@@ -43,7 +43,7 @@ public class GradesEventRepository {
 
     public List<Grade> getList(int page) {
         log.info("Trying to get page of grades, page={}", page);
-        return this.dao.getPageOfGrades(
+        return this.dao.getPage(
                 this.GRADES_PER_PAGE,
                 (page - 1) * this.GRADES_PER_PAGE
         );
@@ -51,11 +51,11 @@ public class GradesEventRepository {
 
     public Optional<Grade> getById(int id) {
         log.info("Trying to get grade by id={}", id);
-        return this.dao.getGradeById(id);
+        return this.dao.getById(id);
     }
 
     public void deleteById(int id)  {
         log.info("Trying to delete grade id={}", id);
-        this.dao.deleteGradeById(id);
+        this.dao.deleteById(id);
     }
 }

@@ -1,0 +1,26 @@
+type: http_request
+model: http_request
+id: rq_fau4jGrVrH
+createdAt: 2026-05-09T16:10:47.237814900
+updatedAt: 2026-05-14T17:52:50.254861500
+workspaceId: wk_TsG5TkW2Jb
+folderId: null
+authentication: {}
+authenticationType: null
+body: {}
+bodyType: null
+description: ''
+headers: []
+method: DELETE
+name: 127.0.0.1/api/v1/grade
+sortPriority: -1185542785072.6655
+url: 127.0.0.1/api/v1/grade
+urlParameters:
+- enabled: true
+  name: id
+  value: '21'
+  id: G2KUat5IGn
+- enabled: true
+  name: ''
+  value: ''
+  id: 75nfMKvUzc

@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
-public class GradesMapper implements RowMapper<Grade> {
+public class GradeMapper implements RowMapper<Grade> {
     @Override
     public Grade map(ResultSet rs, StatementContext ctx) throws SQLException {
         int id = rs.getInt("id");

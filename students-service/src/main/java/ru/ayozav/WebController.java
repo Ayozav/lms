@@ -3,6 +3,7 @@ package ru.ayozav;
 import io.javalin.Javalin;
 import ru.ayozav.answers.EchoAnswer;
 import ru.ayozav.controllers.GradesController;
+import ru.ayozav.controllers.SemestersController;
 import ru.ayozav.controllers.UsersController;
 import ru.ayozav.database.DatabaseMigrator;
 import ru.ayozav.database.HikariConnectionFactory;
@@ -13,6 +14,7 @@ public class WebController {
 
     private UsersController usersController;
     private GradesController gradesController;
+    private SemestersController semestersController;
 
     public void initialize() {
 
@@ -33,6 +35,7 @@ public class WebController {
 
         this.usersController = new UsersController(factory);
         this.gradesController = new GradesController(factory);
+        this.semestersController = new SemestersController(factory);
 
         this.app = Javalin.create(
                 javalinConfig -> {
@@ -51,6 +54,11 @@ public class WebController {
                     javalinConfig.routes.delete("/v1/grade", this.gradesController::deleteGrade);
                     javalinConfig.routes.get("/v1/grade", this.gradesController::getGradeById);
                     javalinConfig.routes.get("/v1/grades", this.gradesController::getAllGrades);
+
+                    javalinConfig.routes.post("/v1/semester", this.semestersController::addSemester);
+                    javalinConfig.routes.delete("/v1/semester", this.semestersController::deleteSemester);
+                    javalinConfig.routes.get("/v1/semester", this.semestersController::getSemesterById);
+                    javalinConfig.routes.get("/v1/semesters", this.semestersController::getAllSemesters);
 
                 }
         );

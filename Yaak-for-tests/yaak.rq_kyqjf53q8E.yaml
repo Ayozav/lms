@@ -1,0 +1,26 @@
+type: http_request
+model: http_request
+id: rq_kyqjf53q8E
+createdAt: 2026-05-09T10:50:52.448784100
+updatedAt: 2026-05-09T12:31:00.262177100
+workspaceId: wk_TsG5TkW2Jb
+folderId: null
+authentication: {}
+authenticationType: null
+body: {}
+bodyType: null
+description: ''
+headers: []
+method: DELETE
+name: ''
+sortPriority: -1778314177609.0
+url: 127.0.0.1/api/v1/user
+urlParameters:
+- enabled: true
+  name: id
+  value: '13'
+  id: 6JygMqcdNJ
+- enabled: true
+  name: ''
+  value: ''
+  id: 8EJnbhcbpa
