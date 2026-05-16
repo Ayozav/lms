@@ -18,6 +18,7 @@ public class WebController {
     private TimetablesController timetablesController;
     private EnrollmentsController enrollmentsController;
     private TimetablesGroupsController timetablesGroupsController;
+    private LessonsController lessonsController;
 
     public void initialize() {
 
@@ -44,6 +45,7 @@ public class WebController {
         this.timetablesController = new TimetablesController(factory);
         this.enrollmentsController = new EnrollmentsController(factory);
         this.timetablesGroupsController = new TimetablesGroupsController(factory);
+        this.lessonsController = new LessonsController(factory);
 
         this.app = Javalin.create(
                 javalinConfig -> {
@@ -100,6 +102,12 @@ public class WebController {
                     javalinConfig.routes.get("/v1/timetable_group/groups", this.timetablesGroupsController::getGroupsByTimetable);
                     javalinConfig.routes.get("/v1/timetable_group/timetables", this.timetablesGroupsController::getTimetablesByGroup);
                     javalinConfig.routes.get("/v1/timetable_groups", this.timetablesGroupsController::getAllLinks);
+
+                    javalinConfig.routes.post("/v1/lesson", this.lessonsController::addLesson);
+                    javalinConfig.routes.delete("/v1/lesson", this.lessonsController::deleteLesson);
+                    javalinConfig.routes.get("/v1/lesson", this.lessonsController::getLessonById);
+                    javalinConfig.routes.get("/v1/lessons", this.lessonsController::getAllLessons);
+                    javalinConfig.routes.put("/v1/lesson", this.lessonsController::updateLesson);
                 }
         );
     }
