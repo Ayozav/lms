@@ -22,6 +22,7 @@ public class WebController {
     private TeachersAbilitiesController teachersAbilitiesController;
     private MarksController marksController;
     private HomeworksController homeworksController;
+    private AttachedHomeworksController attachedHomeworksController;
 
     public void initialize() {
 
@@ -52,6 +53,7 @@ public class WebController {
         this.teachersAbilitiesController = new TeachersAbilitiesController(factory);
         this.marksController = new MarksController(factory);
         this.homeworksController = new HomeworksController(factory);
+        this.attachedHomeworksController = new AttachedHomeworksController(factory);
 
         this.app = Javalin.create(
                 javalinConfig -> {
@@ -132,6 +134,12 @@ public class WebController {
                     javalinConfig.routes.get("/v1/homework", this.homeworksController::getHomeworkById);
                     javalinConfig.routes.get("/v1/homeworks", this.homeworksController::getAllHomeworks);
                     javalinConfig.routes.put("/v1/homework", this.homeworksController::updateHomework);
+
+                    javalinConfig.routes.post("/v1/attached_homework", this.attachedHomeworksController::addAttachedHomework);
+                    javalinConfig.routes.delete("/v1/attached_homework", this.attachedHomeworksController::deleteAttachedHomework);
+                    javalinConfig.routes.get("/v1/attached_homework", this.attachedHomeworksController::getAttachedHomeworkById);
+                    javalinConfig.routes.get("/v1/attached_homeworks", this.attachedHomeworksController::getAllAttachedHomeworks);
+                    javalinConfig.routes.put("/v1/attached_homework", this.attachedHomeworksController::updateAttachedHomework);
                 }
         );
     }
