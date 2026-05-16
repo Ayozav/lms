@@ -21,6 +21,7 @@ public class WebController {
     private LessonsController lessonsController;
     private TeachersAbilitiesController teachersAbilitiesController;
     private MarksController marksController;
+    private HomeworksController homeworksController;
 
     public void initialize() {
 
@@ -50,6 +51,7 @@ public class WebController {
         this.lessonsController = new LessonsController(factory);
         this.teachersAbilitiesController = new TeachersAbilitiesController(factory);
         this.marksController = new MarksController(factory);
+        this.homeworksController = new HomeworksController(factory);
 
         this.app = Javalin.create(
                 javalinConfig -> {
@@ -124,6 +126,12 @@ public class WebController {
                     javalinConfig.routes.get("/v1/mark", this.marksController::getMarkById);
                     javalinConfig.routes.get("/v1/marks", this.marksController::getAllMarks);
                     javalinConfig.routes.put("/v1/mark", this.marksController::updateMark);
+
+                    javalinConfig.routes.post("/v1/homework", this.homeworksController::addHomework);
+                    javalinConfig.routes.delete("/v1/homework", this.homeworksController::deleteHomework);
+                    javalinConfig.routes.get("/v1/homework", this.homeworksController::getHomeworkById);
+                    javalinConfig.routes.get("/v1/homeworks", this.homeworksController::getAllHomeworks);
+                    javalinConfig.routes.put("/v1/homework", this.homeworksController::updateHomework);
                 }
         );
     }
