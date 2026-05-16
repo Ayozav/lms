@@ -45,4 +45,18 @@ public interface SemestersDAO {
             "DELETE FROM semesters WHERE id = :id"
     )
     void deleteById(@Bind("id") int id);
+
+    @SqlUpdate(
+            "UPDATE semesters SET " +
+                    "name = :name, " +
+                    "start = :start, " +
+                    "\"end\" = :end " +
+                    "WHERE id = :id"
+    )
+    int update(
+            @Bind("id") int id,
+            @Bind("name") String name,
+            @Bind("start") LocalDate start,
+            @Bind("end") LocalDate end
+    );
 }

@@ -52,4 +52,18 @@ public class DisciplinesEventRepository {
         log.info("Trying to delete discipline id={}", id);
         this.dao.deleteById(id);
     }
+
+    public void update(int id, String disciplineName, int supervisorId, String description,
+                       int semesterId, int gradeId) throws DatabaseException {
+        try {
+            log.info("Trying to update discipline id={}: name={}", id, disciplineName);
+            int rows = dao.update(id, disciplineName, supervisorId, description, semesterId, gradeId);
+            if (rows == 0) {
+                throw new DatabaseException("Дисциплина с id=" + id + " не найдена.");
+            }
+        } catch (Exception e) {
+            log.warn("[FAILED to update discipline id={}]: {}", id, e.getMessage());
+            throw new DatabaseException("Обновить дисциплину с id=" + id + " не вышло.");
+        }
+    }
 }

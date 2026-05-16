@@ -58,4 +58,17 @@ public class GradesEventRepository {
         log.info("Trying to delete grade id={}", id);
         this.dao.deleteById(id);
     }
+
+    public void update(int id, String code, String gradeName, String gradeType, int supervisorID) throws DatabaseException {
+        try {
+            log.info("Trying to update grade id={}: code={}", id, code);
+            int rows = dao.update(id, code, gradeName, gradeType, supervisorID);
+            if (rows == 0) {
+                throw new DatabaseException("Уровень подготовки с id=" + id + " не найден.");
+            }
+        } catch (Exception e) {
+            log.warn("[FAILED to update grade id={}]: {}", id, e.getMessage());
+            throw new DatabaseException("Обновить уровень подготовки с id=" + id + " не вышло.");
+        }
+    }
 }

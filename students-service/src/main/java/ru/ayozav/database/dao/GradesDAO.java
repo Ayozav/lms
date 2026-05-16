@@ -45,4 +45,20 @@ public interface GradesDAO {
             "DELETE FROM grades WHERE id = :id"
     )
     void deleteById(@Bind("id") int id);
+
+    @SqlUpdate(
+            "UPDATE grades SET " +
+                    "code = :code, " +
+                    "grade_name = :grade_name, " +
+                    "grade_type = :grade_type, " +
+                    "supervisor_id = :supervisor_id " +
+                    "WHERE id = :id"
+    )
+    int update(
+            @Bind("id") int id,
+            @Bind("code") String code,
+            @Bind("grade_name") String gradeName,
+            @Bind("grade_type") String gradeType,
+            @Bind("supervisor_id") int supervisorID
+    );
 }

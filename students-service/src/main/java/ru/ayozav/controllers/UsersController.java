@@ -5,6 +5,7 @@ import org.apache.commons.lang3.ObjectUtils;
 import ru.ayozav.answers.BadArgumentsAnswer;
 import ru.ayozav.answers.EchoAnswer;
 import ru.ayozav.answers.SuccessObjectInsertAnswer;
+import ru.ayozav.answers.SuccessUpdateAnswer;
 import ru.ayozav.database.HikariConnectionFactory;
 import ru.ayozav.database.exceptions.DatabaseException;
 import ru.ayozav.database.repositories.UsersEventRepository;
@@ -119,5 +120,73 @@ public class UsersController {
             return;
         }
         ctx.status(200).json(user.get());
+    }
+
+    // Helper methods
+    private int parsePositiveInt(Context ctx, String paramName) {
+        try {
+            int value = Integer.parseInt(Objects.requireNonNull(ctx.queryParam(paramName)));
+            if (value <= 0) throw new NumberFormatException();
+            return value;
+        } catch (NumberFormatException | NullPointerException e) {
+            ctx.status(400).json(new BadArgumentsAnswer("'" + paramName + "' должен быть положительным целым числом"));
+            return -1;
+        }
+    }
+
+    public void updateUser(Context ctx) {
+        try {
+            int id = parsePositiveInt(ctx, "id");
+            if (id == -1) return;
+
+            String openIdStr = ctx.queryParam("open_id");
+            if (openIdStr == null || openIdStr.isBlank()) {
+                ctx.status(400).json(new BadArgumentsAnswer("'open_id' обязателен"));
+                return;
+            }
+            UUID openID;
+            try {
+                openID = UUID.fromString(openIdStr);
+            } catch (IllegalArgumentException e) {
+                ctx.status(400).json(new BadArgumentsAnswer("'open_id' должен быть валидным UUID"));
+                return;
+            }
+
+            String firstName = ctx.queryParam("first_name");
+            if (firstName == null || firstName.isBlank()) {
+                ctx.status(400).json(new BadArgumentsAnswer("'first_name' не может быть пустым"));
+                return;
+            }
+
+            String lastName = ctx.queryParam("last_name");
+            if (lastName == null || lastName.isBlank()) {
+                ctx.status(400).json(new BadArgumentsAnswer("'last_name' не может быть пустым"));
+                return;
+            }
+
+            String patronymic = ctx.queryParam("patronymic"); // nullable
+
+            String birthDateStr = ctx.queryParam("birth_date");
+            LocalDate birthDate;
+            try {
+                birthDate = LocalDate.parse(Objects.requireNonNull(birthDateStr));
+            } catch (DateTimeParseException | NullPointerException e) {
+                ctx.status(400).json(new BadArgumentsAnswer("'birth_date' должен быть в формате ГГГГ-ММ-ДД"));
+                return;
+            }
+
+            // check existence
+            Optional<User> existing = usersEventRepository.getUserById(id);
+            if (existing.isEmpty()) {
+                ctx.status(404).json(new BadArgumentsAnswer("Пользователь с id=" + id + " не найден"));
+                return;
+            }
+
+            usersEventRepository.update(id, openID, firstName, lastName, patronymic, birthDate);
+            ctx.status(200).json(new SuccessUpdateAnswer("Пользователь", id));
+
+        } catch (DatabaseException e) {
+            ctx.status(400).json(new BadArgumentsAnswer("Не удалось обновить пользователя: " + e.getMessage()));
+        }
     }
 }

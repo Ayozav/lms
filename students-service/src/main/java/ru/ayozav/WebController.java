@@ -53,26 +53,31 @@ public class WebController {
                     javalinConfig.routes.get("/v1/user", this.usersController::getUser);
                     javalinConfig.routes.post("/v1/user", this.usersController::addUser);
                     javalinConfig.routes.delete("/v1/user", this.usersController::deleteUser);
+                    javalinConfig.routes.put("/v1/user", this.usersController::updateUser);
 
                     javalinConfig.routes.post("/v1/grade", this.gradesController::addGrade);
                     javalinConfig.routes.delete("/v1/grade", this.gradesController::deleteGrade);
                     javalinConfig.routes.get("/v1/grade", this.gradesController::getGradeById);
                     javalinConfig.routes.get("/v1/grades", this.gradesController::getAllGrades);
+                    javalinConfig.routes.put("/v1/grade", this.gradesController::updateGrade);
 
                     javalinConfig.routes.post("/v1/semester", this.semestersController::addSemester);
                     javalinConfig.routes.delete("/v1/semester", this.semestersController::deleteSemester);
                     javalinConfig.routes.get("/v1/semester", this.semestersController::getSemesterById);
                     javalinConfig.routes.get("/v1/semesters", this.semestersController::getAllSemesters);
+                    javalinConfig.routes.put("/v1/semester", this.semestersController::updateSemester);
 
                     javalinConfig.routes.post("/v1/discipline", this.disciplinesController::addDiscipline);
                     javalinConfig.routes.delete("/v1/discipline", this.disciplinesController::deleteDiscipline);
                     javalinConfig.routes.get("/v1/discipline", this.disciplinesController::getDisciplineById);
                     javalinConfig.routes.get("/v1/disciplines", this.disciplinesController::getAllDisciplines);
+                    javalinConfig.routes.put("/v1/discipline", this.disciplinesController::updateDiscipline);
 
                     javalinConfig.routes.post("/v1/group", this.groupsController::addGroup);
                     javalinConfig.routes.delete("/v1/group", this.groupsController::deleteGroup);
                     javalinConfig.routes.get("/v1/group", this.groupsController::getGroupById);
                     javalinConfig.routes.get("/v1/groups", this.groupsController::getAllGroups);
+                    javalinConfig.routes.put("/v1/group", this.groupsController::updateGroup);
 
                     javalinConfig.routes.post("/v1/timetable", this.timetablesController::addTimetable);
                     javalinConfig.routes.delete("/v1/timetable", this.timetablesController::deleteTimetable);

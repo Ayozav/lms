@@ -52,4 +52,17 @@ public class SemestersEventRepository {
         log.info("Trying to delete semester id={}", id);
         this.dao.deleteById(id);
     }
+
+    public void update(int id, String name, LocalDate start, LocalDate end) throws DatabaseException {
+        try {
+            log.info("Trying to update semester id={}: name={}", id, name);
+            int rows = dao.update(id, name, start, end);
+            if (rows == 0) {
+                throw new DatabaseException("Семестр с id=" + id + " не найден.");
+            }
+        } catch (Exception e) {
+            log.warn("[FAILED to update semester id={}]: {}", id, e.getMessage());
+            throw new DatabaseException("Обновить семестр с id=" + id + " не вышло.");
+        }
+    }
 }

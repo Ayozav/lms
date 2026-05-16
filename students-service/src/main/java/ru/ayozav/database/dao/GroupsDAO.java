@@ -45,4 +45,22 @@ public interface GroupsDAO {
             "DELETE FROM groups WHERE id = :id"
     )
     void deleteById(@Bind("id") int id);
+
+    @SqlUpdate(
+            "UPDATE groups SET " +
+                    "group_name = :group_name, " +
+                    "headman_id = :headman_id, "    +
+                    "first_semester_id = :first_semester_id, " +
+                    "course_level = :course_level, " +
+                    "grade_id = :grade_id " +
+                    "WHERE id = :id"
+    )
+    int update(
+            @Bind("id") int id,
+            @Bind("group_name") String groupName,
+            @Bind("headman_id") int headmanId,
+            @Bind("first_semester_id") int firstSemesterId,
+            @Bind("course_level") int courseLevel,
+            @Bind("grade_id") int gradeId
+    );
 }

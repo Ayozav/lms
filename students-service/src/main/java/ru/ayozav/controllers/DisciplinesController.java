@@ -3,6 +3,7 @@ package ru.ayozav.controllers;
 import io.javalin.http.Context;
 import ru.ayozav.answers.BadArgumentsAnswer;
 import ru.ayozav.answers.SuccessObjectInsertAnswer;
+import ru.ayozav.answers.SuccessUpdateAnswer;
 import ru.ayozav.database.HikariConnectionFactory;
 import ru.ayozav.database.exceptions.DatabaseException;
 import ru.ayozav.database.repositories.DisciplinesEventRepository;
@@ -123,5 +124,53 @@ public class DisciplinesController {
 
         this.disciplinesEventRepository.deleteById(id);
         ctx.status(200);
+    }
+
+    // Helper methods
+    private int parsePositiveInt(Context ctx, String paramName) {
+        try {
+            int value = Integer.parseInt(Objects.requireNonNull(ctx.queryParam(paramName)));
+            if (value <= 0) throw new NumberFormatException();
+            return value;
+        } catch (NumberFormatException | NullPointerException e) {
+            ctx.status(400).json(new BadArgumentsAnswer("'" + paramName + "' должен быть положительным целым числом"));
+            return -1;
+        }
+    }
+
+    public void updateDiscipline(Context ctx) {
+        try {
+            int id = parsePositiveInt(ctx, "id");
+            if (id == -1) return;
+
+            String disciplineName = ctx.queryParam("discipline_name");
+            if (disciplineName == null || disciplineName.isBlank()) {
+                ctx.status(400).json(new BadArgumentsAnswer("'discipline_name' не может быть пустым"));
+                return;
+            }
+
+            int supervisorId = parsePositiveInt(ctx, "supervisor_id");
+            if (supervisorId == -1) return;
+
+            String description = ctx.queryParam("description"); // nullable
+
+            int semesterId = parsePositiveInt(ctx, "semester_id");
+            if (semesterId == -1) return;
+
+            int gradeId = parsePositiveInt(ctx, "grade_id");
+            if (gradeId == -1) return;
+
+            Optional<Discipline> existing = disciplinesEventRepository.getById(id);
+            if (existing.isEmpty()) {
+                ctx.status(404).json(new BadArgumentsAnswer("Дисциплина с id=" + id + " не найдена"));
+                return;
+            }
+
+            disciplinesEventRepository.update(id, disciplineName, supervisorId, description, semesterId, gradeId);
+            ctx.status(200).json(new SuccessUpdateAnswer("Дисциплина", id));
+
+        } catch (DatabaseException e) {
+            ctx.status(400).json(new BadArgumentsAnswer("Не удалось обновить дисциплину: " + e.getMessage()));
+        }
     }
 }

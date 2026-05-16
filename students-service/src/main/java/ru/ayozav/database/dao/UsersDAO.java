@@ -49,4 +49,22 @@ public interface UsersDAO {
             "DELETE FROM users WHERE id = :id"
     )
     void deleteUserById(@Bind("id") int id);
+
+    @SqlUpdate(
+            "UPDATE users SET " +
+                    "open_id = :open_id, " +
+                    "first_name = :first_name, " +
+                    "last_name = :last_name, " +
+                    "patronymic = :patronymic, " +
+                    "birth_date = :birth_date " +
+                    "WHERE id = :id"
+    )
+    int update(
+            @Bind("id") int id,
+            @Bind("open_id") UUID openID,
+            @Bind("first_name") String firstName,
+            @Bind("last_name") String lastName,
+            @Bind("patronymic") String patronymic,
+            @Bind("birth_date") LocalDate birthDate
+    );
 }

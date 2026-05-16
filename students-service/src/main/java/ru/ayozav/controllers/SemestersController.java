@@ -3,6 +3,7 @@ package ru.ayozav.controllers;
 import io.javalin.http.Context;
 import ru.ayozav.answers.BadArgumentsAnswer;
 import ru.ayozav.answers.SuccessObjectInsertAnswer;
+import ru.ayozav.answers.SuccessUpdateAnswer;
 import ru.ayozav.database.HikariConnectionFactory;
 import ru.ayozav.database.exceptions.DatabaseException;
 import ru.ayozav.database.repositories.SemestersEventRepository;
@@ -117,5 +118,61 @@ public class SemestersController {
 
         this.semestersEventRepository.deleteById(id);
         ctx.status(200);
+    }
+
+    // Helper methods
+    private int parsePositiveInt(Context ctx, String paramName) {
+        try {
+            int value = Integer.parseInt(Objects.requireNonNull(ctx.queryParam(paramName)));
+            if (value <= 0) throw new NumberFormatException();
+            return value;
+        } catch (NumberFormatException | NullPointerException e) {
+            ctx.status(400).json(new BadArgumentsAnswer("'" + paramName + "' должен быть положительным целым числом"));
+            return -1;
+        }
+    }
+
+    public void updateSemester(Context ctx) {
+        try {
+            int id = parsePositiveInt(ctx, "id");
+            if (id == -1) return;
+
+            String name = ctx.queryParam("name");
+            if (name == null || name.isBlank()) {
+                ctx.status(400).json(new BadArgumentsAnswer("'name' не может быть пустым"));
+                return;
+            }
+
+            LocalDate start = parseDate(ctx, "start");
+            if (start == null) return;
+            LocalDate end = parseDate(ctx, "end");
+            if (end == null) return;
+
+            if (start.isAfter(end)) {
+                ctx.status(400).json(new BadArgumentsAnswer("'start' не может быть позже 'end'"));
+                return;
+            }
+
+            Optional<Semester> existing = semestersEventRepository.getById(id);
+            if (existing.isEmpty()) {
+                ctx.status(404).json(new BadArgumentsAnswer("Семестр с id=" + id + " не найден"));
+                return;
+            }
+
+            semestersEventRepository.update(id, name, start, end);
+            ctx.status(200).json(new SuccessUpdateAnswer("Семестр", id));
+
+        } catch (DatabaseException e) {
+            ctx.status(400).json(new BadArgumentsAnswer("Не удалось обновить семестр: " + e.getMessage()));
+        }
+    }
+
+    private LocalDate parseDate(Context ctx, String param) {
+        try {
+            return LocalDate.parse(Objects.requireNonNull(ctx.queryParam(param)));
+        } catch (DateTimeParseException | NullPointerException e) {
+            ctx.status(400).json(new BadArgumentsAnswer("'" + param + "' должен быть в формате ГГГГ-ММ-ДД"));
+            return null;
+        }
     }
 }

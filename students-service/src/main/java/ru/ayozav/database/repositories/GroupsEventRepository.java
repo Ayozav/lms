@@ -52,4 +52,18 @@ public class GroupsEventRepository {
         log.info("Trying to delete group id={}", id);
         this.dao.deleteById(id);
     }
+
+    public void update(int id, String groupName, int headmanId, int firstSemesterId,
+                       int courseLevel, int gradeId) throws DatabaseException {
+        try {
+            log.info("Trying to update group id={}: name={}", id, groupName);
+            int rows = dao.update(id, groupName, headmanId, firstSemesterId, courseLevel, gradeId);
+            if (rows == 0) {
+                throw new DatabaseException("Группа с id=" + id + " не найдена.");
+            }
+        } catch (Exception e) {
+            log.warn("[FAILED to update group id={}]: {}", id, e.getMessage());
+            throw new DatabaseException("Обновить группу с id=" + id + " не вышло.");
+        }
+    }
 }

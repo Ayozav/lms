@@ -3,6 +3,7 @@ package ru.ayozav.controllers;
 import io.javalin.http.Context;
 import ru.ayozav.answers.BadArgumentsAnswer;
 import ru.ayozav.answers.SuccessObjectInsertAnswer;
+import ru.ayozav.answers.SuccessUpdateAnswer;
 import ru.ayozav.database.HikariConnectionFactory;
 import ru.ayozav.database.exceptions.DatabaseException;
 import ru.ayozav.database.repositories.GradesEventRepository;
@@ -117,5 +118,57 @@ public class GradesController {
 
         this.gradesEventRepository.deleteById(id);
         ctx.status(200);
+    }
+
+    // Helper methods
+    private int parsePositiveInt(Context ctx, String paramName) {
+        try {
+            int value = Integer.parseInt(Objects.requireNonNull(ctx.queryParam(paramName)));
+            if (value <= 0) throw new NumberFormatException();
+            return value;
+        } catch (NumberFormatException | NullPointerException e) {
+            ctx.status(400).json(new BadArgumentsAnswer("'" + paramName + "' должен быть положительным целым числом"));
+            return -1;
+        }
+    }
+
+    public void updateGrade(Context ctx) {
+        try {
+            int id = parsePositiveInt(ctx, "id");
+            if (id == -1) return;
+
+            String code = ctx.queryParam("code");
+            if (code == null || code.isBlank()) {
+                ctx.status(400).json(new BadArgumentsAnswer("'code' не может быть пустым"));
+                return;
+            }
+
+            String gradeName = ctx.queryParam("grade_name");
+            if (gradeName == null || gradeName.isBlank()) {
+                ctx.status(400).json(new BadArgumentsAnswer("'grade_name' не может быть пустым"));
+                return;
+            }
+
+            String gradeType = ctx.queryParam("grade_type");
+            if (!GradeType.exists(gradeType)) {
+                ctx.status(400).json(new BadArgumentsAnswer("'grade_type' должен быть из: " + Arrays.toString(GradeType.list())));
+                return;
+            }
+
+            int supervisorID = parsePositiveInt(ctx, "supervisor_id");
+            if (supervisorID == -1) return;
+
+            Optional<Grade> existing = gradesEventRepository.getById(id);
+            if (existing.isEmpty()) {
+                ctx.status(404).json(new BadArgumentsAnswer("Уровень подготовки с id=" + id + " не найден"));
+                return;
+            }
+
+            gradesEventRepository.update(id, code, gradeName, gradeType, supervisorID);
+            ctx.status(200).json(new SuccessUpdateAnswer("Уровень подготовки", id));
+
+        } catch (DatabaseException e) {
+            ctx.status(400).json(new BadArgumentsAnswer("Не удалось обновить уровень подготовки: " + e.getMessage()));
+        }
     }
 }

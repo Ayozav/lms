@@ -56,4 +56,18 @@ public class UsersEventRepository {
         log.info("Trying to delete user id={}", id);
         this.dao.deleteUserById(id);
     }
+
+    public void update(int id, UUID openID, String firstName, String lastName,
+                       String patronymic, LocalDate birthDate) throws DatabaseException {
+        try {
+            log.info("Trying to update user id={}: {}", id, firstName);
+            int rows = dao.update(id, openID, firstName, lastName, patronymic, birthDate);
+            if (rows == 0) {
+                throw new DatabaseException("Пользователь с id=" + id + " не найден.");
+            }
+        } catch (Exception e) {
+            log.warn("[FAILED to update user id={}]: {}", id, e.getMessage());
+            throw new DatabaseException("Обновить пользователя с id=" + id + " не вышло.");
+        }
+    }
 }
