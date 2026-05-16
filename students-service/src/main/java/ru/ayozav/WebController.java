@@ -19,6 +19,7 @@ public class WebController {
     private EnrollmentsController enrollmentsController;
     private TimetablesGroupsController timetablesGroupsController;
     private LessonsController lessonsController;
+    private TeachersAbilitiesController teachersAbilitiesController;
 
     public void initialize() {
 
@@ -46,6 +47,7 @@ public class WebController {
         this.enrollmentsController = new EnrollmentsController(factory);
         this.timetablesGroupsController = new TimetablesGroupsController(factory);
         this.lessonsController = new LessonsController(factory);
+        this.teachersAbilitiesController = new TeachersAbilitiesController(factory);
 
         this.app = Javalin.create(
                 javalinConfig -> {
@@ -108,6 +110,12 @@ public class WebController {
                     javalinConfig.routes.get("/v1/lesson", this.lessonsController::getLessonById);
                     javalinConfig.routes.get("/v1/lessons", this.lessonsController::getAllLessons);
                     javalinConfig.routes.put("/v1/lesson", this.lessonsController::updateLesson);
+
+                    javalinConfig.routes.post("/v1/teacher_ability", this.teachersAbilitiesController::addAbility);
+                    javalinConfig.routes.delete("/v1/teacher_ability", this.teachersAbilitiesController::deleteAbility);
+                    javalinConfig.routes.get("/v1/teacher_ability/disciplines", this.teachersAbilitiesController::getDisciplinesByTeacher);
+                    javalinConfig.routes.get("/v1/teacher_ability/teachers", this.teachersAbilitiesController::getTeachersByDiscipline);
+                    javalinConfig.routes.get("/v1/teacher_abilities", this.teachersAbilitiesController::getAllAbilities);
                 }
         );
     }
