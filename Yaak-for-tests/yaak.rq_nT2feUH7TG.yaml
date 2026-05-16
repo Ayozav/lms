@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_nT2feUH7TG
 createdAt: 2026-05-16T05:40:44.829383600
-updatedAt: 2026-05-16T05:56:10.175649700
+updatedAt: 2026-05-16T07:49:11.696616100
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -13,6 +13,6 @@ description: ''
 headers: []
 method: GET
 name: ''
-sortPriority: -1778314177609.0
-url: 127.0.0.1:4040/v1/semester?id=2
+sortPriority: 2000.0
+url: 127.0.0.1:4040/v1/semester?id=1
 urlParameters: []

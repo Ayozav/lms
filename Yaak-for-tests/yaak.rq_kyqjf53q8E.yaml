@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_kyqjf53q8E
 createdAt: 2026-05-09T10:50:52.448784100
-updatedAt: 2026-05-09T12:31:00.262177100
+updatedAt: 2026-05-16T07:49:02.452521400
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -13,8 +13,8 @@ description: ''
 headers: []
 method: DELETE
 name: ''
-sortPriority: -1778314177609.0
-url: 127.0.0.1/api/v1/user
+sortPriority: 4000.0
+url: 127.0.0.1:4040/v1/user
 urlParameters:
 - enabled: true
   name: id

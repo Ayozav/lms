@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_8XHr9vpPjG
 createdAt: 2026-05-09T08:09:37.612154100
-updatedAt: 2026-05-14T17:49:29.414367600
+updatedAt: 2026-05-16T07:49:02.448899900
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -13,8 +13,8 @@ description: ''
 headers: []
 method: POST
 name: ''
-sortPriority: -1778314177609.0
-url: 127.0.0.1/api/v1/user
+sortPriority: 3000.0
+url: 127.0.0.1:4040/v1/user
 urlParameters:
 - enabled: true
   name: first_name

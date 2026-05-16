@@ -38,7 +38,7 @@ public class GradesController {
                                 ctx.queryParam("supervisor_id")
                         )
                 );
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException | NullPointerException e) {
                 ctx.status(400).json(
                         new BadArgumentsAnswer(
                                 "'supervisor_id' должен быть положительным целым числом.")
@@ -80,12 +80,8 @@ public class GradesController {
         int id;
         try {
             id = Integer.parseInt(Objects.requireNonNull(ctx.queryParam("id")));
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException | NullPointerException e) {
             ctx.status(400).json(new BadArgumentsAnswer("'id' должен быть целым положительным"));
-            return;
-        }
-        catch (NullPointerException e) {
-            ctx.status(400).json(new BadArgumentsAnswer("Должен быть параметр 'id'"));
             return;
         }
         if (id <= 0) {
@@ -106,7 +102,7 @@ public class GradesController {
         int id;
         try {
             id = Integer.parseInt(Objects.requireNonNull(ctx.queryParam("id")));
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException | NullPointerException e) {
             ctx.status(400).json(new BadArgumentsAnswer("'id' должен быть целым положительным"));
             return;
         }

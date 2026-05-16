@@ -44,7 +44,7 @@ public class UsersController {
                     Objects.requireNonNull(ctx.queryParam("open_id"))
             );
         }
-        catch (IllegalArgumentException exc) {
+        catch (IllegalArgumentException | NullPointerException exc) {
             ctx.status(400).json(new BadArgumentsAnswer("'open_id' неверный"));
             return;
         }
@@ -64,7 +64,7 @@ public class UsersController {
         int page;
         try {
             page = Integer.parseInt(Objects.requireNonNull(ctx.queryParam("page")));
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException | NullPointerException e) {
             ctx.status(400).json(new BadArgumentsAnswer("'page' должен быть целым положительным числом"));
             return;
         }
@@ -80,7 +80,7 @@ public class UsersController {
         int id;
         try {
             id = Integer.parseInt(Objects.requireNonNull(ctx.queryParam("id")));
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException | NullPointerException e) {
             ctx.status(400).json(new BadArgumentsAnswer("'id' должен быть целым положительным"));
             return;
         }
@@ -101,12 +101,8 @@ public class UsersController {
         int id;
         try {
             id = Integer.parseInt(Objects.requireNonNull(ctx.queryParam("id")));
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException | NullPointerException e) {
             ctx.status(400).json(new BadArgumentsAnswer("'id' должен быть целым положительным"));
-            return;
-        }
-        catch (NullPointerException e) {
-            ctx.status(400).json(new BadArgumentsAnswer("Должен быть параметр 'id'"));
             return;
         }
 

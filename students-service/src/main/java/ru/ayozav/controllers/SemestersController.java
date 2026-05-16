@@ -36,7 +36,7 @@ public class SemestersController {
             try {
                 start = LocalDate.parse(Objects.requireNonNull(startStr));
                 end = LocalDate.parse(Objects.requireNonNull(endStr));
-            } catch (DateTimeParseException e) {
+            } catch (DateTimeParseException | NullPointerException e) {
                 ctx.status(400).json(new BadArgumentsAnswer(
                         "'start' и 'end' должны быть в формате ГГГГ-ММ-ДД"
                 ));
@@ -80,12 +80,8 @@ public class SemestersController {
         int id;
         try {
             id = Integer.parseInt(Objects.requireNonNull(ctx.queryParam("id")));
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException | NullPointerException e) {
             ctx.status(400).json(new BadArgumentsAnswer("'id' должен быть целым положительным"));
-            return;
-        }
-        catch (NullPointerException e) {
-            ctx.status(400).json(new BadArgumentsAnswer("Должен быть параметр 'id'"));
             return;
         }
         if (id <= 0) {
@@ -106,12 +102,8 @@ public class SemestersController {
         int id;
         try {
             id = Integer.parseInt(Objects.requireNonNull(ctx.queryParam("id")));
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException | NullPointerException e) {
             ctx.status(400).json(new BadArgumentsAnswer("'id' должен быть целым положительным"));
-            return;
-        }
-        catch (NullPointerException e) {
-            ctx.status(400).json(new BadArgumentsAnswer("Должен быть параметр 'id'"));
             return;
         }
 

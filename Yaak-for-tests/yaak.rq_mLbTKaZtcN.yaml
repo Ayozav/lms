@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_mLbTKaZtcN
 createdAt: 2026-05-09T15:48:39.716099100
-updatedAt: 2026-05-14T17:52:43.664772500
+updatedAt: 2026-05-16T07:49:02.481248800
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -12,9 +12,9 @@ bodyType: null
 description: ''
 headers: []
 method: GET
-name: 127.0.0.1/api/v1/grades
-sortPriority: -1185542785072.6655
-url: 127.0.0.1/api/v1/grades?page=1
+name: 127.0.0.1:4040/v1/grades
+sortPriority: 12000.0
+url: 127.0.0.1:4040/v1/grades?page=1
 urlParameters:
 - enabled: true
   name: ''

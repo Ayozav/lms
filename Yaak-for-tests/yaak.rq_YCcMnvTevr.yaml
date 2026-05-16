@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_YCcMnvTevr
 createdAt: 2026-05-16T05:50:08.317480700
-updatedAt: 2026-05-16T05:56:02.178500200
+updatedAt: 2026-05-16T07:49:02.458601300
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -13,7 +13,7 @@ description: ''
 headers: []
 method: POST
 name: 127.0.0.1:4040/v1/semester
-sortPriority: -1778314177608.999
+sortPriority: 6000.0
 url: 127.0.0.1:4040/v1/semester
 urlParameters:
 - enabled: true
