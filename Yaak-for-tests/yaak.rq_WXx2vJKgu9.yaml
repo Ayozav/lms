@@ -1,0 +1,42 @@
+type: http_request
+model: http_request
+id: rq_WXx2vJKgu9
+createdAt: 2026-05-16T08:02:17.231954300
+updatedAt: 2026-05-16T08:10:39.754283600
+workspaceId: wk_TsG5TkW2Jb
+folderId: null
+authentication: {}
+authenticationType: null
+body: {}
+bodyType: null
+description: ''
+headers: []
+method: POST
+name: 127.0.0.1:4040/v1/group
+sortPriority: 11555.555555555557
+url: 127.0.0.1:4040/v1/group
+urlParameters:
+- enabled: true
+  name: group_name
+  value: ИС1-Б23
+  id: Nv9snuRC3X
+- enabled: true
+  name: headman_id
+  value: '1'
+  id: RUiKKb64tC
+- enabled: true
+  name: first_semester_id
+  value: '1'
+  id: APWZDxxwVn
+- enabled: true
+  name: course_level
+  value: '3'
+  id: Xw9pvXJtj9
+- enabled: true
+  name: grade_id
+  value: '1'
+  id: MrwvtN3yZR
+- enabled: true
+  name: ''
+  value: ''
+  id: qQ4aehE4Dw

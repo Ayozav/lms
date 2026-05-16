@@ -1,8 +1,8 @@
 type: http_request
 model: http_request
-id: rq_fau4jGrVrH
-createdAt: 2026-05-09T16:10:47.237814900
-updatedAt: 2026-05-16T08:02:28.044004600
+id: rq_dWNPvXohL8
+createdAt: 2026-05-16T06:09:40.609058100
+updatedAt: 2026-05-16T08:02:28.026508200
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -12,15 +12,15 @@ bodyType: null
 description: ''
 headers: []
 method: DELETE
-name: 127.0.0.1:4040/v1/grade
-sortPriority: 16000.0
-url: 127.0.0.1:4040/v1/grade
+name: 127.0.0.1:4040/v1/discipline
+sortPriority: 11000.0
+url: 127.0.0.1:4040/v1/discipline?id=22
 urlParameters:
 - enabled: true
   name: id
-  value: '21'
-  id: G2KUat5IGn
+  value: '1'
+  id: iW0P4P6eQn
 - enabled: true
   name: ''
   value: ''
-  id: 75nfMKvUzc
+  id: by3k9cwdi6

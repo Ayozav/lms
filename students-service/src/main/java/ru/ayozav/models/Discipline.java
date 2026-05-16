@@ -8,7 +8,7 @@ public class Discipline {
     private String disciplineName;
     private int supervisorId;
     private String description;
-    private int semesterId;
+    private int semesterId; // ЭТО РЕЧЬ ПРО ТО, В КАКОМ СЕМЕСТРЕ БУДЕТ ТОТ ИЛИ ИНОЙ ПРЕДМЕТ!
     private int gradeId;
 
     public Discipline(int id, String disciplineName, int supervisorId, String description, int semesterId, int gradeId) {

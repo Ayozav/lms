@@ -1,8 +1,8 @@
 type: http_request
 model: http_request
-id: rq_nT2feUH7TG
-createdAt: 2026-05-16T05:40:44.829383600
-updatedAt: 2026-05-16T08:02:27.977663
+id: rq_pD6SVxh5pg
+createdAt: 2026-05-16T08:02:22.361863300
+updatedAt: 2026-05-16T08:11:39.612653200
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -12,7 +12,7 @@ bodyType: null
 description: ''
 headers: []
 method: GET
-name: ''
-sortPriority: 2000.0
-url: 127.0.0.1:4040/v1/semester?id=1
+name: 127.0.0.1:4040/v1/group
+sortPriority: 11407.407407407409
+url: 127.0.0.1:4040/v1/group?id=3
 urlParameters: []

@@ -1,0 +1,42 @@
+type: http_request
+model: http_request
+id: rq_njFSF8i2Tv
+createdAt: 2026-05-16T06:09:40.606757700
+updatedAt: 2026-05-16T08:02:28.021477300
+workspaceId: wk_TsG5TkW2Jb
+folderId: null
+authentication: {}
+authenticationType: null
+body: {}
+bodyType: null
+description: ''
+headers: []
+method: POST
+name: 127.0.0.1:4040/v1/discipline
+sortPriority: 10000.0
+url: 127.0.0.1:4040/v1/discipline
+urlParameters:
+- enabled: true
+  name: discipline_name
+  value: Основы математического анализа
+  id: MfSEUrACIS
+- enabled: true
+  name: supervisor_id
+  value: '1'
+  id: 3PB6HuBaiR
+- enabled: true
+  name: grade_id
+  value: '1'
+  id: mjTHn3spzv
+- enabled: true
+  name: semester_id
+  value: '1'
+  id: HQ4kjTCjhg
+- enabled: false
+  name: ''
+  value: ''
+  id: SnRFu5cDIN
+- enabled: true
+  name: ''
+  value: ''
+  id: rcdghHcPVF

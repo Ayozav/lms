@@ -2,10 +2,7 @@ package ru.ayozav;
 
 import io.javalin.Javalin;
 import ru.ayozav.answers.EchoAnswer;
-import ru.ayozav.controllers.DisciplinesController;
-import ru.ayozav.controllers.GradesController;
-import ru.ayozav.controllers.SemestersController;
-import ru.ayozav.controllers.UsersController;
+import ru.ayozav.controllers.*;
 import ru.ayozav.database.DatabaseMigrator;
 import ru.ayozav.database.HikariConnectionFactory;
 
@@ -17,6 +14,7 @@ public class WebController {
     private GradesController gradesController;
     private SemestersController semestersController;
     private DisciplinesController disciplinesController;
+    private GroupsController groupsController;
 
     public void initialize() {
 
@@ -39,6 +37,7 @@ public class WebController {
         this.gradesController = new GradesController(factory);
         this.semestersController = new SemestersController(factory);
         this.disciplinesController = new DisciplinesController(factory);
+        this.groupsController = new GroupsController(factory);
 
         this.app = Javalin.create(
                 javalinConfig -> {
@@ -67,6 +66,11 @@ public class WebController {
                     javalinConfig.routes.delete("/v1/discipline", this.disciplinesController::deleteDiscipline);
                     javalinConfig.routes.get("/v1/discipline", this.disciplinesController::getDisciplineById);
                     javalinConfig.routes.get("/v1/disciplines", this.disciplinesController::getAllDisciplines);
+
+                    javalinConfig.routes.post("/v1/group", this.groupsController::addGroup);
+                    javalinConfig.routes.delete("/v1/group", this.groupsController::deleteGroup);
+                    javalinConfig.routes.get("/v1/group", this.groupsController::getGroupById);
+                    javalinConfig.routes.get("/v1/groups", this.groupsController::getAllGroups);
 
                 }
         );
