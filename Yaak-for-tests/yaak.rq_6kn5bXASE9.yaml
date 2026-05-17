@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_6kn5bXASE9
 createdAt: 2026-05-17T07:26:03.727436300
-updatedAt: 2026-05-17T07:27:44.420479
+updatedAt: 2026-05-17T07:38:31.647804600
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -13,7 +13,7 @@ description: ''
 headers: []
 method: PUT
 name: 127.0.0.1:4040/v1/lesson
-sortPriority: 11000.002
+sortPriority: 22000.0
 url: 127.0.0.1:4040/v1/lesson
 urlParameters:
 - enabled: true

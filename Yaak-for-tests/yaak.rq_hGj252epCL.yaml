@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_hGj252epCL
 createdAt: 2026-05-17T07:17:01.989740600
-updatedAt: 2026-05-17T07:25:28.674313800
+updatedAt: 2026-05-17T07:38:31.629586100
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -13,6 +13,6 @@ description: ''
 headers: []
 method: GET
 name: 127.0.0.1:4040/v1/lesson
-sortPriority: 9000.001
+sortPriority: 17000.0
 url: 127.0.0.1:4040/v1/lesson?id=8
 urlParameters: []

@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_kpGsYmmzGV
 createdAt: 2026-05-17T07:32:41.935046800
-updatedAt: 2026-05-17T07:33:21.590938100
+updatedAt: 2026-05-17T07:38:31.613043100
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -13,7 +13,7 @@ description: ''
 headers: []
 method: POST
 name: 127.0.0.1:4040/v1/teacher_ability
-sortPriority: 8000.003000000001
+sortPriority: 12000.0
 url: 127.0.0.1:4040/v1/teacher_ability
 urlParameters:
 - enabled: true

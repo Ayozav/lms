@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_njFSF8i2Tv
 createdAt: 2026-05-16T06:09:40.606757700
-updatedAt: 2026-05-17T07:10:10.929540300
+updatedAt: 2026-05-17T07:38:31.632983100
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -13,7 +13,7 @@ description: ''
 headers: []
 method: POST
 name: 127.0.0.1:4040/v1/discipline
-sortPriority: 10000.0
+sortPriority: 18000.0
 url: 127.0.0.1:4040/v1/discipline
 urlParameters:
 - enabled: true

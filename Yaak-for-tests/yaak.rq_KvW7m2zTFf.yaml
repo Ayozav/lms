@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_KvW7m2zTFf
 createdAt: 2026-05-17T07:33:08.677781
-updatedAt: 2026-05-17T07:33:24.345824600
+updatedAt: 2026-05-17T07:38:31.616263500
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -13,7 +13,7 @@ description: ''
 headers: []
 method: DELETE
 name: 127.0.0.1:4040/v1/teacher_ability
-sortPriority: 8000.004000000001
+sortPriority: 13000.0
 url: 127.0.0.1:4040/v1/teacher_ability
 urlParameters:
 - enabled: true

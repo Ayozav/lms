@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_sm34EpufjS
 createdAt: 2026-05-17T07:17:01.987590300
-updatedAt: 2026-05-17T07:25:19.436956100
+updatedAt: 2026-05-17T07:38:31.643823100
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -13,6 +13,6 @@ description: ''
 headers: []
 method: DELETE
 name: 127.0.0.1:4040/v1/lesson
-sortPriority: 11000.001
+sortPriority: 21000.0
 url: 127.0.0.1:4040/v1/lesson?id=7
 urlParameters: []

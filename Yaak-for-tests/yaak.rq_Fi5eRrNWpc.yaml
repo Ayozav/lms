@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_Fi5eRrNWpc
 createdAt: 2026-05-16T08:02:11.318977300
-updatedAt: 2026-05-17T07:10:10.983264700
+updatedAt: 2026-05-17T07:38:31.704893200
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -13,7 +13,7 @@ description: ''
 headers: []
 method: DELETE
 name: 127.0.0.1:4040/v1/group
-sortPriority: 28000.0
+sortPriority: 38000.0
 url: 127.0.0.1:4040/v1/group?id=1
 urlParameters:
 - enabled: true

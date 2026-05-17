@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_Ui96Z4vapw
 createdAt: 2026-05-17T07:07:53.711550700
-updatedAt: 2026-05-17T07:13:12.657805200
+updatedAt: 2026-05-17T07:38:31.697952
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -13,7 +13,7 @@ description: ''
 headers: []
 method: GET
 name: 127.0.0.1:4040/v1/timetable_group
-sortPriority: 25000.0
+sortPriority: 36000.0
 url: 127.0.0.1:4040/v1/timetable_group/timetables
 urlParameters:
 - enabled: true

@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_7ZwWUuXo3y
 createdAt: 2026-05-17T07:32:08.814729200
-updatedAt: 2026-05-17T07:32:35.549614100
+updatedAt: 2026-05-17T07:38:31.609710900
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -13,6 +13,6 @@ description: ''
 headers: []
 method: GET
 name: 127.0.0.1:4040/v1/teacher_ability/disciplines
-sortPriority: 8000.002
+sortPriority: 11000.0
 url: 127.0.0.1:4040/v1/teacher_ability/disciplines?teacher_id=1
 urlParameters: []
