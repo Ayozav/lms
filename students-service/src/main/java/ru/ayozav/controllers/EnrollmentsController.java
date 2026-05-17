@@ -108,7 +108,7 @@ public class EnrollmentsController {
             ctx.status(200).json(new SuccessUpdateAnswer("Зачисление", id));
 
         } catch (DatabaseException e) {
-            ctx.status(400).json(new BadArgumentsAnswer("Не удалось обновить зачисление: " + e.getMessage()));
+            ctx.status(400).json(new BadArgumentsAnswer("Не удалось обновить зачисление."));
         }
     }
 

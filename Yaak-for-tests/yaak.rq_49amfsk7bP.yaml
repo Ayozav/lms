@@ -1,8 +1,8 @@
 type: http_request
 model: http_request
-id: rq_a5hwv443ez
-createdAt: 2026-05-16T08:17:36.298947900
-updatedAt: 2026-05-17T07:10:10.986439600
+id: rq_49amfsk7bP
+createdAt: 2026-05-17T07:00:58.817464
+updatedAt: 2026-05-17T07:10:10.953616400
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -11,8 +11,8 @@ body: {}
 bodyType: null
 description: ''
 headers: []
-method: DELETE
+method: GET
 name: 127.0.0.1:4040/v1/enrollment
-sortPriority: 29000.0
-url: 127.0.0.1:4040/v1/enrollment?id=3
+sortPriority: 18000.0
+url: 127.0.0.1:4040/v1/enrollment?id=4
 urlParameters: []

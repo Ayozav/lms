@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_PB9Zo9Sxez
 createdAt: 2026-05-16T08:17:36.303129300
-updatedAt: 2026-05-16T08:27:02.561410100
+updatedAt: 2026-05-17T07:10:10.962177800
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -13,7 +13,7 @@ description: ''
 headers: []
 method: POST
 name: 127.0.0.1:4040/v1/timetable
-sortPriority: 11555.556555555557
+sortPriority: 21000.0
 url: 127.0.0.1:4040/v1/timetable
 urlParameters:
 - enabled: true

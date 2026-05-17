@@ -5,7 +5,7 @@ import ru.ayozav.answers.EchoAnswer;
 import ru.ayozav.controllers.*;
 import ru.ayozav.database.DatabaseMigrator;
 import ru.ayozav.database.HikariConnectionFactory;
-import ru.ayozav.models.Comment;
+
 
 public class WebController {
 

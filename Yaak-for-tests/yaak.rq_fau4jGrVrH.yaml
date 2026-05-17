@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_fau4jGrVrH
 createdAt: 2026-05-09T16:10:47.237814900
-updatedAt: 2026-05-16T08:02:28.044004600
+updatedAt: 2026-05-17T07:10:11.001192900
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -13,7 +13,7 @@ description: ''
 headers: []
 method: DELETE
 name: 127.0.0.1:4040/v1/grade
-sortPriority: 16000.0
+sortPriority: 34000.0
 url: 127.0.0.1:4040/v1/grade
 urlParameters:
 - enabled: true

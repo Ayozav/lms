@@ -1,0 +1,34 @@
+type: http_request
+model: http_request
+id: rq_9VzDcihz63
+createdAt: 2026-05-17T07:00:58.820086400
+updatedAt: 2026-05-17T07:10:10.968354600
+workspaceId: wk_TsG5TkW2Jb
+folderId: null
+authentication: {}
+authenticationType: null
+body: {}
+bodyType: null
+description: ''
+headers: []
+method: POST
+name: 127.0.0.1:4040/v1/enrollment
+sortPriority: 23000.0
+url: 127.0.0.1:4040/v1/enrollment
+urlParameters:
+- enabled: true
+  name: student_id
+  value: '1'
+  id: y0zb5tRfAT
+- enabled: true
+  name: group_id
+  value: '3'
+  id: HhdycZbIKh
+- enabled: true
+  name: start_semester_id
+  value: '1'
+  id: hBafwXycQu
+- enabled: true
+  name: ''
+  value: ''
+  id: xwxHWyimEU

@@ -33,7 +33,7 @@ public class TimetablesGroupsController {
                     timetableId
             ));
         } catch (DatabaseException e) {
-            ctx.status(400).json(new BadArgumentsAnswer(e.getMessage()));
+            ctx.status(400).json(new BadArgumentsAnswer("Не удалось записать в расписание группу."));
         }
     }
 

@@ -1,0 +1,30 @@
+type: http_request
+model: http_request
+id: rq_KoYscDAqqx
+createdAt: 2026-05-17T07:10:08.537762700
+updatedAt: 2026-05-17T07:12:39.730348400
+workspaceId: wk_TsG5TkW2Jb
+folderId: null
+authentication: {}
+authenticationType: null
+body: {}
+bodyType: null
+description: ''
+headers: []
+method: POST
+name: 127.0.0.1:4040/v1/timetable_group
+sortPriority: 26000.0
+url: 127.0.0.1:4040/v1/timetable_group
+urlParameters:
+- enabled: true
+  name: timetable_id
+  value: '3'
+  id: IhcQrn3tr3
+- enabled: true
+  name: group_id
+  value: '3'
+  id: w7SHssinDB
+- enabled: true
+  name: ''
+  value: ''
+  id: b2jETKX70K

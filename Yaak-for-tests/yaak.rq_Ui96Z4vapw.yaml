@@ -1,0 +1,26 @@
+type: http_request
+model: http_request
+id: rq_Ui96Z4vapw
+createdAt: 2026-05-17T07:07:53.711550700
+updatedAt: 2026-05-17T07:13:12.657805200
+workspaceId: wk_TsG5TkW2Jb
+folderId: null
+authentication: {}
+authenticationType: null
+body: {}
+bodyType: null
+description: ''
+headers: []
+method: GET
+name: 127.0.0.1:4040/v1/timetable_group
+sortPriority: 25000.0
+url: 127.0.0.1:4040/v1/timetable_group/timetables
+urlParameters:
+- enabled: true
+  name: group_id
+  value: '3'
+  id: em69gUrMuR
+- enabled: true
+  name: ''
+  value: ''
+  id: irezBFedKU
