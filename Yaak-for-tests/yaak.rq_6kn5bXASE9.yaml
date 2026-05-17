@@ -1,0 +1,42 @@
+type: http_request
+model: http_request
+id: rq_6kn5bXASE9
+createdAt: 2026-05-17T07:26:03.727436300
+updatedAt: 2026-05-17T07:27:44.420479
+workspaceId: wk_TsG5TkW2Jb
+folderId: null
+authentication: {}
+authenticationType: null
+body: {}
+bodyType: null
+description: ''
+headers: []
+method: PUT
+name: 127.0.0.1:4040/v1/lesson
+sortPriority: 11000.002
+url: 127.0.0.1:4040/v1/lesson
+urlParameters:
+- enabled: true
+  name: id
+  value: '8'
+  id: 9HrpwZ2I6F
+- enabled: true
+  name: discipline_id
+  value: '2'
+  id: VQ2ZSX5IRq
+- enabled: true
+  name: ordered_number
+  value: '2'
+  id: w4cu3fmnuD
+- enabled: true
+  name: main_theme
+  value: Аксиома Архимеда
+  id: 0vaXbYk8Nr
+- enabled: true
+  name: description
+  value: Ура!
+  id: aahp4kTFDX
+- enabled: true
+  name: ''
+  value: ''
+  id: bFvptWuNBg

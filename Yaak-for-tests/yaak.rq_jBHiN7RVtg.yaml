@@ -1,0 +1,58 @@
+type: http_request
+model: http_request
+id: rq_jBHiN7RVtg
+createdAt: 2026-05-17T07:17:01.992388100
+updatedAt: 2026-05-17T07:24:36.131027400
+workspaceId: wk_TsG5TkW2Jb
+folderId: null
+authentication: {}
+authenticationType: null
+body: {}
+bodyType: null
+description: ''
+headers: []
+method: POST
+name: 127.0.0.1:4040/v1/lesson
+sortPriority: 10000.001
+url: 127.0.0.1:4040/v1/lesson
+urlParameters:
+- enabled: true
+  name: discipline_id
+  value: '2'
+  id: 2g08APcT2R
+- enabled: true
+  name: ordered_number
+  value: '1'
+  id: Gcsb8xANFv
+- enabled: true
+  name: main_theme
+  value: Аксиома Архимеда
+  id: GZqbPtFFDz
+- enabled: true
+  name: description
+  value: Поговорим об общеизвестном принципе, попробуем его опровергнуть
+  id: PyC44Xr9E6
+- enabled: true
+  name: teacher_file_link
+  value: https://ru.wikipedia.org/wiki/%D0%90%D0%BA%D1%81%D0%B8%D0%BE%D0%BC%D0%B0_%D0%90%D1%80%D1%85%D0%B8%D0%BC%D0%B5%D0%B4%D0%B0
+  id: hjwRa6P88X
+- enabled: true
+  name: students_file_link
+  value: https://letmegooglethat.com/?q=%D0%90%D0%BA%D1%81%D0%B8%D0%BE%D0%BC%D0%B0+%D0%90%D1%80%D1%85%D0%B8%D0%BC%D0%B5%D0%B4%D0%B0
+  id: 9THKNc56GH
+- enabled: true
+  name: type
+  value: Лекция вдвоём
+  id: aMJIpiCJS2
+- enabled: true
+  name: format
+  value: Очно
+  id: gQatexHSA6
+- enabled: true
+  name: recommend_room
+  value: 2-216
+  id: jDJMBJenAh
+- enabled: true
+  name: ''
+  value: ''
+  id: DDx3QjCYhn

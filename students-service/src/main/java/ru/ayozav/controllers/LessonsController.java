@@ -52,7 +52,7 @@ public class LessonsController {
             ctx.status(200).json(new SuccessObjectInsertAnswer("lesson", id));
 
         } catch (DatabaseException e) {
-            ctx.status(400).json(new BadArgumentsAnswer(e.getMessage()));
+            ctx.status(400).json(new BadArgumentsAnswer("Не удалось добавить занятие."));
         }
     }
 
@@ -142,7 +142,7 @@ public class LessonsController {
             ctx.status(200).json(new SuccessUpdateAnswer("Занятие", id));
 
         } catch (DatabaseException e) {
-            ctx.status(400).json(new BadArgumentsAnswer(e.getMessage()));
+            ctx.status(400).json(new BadArgumentsAnswer("Обновить занятие не вышло."));
         }
     }
 

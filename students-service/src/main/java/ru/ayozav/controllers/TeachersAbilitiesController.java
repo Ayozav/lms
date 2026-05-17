@@ -29,7 +29,7 @@ public class TeachersAbilitiesController {
             repository.addLink(teacherId, disciplineId);
             ctx.status(200);
         } catch (DatabaseException e) {
-            ctx.status(400).json(new BadArgumentsAnswer(e.getMessage()));
+            ctx.status(400).json(new BadArgumentsAnswer("Не удалось добавить возможность преподавателю."));
         }
     }
 
@@ -44,7 +44,7 @@ public class TeachersAbilitiesController {
             repository.deleteLink(teacherId, disciplineId);
             ctx.status(200);
         } catch (DatabaseException e) {
-            ctx.status(400).json(new BadArgumentsAnswer(e.getMessage()));
+            ctx.status(400).json(new BadArgumentsAnswer("Не удалось удалить возможность преподавателю."));
         }
     }
 
