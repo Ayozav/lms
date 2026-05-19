@@ -1,5 +1,6 @@
 // import React, { useState } from 'react'; НУ И БОЛЬНО ХОТЕЛОСЬ
 import { useState } from 'react';
+import Profile from '../student/profile.tsx';
 import Timetable from '../timetable/Timetable.tsx'
 
 import {
@@ -83,7 +84,7 @@ function Main_page() {
     </div>
   );
 
-  // рендер что выбрали
+  // !!СВИТЧ ВЫБОРА!!
   const render = () => {
     switch (selectedTab) {
       case 'schedule':
@@ -105,7 +106,28 @@ function Main_page() {
           />
         );
       case 'profile':
-        return 'comming soon';
+        return (
+          <Profile 
+            profileData={{
+              full_name: 'Jithjdcrfgz Lfhmz Dbrnjhjdyf',
+              age: 20,
+              b_date: 'dd.mm.yyyy',
+              phone_number: 79161234567,
+              email_adress: 'frontend.hater@yes.me',
+              home_adress: 'adress',
+              grade_level: 'Бакалавриат',
+              country: 'ru',
+              study_mode: 'Очная',
+              institute: 'ОИКС',
+              course: 3,
+              program_code: '09.03.01',
+              group: 'Ис2-б23',
+              zachetka: 'СТО-12345',
+              path_to_photo: '',
+            }}
+            loading={false}
+            />
+        );
       case 'teachers':
         return (
           <Typography variant="h5" sx={{ p: 3 }}>
