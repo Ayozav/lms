@@ -1,35 +1,35 @@
 import type { 
-    student_profile, 
+    // student_profile, 
     ProfileProps 
 } from "./student_profile";
-import { beautyPhoneNumber } from "./student_profile";
+// import { beautyPhoneNumber } from "./student_profile";
 
 import React from 'react';
 import {Box,
     Paper,
-    Grid,
+    // Grid,
     Typography,
     Avatar,
-    Card,
-    CardContent,
+    // Card,
+    // CardContent,
     Chip
 } from '@mui/material';
-import { GroupAdd } from "@mui/icons-material";
-import {
-    Person as PersonIcon,
-    Cake as CakeIcon,
-    Phone as PhoneIcon,
-    Email as EmailIcon,
-    Home as HomeIcon,
-    School as SchoolIcon,
-    Class as ClassIcon,
-    Book as BookIcon,
-    Badge as BadgeIcon,
-    Groups as GroupsIcon,
-} from '@mui/icons-material';
+// import { GroupAdd } from "@mui/icons-material";
+// import {
+//     Person as PersonIcon,
+//     Cake as CakeIcon,
+//     Phone as PhoneIcon,
+//     Email as EmailIcon,
+//     Home as HomeIcon,
+//     School as SchoolIcon,
+//     Class as ClassIcon,
+//     Book as BookIcon,
+//     Badge as BadgeIcon,
+//     Groups as GroupsIcon,
+// } from '@mui/icons-material';
 import { deepPurple } from "@mui/material/colors";
 
-const Profile: React.FC<ProfileProps> = ({profileData, loading=false}) => {
+const Profile: React.FC<ProfileProps> = ({profileData}) => {
     return (
             <Box sx={{p:3, maxWidth:1200, margin: 'auto'}}>
                 <Paper elevation={3} sx={{borderRadius:3, overflow:'hidden'}}></Paper>
