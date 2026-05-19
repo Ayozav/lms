@@ -1,5 +1,7 @@
 // import React, { useState } from 'react'; НУ И БОЛЬНО ХОТЕЛОСЬ
 import { useState } from 'react';
+import Timetable from '../timetable/Timetable.tsx'
+
 import {
   AppBar,
   Box,
@@ -46,11 +48,16 @@ function Main_page() {
     setMobileOpen(!mobileOpen);
   };
 
+  const TabChange = (tabId: string) => {
+    setSelectedTab(tabId);
+    if (isMobile) setMobileOpen(false);
+  }
+
   const squares = [
-    { id: 1, title: 'Раписание', color: '#FF6B6B', content: 'Расписание группы' },
-    { id: 2, title: 'Вход в систему', color: '#4ECDC4', content: 'Войти с использованием локальной учетной записи' },
-    { id: 3, title: 'Моя группа', color: '#45B7D1', content: 'Я и мой детский садик' },
-    { id: 4, title: '(Что-то ещё)', color: '#96CEB4', content: 'здесь могла быть ваша реклама' },
+    { id: 1, title: 'Расписание', color: '#FF6B6B', content: 'Расписание группы', tabId: 'schedule' },
+    { id: 2, title: 'Вход в систему', color: '#4ECDC4', content: 'Войти с использованием локальной учетной записи', tabId: 'profile' },
+    { id: 3, title: 'Моя группа', color: '#45B7D1', content: 'Я и мой детский садик', tabId: 'knowledge' },
+    { id: 4, title: '(Что-то ещё)', color: '#96CEB4', content: 'здесь могла быть ваша реклама', tabId: 'knowledge' },
   ];
 
   const drawer = (
@@ -65,10 +72,7 @@ function Main_page() {
           <ListItem key={item.text} disablePadding>
             <ListItemButton
               selected={selectedTab === item.id}
-              onClick={() => {
-                setSelectedTab(item.id);
-                if (isMobile) setMobileOpen(false);
-              }}
+              onClick={() => TabChange(item.id)}
             >
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
@@ -78,6 +82,89 @@ function Main_page() {
       </List>
     </div>
   );
+
+  // рендер что выбрали
+  const render = () => {
+    switch (selectedTab) {
+      case 'schedule':
+        return (
+          <Timetable 
+            groupName='GROUP' 
+            timetableData={[
+              {
+                id: '001', 
+                subject_name: 'Теория вероятностей',
+                teacher: 'Перегуда А. И.',
+                classroom: '2-512',
+                is_appointed: true,
+                day: 0, 
+                time: 0
+              }
+            ]} 
+            loading={false}
+          />
+        );
+      case 'profile':
+        return 'comming soon';
+      case 'teachers':
+        return (
+          <Typography variant="h5" sx={{ p: 3 }}>
+            Список преподавателей
+          </Typography>
+        );
+      default: //main
+        return (
+          <Box sx={{
+            flexGrow: 1,
+            p: 3,
+            backgroundColor: '#f5f5f5',
+            minHeight: '100vh',
+          }}>
+            {/* квадраты с Grid */}
+            <Grid container spacing={3}>
+              {squares.map((square) => (
+                <Grid key={square.id} size={{xs: 12, sm: 8, md: 3}}>
+                  <Paper
+                    elevation={3}
+                    sx={{
+                      p: 3,
+                      height: 200,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      borderRadius: 4,
+                      backgroundColor: square.color,
+                      color: 'white',
+                      transition: 'transform 0.2s, box-shadow 0.2s',
+                      cursor: 'pointer',
+                      '&:hover': {
+                        transform: 'translateY(-4px)',
+                        boxShadow: 6,
+                      },
+                    }}
+                    onClick={() => TabChange(square.tabId)}
+                  >
+                    <Typography variant="h5" component="div" gutterBottom>
+                      {square.title}
+                    </Typography>
+                    <Typography variant="body2" align="center">
+                      {square.content}
+                    </Typography>
+                  </Paper>
+                </Grid>
+              ))}
+            </Grid>
+
+            <Box sx={{ mt: 4, p: 2, backgroundColor: 'white', borderRadius: 2 }}>
+              <Typography variant="body1" color="text.secondary">
+                Здесь дополнительная информация для раздела "{menu_items.find(item => item.id === selectedTab)?.text}"
+              </Typography>
+            </Box>
+          </Box>
+        );
+    }
+  }
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -108,12 +195,11 @@ function Main_page() {
         </Toolbar>
       </AppBar>
 
-      {/* Боковая панель (Drawer) */}
+      {/* Боковая панель */}
       <Box
         component="nav"
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
       >
-
         <Drawer
           variant="permanent"
           sx={{
@@ -126,57 +212,8 @@ function Main_page() {
         </Drawer>
       </Box>
 
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          p: 3,
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          backgroundColor: '#f5f5f5',
-          minHeight: '100vh',
-        }}
-      >
-
-        {/* квадраты с Grid */}
-        <Grid container spacing={3}>
-          {squares.map((square) => (
-            <Grid key={square.id} size={{xs: 12, sm:8, md:3}}>
-              <Paper
-                elevation={3}
-                sx={{
-                  p: 3,
-                  height: 200,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  borderRadius: 4, // Закругление!
-                  backgroundColor: square.color,
-                  color: 'white',
-                  transition: 'transform 0.2s, box-shadow 0.2s',
-                  cursor: 'pointer',
-                  '&:hover': {
-                    transform: 'translateY(-4px)',
-                    boxShadow: 6,
-                  },
-                }}
-              >
-                <Typography variant="h5" component="div" gutterBottom>
-                  {square.title}
-                </Typography>
-                <Typography variant="body2" align="center">
-                  {square.content}
-                </Typography>
-              </Paper>
-            </Grid>
-          ))}
-        </Grid>
-
-        <Box sx={{ mt: 4, p: 2, backgroundColor: 'white', borderRadius: 2 }}>
-          <Typography variant="body1" color="text.secondary">
-            Здесь дополнительная информация для раздела "{menu_items.find(item => item.id === selectedTab)?.text}"
-          </Typography>
-        </Box>
+      <Box component="main" sx={{ flexGrow: 1 }}>
+        {render()}
       </Box>
     </Box>
   );
