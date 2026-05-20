@@ -2,6 +2,8 @@
 import { useState } from 'react';
 import Profile from '../student/profile.tsx';
 import Timetable from '../timetable/Timetable.tsx'
+// import TeacherProps from '../teachers/teachers_component.tsx';
+import { TeacherProfile } from '../teachers/teachers.tsx'; 
 
 import {
   AppBar,
@@ -109,7 +111,7 @@ function Main_page() {
         return (
           <Profile 
             profileData={{
-              full_name: 'Jithjdcrfgz Lfhmz Dbrnjhjdyf',
+              full_name: 'Ошеровская Дарья Викторовна',
               age: 20,
               b_date: 'dd.mm.yyyy',
               phone_number: 79161234567,
@@ -130,9 +132,17 @@ function Main_page() {
         );
       case 'teachers':
         return (
-          <Typography variant="h5" sx={{ p: 3 }}>
-            Список преподавателей
-          </Typography>
+          // <Typography variant="h5" sx={{ p: 3 }}>
+          //   Список преподавателей
+          // </Typography>
+          <TeacherProfile 
+            teacher_info={{
+              full_name: 'Перегуда Аркадий Иванович',
+              institute: 'ОИКС',
+              regalis: 'самый крутой булочка',
+              b_date: '03.07.1800'
+            }}
+            />
         );
       default: //main
         return (
