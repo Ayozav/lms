@@ -1,19 +1,29 @@
-// // import React from 'react';
-// import Button from '@mui/material/Button';
-// import TextField from '@mui/material/TextField';
-// // import './App_styles.css'; 
+// import React from 'react';
+import './App_styles.css'; 
 
-// function App() {
-//   return (
-//     <div>
-//       <Button variant="contained" size="medium" color="primary">Привет я кнопка</Button>
-//       <Button variant="outlined" color="secondary" size="large">Привет я тоже кнопка, но с подвохом</Button> 
-//       <Button variant="contained" className='im-still-want-custom-button'>А я изгой, зато красивый</Button>
-// '
+// logto...
+import { LogtoProvider, type LogtoConfig } from '@logto/react';
+import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import Callback from './LogTo/Callback';
+import Home from './LogTo/Home';
 
-//       <TextField variant="filled" label="Введите хоть что-то"/>
-//     </div>
-//   );
-// }
 
-// export default App;
+function App() {
+    const config: LogtoConfig = {
+        endpoint: 'https://033d55.logto.app/',
+        appId: 'e679vw0uj2349hil54b6o',
+    };
+
+    return (
+        <BrowserRouter>
+            <LogtoProvider config={config}>
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/callback" element={<Callback />} />
+                </Routes>
+            </LogtoProvider>
+        </BrowserRouter>
+    );
+}
+
+export default App;
