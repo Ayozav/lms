@@ -58,7 +58,7 @@ function Main_page() {
 
   const squares = [
     { id: 1, title: 'Расписание', color: '#FF6B6B', content: 'Расписание группы', tabId: 'schedule' },
-    { id: 2, title: 'Вход в систему', color: '#4ECDC4', content: 'Войти с использованием локальной учетной записи', tabId: 'profile' },
+    { id: 2, title: 'Вход в систему', color: '#4ECDC4', content: 'Личный кабинет', tabId: 'profile' },
     { id: 3, title: 'Моя группа', color: '#45B7D1', content: 'Я и мой детский садик', tabId: 'knowledge' },
     { id: 4, title: '(Что-то ещё)', color: '#96CEB4', content: 'здесь могла быть ваша реклама', tabId: 'knowledge' },
   ];
@@ -134,7 +134,7 @@ function Main_page() {
         return (
           // <Typography variant="h5" sx={{ p: 3 }}>
           //   Список преподавателей
-          // </Typography>
+          // </Typography> ????????????
           <TeacherProfile 
             teacher_info={{
               full_name: 'Перегуда Аркадий Иванович',

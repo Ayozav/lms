@@ -2,7 +2,7 @@ import type {
     // student_profile, 
     ProfileProps 
 } from "./student_profile";
-// import { beautyPhoneNumber } from "./student_profile";
+import { beautyPhoneNumber } from "./student_profile";
 
 import React from 'react';
 import {Box,
@@ -28,6 +28,13 @@ import {Box,
 //     Groups as GroupsIcon,
 // } from '@mui/icons-material';
 import { deepPurple } from "@mui/material/colors";
+
+const PersonBox = {
+
+
+};
+
+
 
 const Profile: React.FC<ProfileProps> = ({profileData}) => {
     return (
@@ -55,6 +62,7 @@ const Profile: React.FC<ProfileProps> = ({profileData}) => {
                         </Typography>
                         {/* курс */}
                         <Box sx={{display: 'flex', gap:1, flexWrap:'wrap', mb:2, p:5}}>
+                            {/* чипы для профильДата */}
                             <Chip 
                                 label={`${profileData.grade_level}, ${profileData.course} курс`} 
                                 color='primary'
@@ -65,10 +73,59 @@ const Profile: React.FC<ProfileProps> = ({profileData}) => {
                                 // icon={<GroupsIcon/>}
                                 sx={{bgcolor: 'rgba(255,255,255, 0.2)', color: 'white'}} 
                             />
+                            <Chip
+                                label={`${profileData.email_adress}`}
+                                sx={{bgcolor: 'rgba(255,255,255, 0.2)', color:'white'}}
+                            />
+                            {/* ????????????????????????/ */}
+                            <Chip
+                                label={`${profileData.institute}`}
+                                sx={{bgcolor: 'rgba(255,255,255, 0.2)', color: 'white'}}
+                                />
+                            <Chip
+                            label={`${beautyPhoneNumber(profileData.phone_number, profileData.country)}`}
+                            sx={{bgcolor: 'rgba(255,255,255, 0.2)', color: 'white'}}
+                            />
+                            <Chip 
+                                label={`Направление подготовки: ${profileData.program_code}`}
+                                // icon={<GroupsIcon/>}
+                                sx={{bgcolor: 'rgba(255,255,255, 0.2)', color: 'white'}} 
+                            />
+                            <Chip 
+                                label={`Форма обучения: ${profileData.study_mode}`}
+                                // icon...
+                                sx={{bgcolor: 'rgba(255,255,255, 0.2)', color: 'white'}} 
+                            />
+                            <Chip 
+                                label={`Группа: ${profileData.group}`}
+                                // icon?
+                                sx={{bgcolor: 'rgba(255,255,255, 0.2)', color: 'white'}} 
+                            />
+                            <Chip 
+                                label={`День рождения: ${profileData.b_date}`}
+                                // icon...
+                                sx={{bgcolor: 'rgba(255,255,255, 0.2)', color: 'white'}} 
+                            />
+                            <Chip 
+                                label={`Полных лет: ${profileData.age}`}
+                                // icon...
+                                sx={{bgcolor: 'rgba(255,255,255, 0.2)', color: 'white'}} 
+                            />
+                            <Chip 
+                                label={`Номер зачётной книжки: ${profileData.zachetka}`}
+                                // icon...
+                                sx={{bgcolor: 'rgba(255,255,255, 0.2)', color: 'white'}} 
+                            />
                         </Box>
                     </Box>
                 </Box>
-
+            <Typography>
+                    <Box>
+                        <Typography>
+                            hello there :D
+                        </Typography>
+                    </Box>
+            </Typography>
             </Box>
     );
 };
