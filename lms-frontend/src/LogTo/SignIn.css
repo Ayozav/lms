@@ -1,0 +1,8 @@
+
+.bg_pic {
+  background-image: url('../assets/bg_blured.png');
+  background-size:"100%";
+  background-position: center;
+  background-repeat:repeat;
+  /* min-height: 100vh; */
+}

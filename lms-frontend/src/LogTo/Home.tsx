@@ -1,25 +1,18 @@
+import { useLogto } from "@logto/react";
 import SignIn from "./SignIn";
+import SignOut from "./SignOut";
 
 const Home = () => {
+    const { isAuthenticated } = useLogto();
+
     return (
             <div className="App">
                 <header className="App-header">
                     <SignIn />
+                    {isAuthenticated && <SignOut />}
                 </header>
             </div>
           );
 }
-
-// import { useLogto } from '@logto/react';
-
-// const Home = () => {
-//   const { signIn, signOut, isAuthenticated } = useLogto();
-
-//   return isAuthenticated ? (
-//     <button onClick={() => signOut('http://localhost:3000/callback')}>Sign Out</button>
-//   ) : (
-//     <button onClick={() => signIn('http://localhost:3000/callback')}>Sign In</button>
-//   );
-// };
 
 export default Home;

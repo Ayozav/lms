@@ -1,27 +1,61 @@
-import {useLogto} from '@logto/react';
-import { Button } from '@mui/material';
-
+import { useLogto } from '@logto/react';
+import { Button, Box, Paper } from '@mui/material';
+import './SignIn.css';
 
 const SignIn = () => {
-    const {signIn, isAuthenticated} = useLogto();
+    const { signIn, isAuthenticated } = useLogto();
 
     if (isAuthenticated) {
         return <div>u are signed in</div>;
     }
 
     return (
-        <div
-            style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "100vh",
-                width: "100%",
-            }} >
-            <Button variant="contained" color="primary" onClick={() => signIn('http://localhost:3000/callback')}>
-                Войти в LMS систему
-            </Button>
-        </div>
+        // <Box
+        //     sx={{
+        //         backgroundImage: 'url("../assets/bg_blured.png")',
+        //         backgroundSize: 'cover',
+        //         backgroundPosition: 'center',
+        //         backgroundRepeat: 'no-repeat',
+        //         minHeight: '100vh',
+        //         width: '100%',
+        //     }}
+        // >
+
+        <Box 
+            className="bg_pic"
+            //а я хуй знает как сделать ее широкую во все окно
+            sx={{display:'cover'}}> 
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: '100vh',
+                    width: '100%',
+                }}
+            >
+                <Paper
+                    elevation={2} 
+                    sx={{
+                        borderRadius: '30px', 
+                        padding: '60px',     
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: 'rgba(255, 255, 255, 0.25)',
+                    }}
+                >
+                    <Button 
+                        variant="contained" 
+                        sx={{ borderRadius: '15px'}} 
+                        color="secondary" //и как это переопределить в здравом уме...
+                        onClick={() => signIn('http://localhost:8000/callback')}
+                    >
+                        Войти в LMS систему
+                    </Button>
+                </Paper>
+            </Box>
+        </Box>    
     );
 }
 

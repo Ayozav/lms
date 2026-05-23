@@ -265,16 +265,3 @@ function Main_page() {
 }
 
 export default Main_page;
-
-
-// function useLogto(): { isAuthenticated: any; signIn: any; } {
-//   throw new Error('Function not implemented.');
-// }
-// function Main_page() {
-//   <Home />
-//   return (
-//     <Home />
-//   );
-// }
-
-// export default Main_page;
