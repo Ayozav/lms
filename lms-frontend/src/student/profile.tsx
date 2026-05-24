@@ -1,4 +1,3 @@
-
 import type { 
     // student_profile, 
     ProfileProps 
@@ -31,20 +30,20 @@ import {Box,
 // } from '@mui/icons-material';
 import { deepPurple } from "@mui/material/colors";
 
-const PersonBox = {
+// const PersonBox = {
 
 
-};
+// };
 
 
 
 const Profile: React.FC<ProfileProps> = ({profileData}) => {
     return (
             <Box sx={{p:3, maxWidth:1200, margin: 'auto'}}>
-                <Paper elevation={3} sx={{borderRadius:3, overflow:'hidden'}}></Paper>
+                <Paper elevation={5} sx={{borderRadius:3, overflow:'hidden'}}></Paper>
                 {/* ????????????????????????? */}
                 <Box sx={{
-                    // width: {md:'300'}, ширина ЛИНАР ГРАДИЕНТАА
+                    // width: {md:'500'},// ширина ЛИНАР ГРАДИЕНТАА 
                     background:'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                     p:4,
                     // display:,
@@ -55,7 +54,7 @@ const Profile: React.FC<ProfileProps> = ({profileData}) => {
                                 width:200,
                                 height:200,
                                 fontSize:'500%'
-                        }}>O</Avatar>
+                        }}>S</Avatar>
                     </Box>
 
                     <Box sx={{width: {xs: '100%', sm: '50%', md:'33%'}, p:{xs:1, md:3}, display:'table-row'}}>
@@ -96,11 +95,6 @@ const Profile: React.FC<ProfileProps> = ({profileData}) => {
                             <Chip 
                                 label={`Форма обучения: ${profileData.study_mode}`}
                                 // icon...
-                                sx={{bgcolor: 'rgba(255,255,255, 0.2)', color: 'white'}} 
-                            />
-                            <Chip 
-                                label={`Группа: ${profileData.group}`}
-                                // icon?
                                 sx={{bgcolor: 'rgba(255,255,255, 0.2)', color: 'white'}} 
                             />
                             <Chip 
