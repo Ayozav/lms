@@ -10,8 +10,8 @@ import Home from './LogTo/Home';
 
 function App() {
     const config: LogtoConfig = {
-        endpoint: 'https://033d55.logto.app/',
-        appId: 'e679vw0uj2349hil54b6o',
+        endpoint: 'https://5ay0ts.logto.app/',
+        appId: 'a8j7o75zsqw60mnsjpls0',
     };
 
     return (

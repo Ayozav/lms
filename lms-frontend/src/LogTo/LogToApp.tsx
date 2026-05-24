@@ -37,4 +37,3 @@ function LogToApp() {
 }
 
 export default LogToApp;
-

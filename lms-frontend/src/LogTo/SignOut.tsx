@@ -4,7 +4,7 @@ const SignOut = () => {
   const {signOut} = useLogto();
 
   return (
-    <button onClick={() => signOut('http://localhost:3000')}>
+    <button onClick={() => signOut('http://localhost:5173')}>
         Sign Out
     </button>
   );

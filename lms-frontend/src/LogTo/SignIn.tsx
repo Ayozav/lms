@@ -49,7 +49,7 @@ const SignIn = () => {
                         variant="contained" 
                         sx={{ borderRadius: '15px'}} 
                         color="secondary" //и как это переопределить в здравом уме...
-                        onClick={() => signIn('http://localhost:8000/callback')}
+                        onClick={() => signIn('http://localhost:5173/callback')}
                     >
                         Войти в LMS систему
                     </Button>
