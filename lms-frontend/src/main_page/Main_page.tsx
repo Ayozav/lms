@@ -5,8 +5,7 @@ import Timetable from '../timetable/Timetable.tsx'
 // import TeacherProps from '../teachers/teachers_component.tsx';
 import { mockTeachers } from '../teachers/teachers_component.tsx'; 
 import {TeachersTable} from '../teachers/teachers.tsx'
-
-// import Home from '../Home.tsx';
+import Pesronal_Note from '../notes/Pesronal_Note.tsx'
 
 import {
   AppBar,
@@ -25,60 +24,44 @@ import {
   Grid,
   useTheme,
   useMediaQuery,
-  Button,
 } from '@mui/material';
-
 import {
-  Menu as MenuIcon,
   School as KnowledgeIcon,
   Schedule as ScheduleIcon,
   AccountCircle as AccountIcon,
-  People as TeachersIcon,
+  People as TeachersIcon
 } from '@mui/icons-material';
-import App from '../App.tsx';
-import { useLogto } from '@logto/react';
+
+import CreateIcon from '@mui/icons-material/Create';
 
 const drawerWidth = 240;
 
-
-function Main_page() {
-
-  // внутри компонента Main_page
-  // const { signOut, isAuthenticated } = useLogto();
-
-// добавьте где-то кнопку:
-  // <Button color="primary" onClick={signOut}>Выйти</Button>
-
-  const menu_items = [
+const menu_items = [
   { text: 'Знание', icon: <KnowledgeIcon />, id: 'knowledge' },
   { text: 'Расписание', icon: <ScheduleIcon />, id: 'schedule' },
   { text: 'Личный кабинет', icon: <AccountIcon />, id: 'profile' },
   { text: 'Преподаватели', icon: <TeachersIcon />, id: 'teachers' },
+  { text: 'Перо', icon:< TeachersIcon/>, id:'node'},
 ];
 
+function Main_page() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const [mobileOpen, setMobileOpen] = useState(false);
   const [selectedTab, setSelectedTab] = useState('knowledge');
-
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
 
   const TabChange = (tabId: string) => {
     setSelectedTab(tabId);
-    if (isMobile) setMobileOpen(false);
   }
 
-
-    const squares = [
-    { id: 1, title: 'Расписание', color: '#FF6B6B', content: 'Расписание группы', tabId: 'schedule' },
-    { id: 2, title: 'Вход в систему', color: '#4ECDC4', content: 'Личный кабинет', tabId: 'profile' },
-    { id: 3, title: 'Моя группа', color: '#45B7D1', content: 'Я и мой детский садик', tabId: 'knowledge' },
-    { id: 4, title: '(Что-то ещё)', color: '#96CEB4', content: 'здесь могла быть ваша реклама', tabId: 'knowledge' },
+  const squares = [
+    { id: 1, title: 'Расписание', color: '#ff9289', content: 'учбеных занятий', tabId: 'schedule' },
+    { id: 2, title: 'Профиль', color: '#87f694', content: 'Личный кабинет', tabId: 'profile' },
+    { id: 3, title: 'Моя группа', color: '#fac086', content: 'хз', tabId: 'knowledge' },
+    { id: 4, title: 'Знание', color: '#ffe57e', content: 'Внутреннее устройство ИАТЭ НИЯУ МИФИ', tabId: 'knowledge' },
+    {id: 5, title:'Перо', color: '#6fa1f3', content: 'Учебные заметки', tableId: CreateIcon }
   ];
 
-    const drawer = (
+  const drawer = (
     <div>
       <Toolbar>
         <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
@@ -100,9 +83,16 @@ function Main_page() {
       </List>
     </div>
   );
+
   // !!СВИТЧ ВЫБОРА!!
   const render = () => {
     switch (selectedTab) {
+      case 'nodes':
+        return (
+          <Pesronal_Note>
+            {/* ehhhh */}
+          </Pesronal_Note>
+        );
       case 'schedule':
         return (
           <Timetable 
@@ -197,11 +187,11 @@ function Main_page() {
               ))}
             </Grid>
 
-            <Box sx={{ mt: 4, p: 2, backgroundColor: 'white', borderRadius: 2 }}>
+            {/* <Box sx={{ mt: 4, p: 2, backgroundColor: 'white', borderRadius: 2 }}>
               <Typography variant="body1" color="text.secondary">
                 Здесь дополнительная информация для раздела "{menu_items.find(item => item.id === selectedTab)?.text}"
               </Typography>
-            </Box>
+            </Box> */}
           </Box>
         );
     }
@@ -211,31 +201,7 @@ function Main_page() {
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       
-      {/* Верхняя панель для мобильных устройств */}
-      <AppBar
-        position="fixed"
-        sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
-          display: { sm: 'none' },
-        }}
-      >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            {menu_items.find(item => item.id === selectedTab)?.text || 'Главная'}
-          </Typography>
-        </Toolbar>
-      </AppBar>
-
+      
       {/* Боковая панель */}
       <Box
         component="nav"
