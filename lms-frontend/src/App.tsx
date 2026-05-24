@@ -1,6 +1,3 @@
-// import React from 'react';
-// import './App_styles.css'; 
-
 // logto...
 import { LogtoProvider, type LogtoConfig } from '@logto/react';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
@@ -10,7 +7,7 @@ import Home from './LogTo/Home';
 
 function App() {
     const config: LogtoConfig = {
-        endpoint: 'https://5ay0ts.logto.app/',
+        endpoint: 'https://auth.localhost/',
         appId: 'a8j7o75zsqw60mnsjpls0',
     };
 

@@ -1,10 +1,9 @@
 
-
-function Pesronal_Note() {
+function PesronalNote() {
     return (
         <div>мама мама что я буду делать...</div>
     );
 }
 
 
-export default Pesronal_Note;
+export default PesronalNote;
