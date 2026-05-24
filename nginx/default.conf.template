@@ -13,14 +13,38 @@ server {
         proxy_pass http://students-service:4040/;
     }
 
+    # Allow access to the assets directory
+    location /assets/ {
+        allow all;
+        # Optional: Enable directory listing if you want users to see all files
+        # autoindex on;
+    }
+
     root /usr/share/nginx/html;
     index index.html;
     location / {
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto http;
         try_files $uri $uri/ /index.html;
     }
 }
 
 # 2. Поддомен для авторизации пользователей
+server {
+    listen 80;
+    server_name ${LOGTO_AUTH_DOMAIN};
+
+    location / {
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto http;
+        proxy_pass http://logto:3001;
+    }
+}
+
 server {
     listen 80;
     server_name ${AUTH_DOMAIN};
@@ -30,7 +54,7 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto http;
-        proxy_pass http://logto:3001;
+        proxy_pass http://oauth2-proxy:4180;
     }
 }
 
@@ -58,6 +82,5 @@ server {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto http;
         proxy_pass http://kafka-ui:8080/;
-
     }
 }

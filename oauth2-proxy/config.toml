@@ -1,28 +1,25 @@
 provider = "oidc"
 http_address = "0.0.0.0:4180"
 
-client_id = "$OAUTH_PROXY_LOGTO_APP_ID"
-client_secret = "$OAUTH_PROXY_LOGTO_SECRET"
+client_id = "buf8jnenp4dmiyf6zlpow"
+client_secret = "u5I8tqNzFCT6eDAkyiol4riSSQmprwzI"
 
-# Задаётся в докер-компоте!
-redirect_url = "http://$REDIRECT_URN"
-oidc_issuer_url = "http://$OIDC_ISSUER_URN"
+redirect_url = "http://localhost/"
+oidc_issuer_url = "http://auth.localhost/oidc"
 
-# Из контейнера discovery по localhost недоступен, поэтому endpoint'ы задаем явно.
 skip_oidc_discovery = true
 # Это browser redirect URL, поэтому здесь должен быть localhost, а не host.docker.internal.
-# Тоже в докер-композе!
-login_url = "http://$LOGIN_URN"
-redeem_url = "http://$REDEEEM_URN"
-oidc_jwks_url = "http://$OIDC_JWKS_URN"
-profile_url = "http://$PROFILE_URN"
+login_url = "http://auth.localhost/oidc/auth"
+redeem_url = "http://auth.localhost/oidc/token"
+oidc_jwks_url = "http://auth.localhost/oidc/jwks"
+profile_url = "http://auth.localhost/oidc/me"
 
 scope = "openid profile email"
 email_domains = ["*"]
 skip_provider_button = true
 
 upstreams = [
-    "http://host.docker.internal:8080/"
+    "http://host.docker.internal:80/"
 ]
 
 # Для API не делаем redirect на login, чтобы frontend получал 401.
@@ -32,12 +29,12 @@ api_routes = [
 
 # GET-маршруты остаются публичными, но при наличии валидной сессии хедеры все равно будут добавлены.
 skip_auth_routes = [
-    "GET=^/$",
-    "GET=^/index\\.html$",
-#    "GET=^/login$",
-#    "GET=^/login\\.html$",
-    "GET=^/css/.*$",
-    "GET=^/js/.*$",
+
+    "GET=^/assets/.*$",
+    "GET=^/favicon.svg$",
+    "GET=^/icons.svg$",
+    "GET=^/oauth2/callback$",
+    "GET=^/oidc/auth$",
 ]
 
 session_store_type = "redis"
@@ -60,5 +57,7 @@ cookie_csrf_per_request = true
 cookie_csrf_samesite = "lax"
 
 whitelist_domains = [
-    "localhost:4180"
+    "localhost:4180",
+    "auth.localhost"  # Обратите внимание на точку в начале
+
 ]
