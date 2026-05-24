@@ -3,11 +3,13 @@ package ru.ayozav;
 import io.javalin.Javalin;
 
 import io.javalin.http.Context;
+import kotlin.IgnorableReturnValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.ayozav.answers.EchoAnswer;
 import ru.ayozav.database.DatabaseMigrator;
 import ru.ayozav.database.HikariConnectionFactory;
+import ru.ayozav.javalin.controllers.GradesController;
 import ru.ayozav.javalin.controllers.UsersController;
 
 public class JavalinServer {
@@ -27,9 +29,15 @@ public class JavalinServer {
     private static final String DATABASE_SCHEMA = System.getenv("DATABASE_SCHEMA");
     private static final Logger log = LoggerFactory.getLogger(JavalinServer.class);
 
-
     private final HikariConnectionFactory factory;
     private final Javalin app;
+
+    /// Игнорируем, потому что lombok ведёт себя с ним как-то неправильно,
+    /// поэтому данный метод мы написали ручками...
+    @IgnorableReturnValue
+    public HikariConnectionFactory getFactory() {
+        return this.factory;
+    }
 
     public JavalinServer() {
 
@@ -48,7 +56,7 @@ public class JavalinServer {
     }
 
     public void start() {
-        app.start(4040);
+        app.start(4050);
     }
     public void stop() {
         app.stop();
@@ -61,6 +69,7 @@ public class JavalinServer {
     public Javalin createApp() {
 
         UsersController usersController = new UsersController(this.factory, JavalinServer.KAFKA_BOOTSTRAP_SERVER);
+        GradesController gradesController = new GradesController(this.factory, JavalinServer.KAFKA_BOOTSTRAP_SERVER);
 
         return Javalin.create(
 
@@ -68,17 +77,20 @@ public class JavalinServer {
                     javalinConfig.routes.before(this::preHandler);
 
                     javalinConfig.routes.get(
-                            "/echo", ctx -> {
-                                ctx.status(200).json(
-                                        new EchoAnswer()
-                                );
-                            });
+                            "/echo", ctx -> ctx.status(200).json(new EchoAnswer())
+                    );
 
-                    // Прямые маппинги без switch
-                    javalinConfig.routes.get("/v1/user", usersController::getUser);
-                    javalinConfig.routes.post("/v1/user", usersController::addUser);
-                    javalinConfig.routes.delete("/v1/user", usersController::deleteUser);
-                    javalinConfig.routes.put("/v1/user", usersController::updateUser);
+                    javalinConfig.routes.get("/v1/user", usersController::getById);
+                    javalinConfig.routes.get("/v1/users", usersController::getPage);
+                    javalinConfig.routes.post("/v1/user", usersController::add);
+                    javalinConfig.routes.delete("/v1/user", usersController::delete);
+                    javalinConfig.routes.put("/v1/user", usersController::update);
+
+                    javalinConfig.routes.get("/v1/grade", gradesController::getById);
+                    javalinConfig.routes.get("/v1/grades", gradesController::getPage);
+                    javalinConfig.routes.post("/v1/grade", gradesController::add);
+                    javalinConfig.routes.delete("/v1/grade", gradesController::delete);
+                    javalinConfig.routes.put("/v1/grade", gradesController::update);
                 }
         );
     }

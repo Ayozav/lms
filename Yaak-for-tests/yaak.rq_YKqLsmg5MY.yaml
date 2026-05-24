@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_YKqLsmg5MY
 createdAt: 2026-05-09T15:20:57.942322400
-updatedAt: 2026-05-17T07:38:31.722516200
+updatedAt: 2026-05-24T11:41:51.260480200
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -14,11 +14,11 @@ headers: []
 method: POST
 name: ''
 sortPriority: 43000.0
-url: 127.0.0.1:4040/v1/grade
+url: 127.0.0.1:4050/v1/grade
 urlParameters:
 - enabled: true
   name: code
-  value: 09.03.01
+  value: 09.03.02
   id: G2KUat5IGn
 - enabled: true
   name: grade_name
@@ -30,9 +30,9 @@ urlParameters:
   id: nfcC0Q5jDy
 - enabled: true
   name: supervisor_id
-  value: '1'
+  value: '7'
   id: AH87YxrnsV
 - enabled: true
   name: ''
   value: ''
-  id: vAsSWTMytB
+  id: MuYwiunbQj

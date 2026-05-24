@@ -7,11 +7,11 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.ayozav.database.HikariConnectionFactory;
-import ru.ayozav.database.repositories.UsersEventRepository;
+import ru.ayozav.database.repositories.GradesEventRepository;
 
 import ru.ayozav.kafka.json.JsonDeserializer;
-import ru.ayozav.kafka.producers.UserProducer;
-import ru.ayozav.models.User;
+import ru.ayozav.kafka.producers.GradeProducer;
+import ru.ayozav.models.Grade;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -23,20 +23,20 @@ import java.util.concurrent.Executors;
 /**
  * Консьюмер Kafka для обработки событий пользователей (добавление, удаление, обновление).
  */
-public class UserConsumer implements AutoCloseable {
-    private static final Logger log = LoggerFactory.getLogger(UserConsumer.class);
+public class GradeConsumer implements AutoCloseable {
+    private static final Logger log = LoggerFactory.getLogger(GradeConsumer.class);
 
-    private final UsersEventRepository eventRepository;
+    private final GradesEventRepository eventRepository;
 
-    private static final String GROUP_ID = "javalin-user-consumer";
+    private static final String GROUP_ID = "javalin-grade-consumer";
     private static final Duration POLL_TIMEOUT = Duration.ofMillis(1000);
     private static final List<String> SUBSCRIBED_TOPICS = Arrays.asList(
-            UserProducer.ADD_NEW_TOPIC,
-            UserProducer.DELETE_TOPIC,
-            UserProducer.UPDATE_TOPIC
+            GradeProducer.ADD_NEW_TOPIC,
+            GradeProducer.DELETE_TOPIC,
+            GradeProducer.UPDATE_TOPIC
     );
 
-    private final KafkaConsumer<String, User> consumer;
+    private final KafkaConsumer<String, Grade> consumer;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private volatile boolean running = false;
 
@@ -45,8 +45,8 @@ public class UserConsumer implements AutoCloseable {
      *
      * @param bootstrapServers адреса брокеров Kafka (например, "localhost:9092")
      */
-    public UserConsumer(String bootstrapServers, HikariConnectionFactory factory) {
-        this.eventRepository = new UsersEventRepository(factory);
+    public GradeConsumer(String bootstrapServers, HikariConnectionFactory factory) {
+        this.eventRepository = new GradesEventRepository(factory);
         this.consumer = new KafkaConsumer<>(createConsumerConfig(bootstrapServers));
     }
 
@@ -55,13 +55,13 @@ public class UserConsumer implements AutoCloseable {
      */
     public void start() {
         if (running) {
-            log.warn("Consumer is already running");
+            log.warn("GradeConsumer is already running");
             return;
         }
 
         running = true;
         executor.submit(this::consumeMessages);
-        log.info("UserConsumer started, subscribed to topics: {}", SUBSCRIBED_TOPICS);
+        log.info("GradeConsumer started, subscribed to topics: {}", SUBSCRIBED_TOPICS);
     }
 
     /**
@@ -73,7 +73,7 @@ public class UserConsumer implements AutoCloseable {
             return;
         }
 
-        log.info("Stopping UserConsumer...");
+        log.info("Stopping GradeConsumer...");
         running = false;
         consumer.wakeup(); // Прерываем poll() для быстрого завершения
         executor.shutdown();
@@ -85,7 +85,7 @@ public class UserConsumer implements AutoCloseable {
             Thread.currentThread().interrupt();
             log.error("Interrupted while waiting for consumer executor to terminate", e);
         }
-        log.info("UserConsumer stopped");
+        log.info("GradeConsumer stopped");
     }
 
     private void consumeMessages() {
@@ -93,13 +93,13 @@ public class UserConsumer implements AutoCloseable {
 
         try {
             while (running) {
-                ConsumerRecords<String, User> records = consumer.poll(POLL_TIMEOUT);
+                ConsumerRecords<String, Grade> records = consumer.poll(POLL_TIMEOUT);
                 if (records.isEmpty()) {
                     continue;
                 }
 
                 log.info("Polled {} records from Kafka", records.count());
-                for (ConsumerRecord<String, User> record : records) {
+                for (ConsumerRecord<String, Grade> record : records) {
                     processRecord(record);
                 }
             }
@@ -112,30 +112,30 @@ public class UserConsumer implements AutoCloseable {
         }
     }
 
-    private void processRecord(ConsumerRecord<String, User> record) {
+    private void processRecord(ConsumerRecord<String, Grade> record) {
         try {
             String topic = record.topic();
             String key = record.key();
-            User user = record.value();
+            Grade grade = record.value();
 
-            log.info("Processing message: topic={}, key={}, user={}", topic, key, user);
+            log.info("Processing message: topic={}, key={}, user={}", topic, key, grade);
             // Здесь можно добавить бизнес-логику обработки конкретного типа события
             switch (topic) {
-                case UserProducer.ADD_NEW_TOPIC:
-                        this.eventRepository.add(
-                                user.getOpenID(), user.getFirstName(), user.getLastName(),
-                                user.getPatronymic(), user.getBirthDate()
-                        );
-                        break;
-                case UserProducer.DELETE_TOPIC:
-                    this.eventRepository.deleteById(user.getId());
+                case GradeProducer.ADD_NEW_TOPIC:
+                    this.eventRepository.add(
+                            grade.getCode(), grade.getGradeName(),
+                            grade.getGradeType(), grade.getSupervisorID()
+                    );
                     break;
-                case UserProducer.UPDATE_TOPIC:
-                        this.eventRepository.update(
-                                user.getId(), user.getOpenID(), user.getFirstName(),
-                                user.getLastName(), user.getPatronymic(), user.getBirthDate()
-                        );
-                        break;
+                case GradeProducer.DELETE_TOPIC:
+                    this.eventRepository.deleteById(grade.getId());
+                    break;
+                case GradeProducer.UPDATE_TOPIC:
+                    this.eventRepository.update(
+                            grade.getId(), grade.getCode(), grade.getGradeName(),
+                            grade.getGradeType(), grade.getSupervisorID()
+                    );
+                    break;
             }
         } catch (Exception e) {
             log.error("Failed to process record from topic: {}, key: {}",
@@ -150,7 +150,7 @@ public class UserConsumer implements AutoCloseable {
         props.put(ConsumerConfig.GROUP_ID_CONFIG, GROUP_ID);
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class.getName());
-        props.put("json.deserializer.target.type", User.class.getName());
+        props.put("json.deserializer.target.type", Grade.class.getName());
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "true");
         props.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, "1000");
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");

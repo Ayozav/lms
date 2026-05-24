@@ -1,22 +1,23 @@
 package ru.ayozav.javalin.controllers;
 
 import io.javalin.http.Context;
-import ru.ayozav.answers.BadArgumentsAnswer;
-import ru.ayozav.answers.SuccessUpdateAnswer;
 import ru.ayozav.database.HikariConnectionFactory;
-import ru.ayozav.database.exceptions.DatabaseException;
 import ru.ayozav.database.repositories.UsersEventRepository;
+import ru.ayozav.javalin.exceptions.BusyOpenIDException;
+import ru.ayozav.javalin.exceptions.GreatException;
+import ru.ayozav.javalin.exceptions.ObjectNotFoundInDatabase;
+import ru.ayozav.javalin.responses.ErrorResponse;
+import ru.ayozav.javalin.responses.ObjectResponse;
+import ru.ayozav.javalin.responses.OkResponse;
+import ru.ayozav.javalin.responses.PageResponse;
 import ru.ayozav.kafka.producers.UserProducer;
 import ru.ayozav.models.User;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-public class UsersController {
+public class UsersController extends ControllerSkeleton {
 
     private final UsersEventRepository usersEventRepository;
     private final UserProducer userProducer;
@@ -26,165 +27,87 @@ public class UsersController {
         this.userProducer = new UserProducer(kafka_bootstrap_server);
     }
 
-    public void addUser(Context ctx) {
-        String firstName = ctx.queryParam("first_name");
-        String lastName = ctx.queryParam("last_name");
-        String patronymic = ctx.queryParam("patronymic");
-        LocalDate birthDate;
+    public void add(Context ctx) {
         try {
-            birthDate = LocalDate.parse(
-                    Objects.requireNonNull(ctx.queryParam("birth_date")),
-                    DateTimeFormatter.ofPattern("dd.MM.yyyy")
+            String firstName = this.queryParam(ctx, "first_name");
+            String lastName = this.queryParam(ctx, "last_name");
+            String patronymic = this.queryParam(ctx, "patronymic");
+            LocalDate birthDate = this.parseDate(this.queryParam(ctx, "birth_date"));
+
+            UUID openID = this.parseUIID(
+                    "open_id",
+                    this.queryParam(ctx, "open_id")
             );
-        }
-        catch (DateTimeParseException | NumberFormatException | NullPointerException exc) {
-            ctx.status(400).json(new BadArgumentsAnswer("'birth_date' должен быть в формате ДД.ММ.ГГГГ"));
-            return;
+
+            Optional<User> existing = this.usersEventRepository.getByOpenId(openID);
+            if (existing.isPresent()) throw new BusyOpenIDException(openID);
+
+            User user = new User(0, openID, firstName, lastName, patronymic, birthDate);
+            new OkResponse(ctx);
+            this.userProducer.produceAdd(openID.toString(), user);
+        } catch (GreatException exc) {
+            new ErrorResponse(ctx, exc.getCode(), exc.getMessage());
         }
 
-        UUID openID;
+    }
+
+    public void getPage(Context ctx) {
         try {
-            openID = UUID.fromString(
-                    Objects.requireNonNull(ctx.queryParam("open_id"))
+            int page = this.parsePositiveInt(ctx, "page");
+            new PageResponse<>(ctx, this.usersEventRepository.getPage(page));
+        } catch (GreatException exc) {
+            new ErrorResponse(ctx, exc.getCode(), exc.getMessage());
+        }
+    }
+
+    public void delete(Context ctx) {
+        try {
+            int id = this.parsePositiveInt(ctx, "id");
+            Optional<User> user = this.usersEventRepository.getById(id);
+            if (user.isEmpty()) throw new ObjectNotFoundInDatabase("Пользователь", id);
+            new OkResponse(ctx);
+            this.userProducer.produceDelete(user.get().getOpenID().toString(), user.get());
+        } catch (GreatException exc) {
+            new ErrorResponse(ctx, exc.getCode(), exc.getMessage());
+        }
+    }
+
+    public void getById(Context ctx) {
+        try {
+            int id = this.parsePositiveInt(ctx, "id");
+            Optional<User> user = this.usersEventRepository.getById(id);
+            if (user.isEmpty()) throw new ObjectNotFoundInDatabase("Пользователь", id);
+            new ObjectResponse<>(ctx, user.get());
+        }
+        catch (GreatException exc) {
+            new ErrorResponse(ctx, exc.getCode(), exc.getMessage());
+        }
+    }
+
+    public void update(Context ctx) {
+        try {
+            int id = this.parsePositiveInt(ctx, "id");
+            String firstName = this.queryParam(ctx, "first_name");
+            String lastName = this.queryParam(ctx, "last_name");
+            String patronymic = this.queryParam(ctx, "patronymic");
+            LocalDate birthDate = this.parseDate(this.queryParam(ctx, "birth_date"));
+            UUID openID = this.parseUIID(
+                    "open_id",
+                    this.queryParam(ctx, "open_id")
             );
-        }
-        catch (IllegalArgumentException | NullPointerException exc) {
-            ctx.status(400).json(new BadArgumentsAnswer("'open_id' неверный"));
-            return;
-        }
 
-        User user = new User(0, openID, firstName, lastName, patronymic, birthDate);
-        ctx.status(200);
-        this.userProducer.produceAddUser(openID.toString(), user);
+            Optional<User> existing = usersEventRepository.getById(id);
+            if (existing.isEmpty()) throw new ObjectNotFoundInDatabase("Пользователь", id);
 
+            User user = new User(id, openID, firstName, lastName, patronymic, birthDate);
+            this.userProducer.produceUpdate(
+                    user.getOpenID().toString(),
+                    user
+            );
 
-    }
-
-    public void getUsers(Context ctx) {
-        int page;
-        try {
-            page = Integer.parseInt(Objects.requireNonNull(ctx.queryParam("page")));
-        } catch (NumberFormatException | NullPointerException e) {
-            ctx.status(400).json(new BadArgumentsAnswer("'page' должен быть целым положительным числом"));
-            return;
-        }
-
-        if (page <= 0) {
-            ctx.status(400).json(new BadArgumentsAnswer("'page' должен быть положительным."));
-            return;
-        }
-        ctx.status(200).json(this.usersEventRepository.getUsers(page));
-    }
-
-    public void deleteUser(Context ctx) {
-        int id;
-        try {
-            id = Integer.parseInt(Objects.requireNonNull(ctx.queryParam("id")));
-        } catch (NumberFormatException | NullPointerException e) {
-            ctx.status(400).json(new BadArgumentsAnswer("'id' должен быть целым положительным"));
-            return;
-        }
-
-        Optional<User> user = this.usersEventRepository.getUserById(id);
-        if (user.isEmpty()) {
-            ctx.status(404).json(new BadArgumentsAnswer(
-                    "Нет пользователя к удалению с 'id' " + id
-            ));
-            return;
-        }
-
-        this.usersEventRepository.deleteUserById(id);
-        ctx.status(200);
-    }
-
-    public void getUser(Context ctx) {
-        int id;
-        try {
-            id = Integer.parseInt(Objects.requireNonNull(ctx.queryParam("id")));
-        } catch (NumberFormatException | NullPointerException e) {
-            ctx.status(400).json(new BadArgumentsAnswer("'id' должен быть целым положительным"));
-            return;
-        }
-
-        if (id <= 0) {
-            ctx.status(404);
-            return;
-        }
-
-        Optional<User> user = this.usersEventRepository.getUserById(id);
-
-        if (user.isEmpty()) {
-            ctx.status(404);
-            return;
-        }
-        ctx.status(200).json(user.get());
-    }
-
-    // Helper methods
-    private int parsePositiveInt(Context ctx, String paramName) {
-        try {
-            int value = Integer.parseInt(Objects.requireNonNull(ctx.queryParam(paramName)));
-            if (value <= 0) throw new NumberFormatException();
-            return value;
-        } catch (NumberFormatException | NullPointerException e) {
-            ctx.status(400).json(new BadArgumentsAnswer("'" + paramName + "' должен быть положительным целым числом"));
-            return -1;
-        }
-    }
-
-    public void updateUser(Context ctx) {
-        try {
-            int id = parsePositiveInt(ctx, "id");
-            if (id == -1) return;
-
-            String openIdStr = ctx.queryParam("open_id");
-            if (openIdStr == null || openIdStr.isBlank()) {
-                ctx.status(400).json(new BadArgumentsAnswer("'open_id' обязателен"));
-                return;
-            }
-            UUID openID;
-            try {
-                openID = UUID.fromString(openIdStr);
-            } catch (IllegalArgumentException e) {
-                ctx.status(400).json(new BadArgumentsAnswer("'open_id' должен быть валидным UUID"));
-                return;
-            }
-
-            String firstName = ctx.queryParam("first_name");
-            if (firstName == null || firstName.isBlank()) {
-                ctx.status(400).json(new BadArgumentsAnswer("'first_name' не может быть пустым"));
-                return;
-            }
-
-            String lastName = ctx.queryParam("last_name");
-            if (lastName == null || lastName.isBlank()) {
-                ctx.status(400).json(new BadArgumentsAnswer("'last_name' не может быть пустым"));
-                return;
-            }
-
-            String patronymic = ctx.queryParam("patronymic"); // nullable
-
-            String birthDateStr = ctx.queryParam("birth_date");
-            LocalDate birthDate;
-            try {
-                birthDate = LocalDate.parse(Objects.requireNonNull(birthDateStr));
-            } catch (DateTimeParseException | NullPointerException e) {
-                ctx.status(400).json(new BadArgumentsAnswer("'birth_date' должен быть в формате ГГГГ-ММ-ДД"));
-                return;
-            }
-
-            // check existence
-            Optional<User> existing = usersEventRepository.getUserById(id);
-            if (existing.isEmpty()) {
-                ctx.status(404).json(new BadArgumentsAnswer("Пользователь с id=" + id + " не найден"));
-                return;
-            }
-
-            usersEventRepository.update(id, openID, firstName, lastName, patronymic, birthDate);
-            ctx.status(200).json(new SuccessUpdateAnswer("Пользователь", id));
-
-        } catch (DatabaseException e) {
-            ctx.status(400).json(new BadArgumentsAnswer("Не удалось обновить пользователя: " + e.getMessage()));
+            new OkResponse(ctx);
+        } catch (GreatException exc) {
+            new ErrorResponse(ctx, exc.getCode(), exc.getMessage());
         }
     }
 }

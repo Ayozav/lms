@@ -15,7 +15,8 @@ public class GradeMapper implements RowMapper<Grade> {
         String code = rs.getString("code");
         String gradeName = rs.getString("grade_name");
         int supervisorID = rs.getInt("supervisor_id");
+        String grade_type = rs.getString("grade_type");
 
-        return new Grade(id, code, gradeName, supervisorID);
+        return new Grade(id, code, gradeName, supervisorID, grade_type);
     }
 }

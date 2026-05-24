@@ -21,7 +21,7 @@ public class UsersEventRepository {
     private static final Logger log = LoggerFactory.getLogger(UsersEventRepository.class);
     private final UsersDAO dao;
 
-    private final int USERS_PER_PAGE = 10;
+    private final int PER_PAGE = 10;
 
     public UsersEventRepository(HikariConnectionFactory factory) {
             Jdbi jdbi = Jdbi.create(factory.getDataSource());
@@ -29,7 +29,7 @@ public class UsersEventRepository {
             this.dao = jdbi.onDemand(UsersDAO.class);
     }
 
-    public int addUser(UUID openID, String firstName, String lastName, String patronymic, LocalDate birthDate) throws DatabaseException {
+    public int add(UUID openID, String firstName, String lastName, String patronymic, LocalDate birthDate) throws DatabaseException {
         try {
             log.info("Trying to add new user: {} (name: {} {})", openID, firstName, lastName);
             return this.dao.insert(openID, firstName, lastName, patronymic, birthDate);
@@ -39,20 +39,25 @@ public class UsersEventRepository {
         }
     }
 
-    public List<User> getUsers(int page) {
+    public List<User> getPage(int page) {
         log.info("Trying to get page of users, page={}", page);
         return this.dao.getPageOfUsers(
-                this.USERS_PER_PAGE,
-                (page - 1) * this.USERS_PER_PAGE
+                this.PER_PAGE,
+                (page - 1) * this.PER_PAGE
         );
     }
 
-    public Optional<User> getUserById(int id) {
+    public Optional<User> getById(int id) {
         log.info("Trying to get user by id={}", id);
         return this.dao.getUserById(id);
     }
 
-    public void deleteUserById(int id)  {
+    public Optional<User> getByOpenId(UUID openID) {
+        log.info("Trying to get user by open_id={}", openID);
+        return this.dao.getUserByOpenId(openID);
+    }
+
+    public void deleteById(int id)  {
         log.info("Trying to delete user id={}", id);
         this.dao.deleteUserById(id);
     }

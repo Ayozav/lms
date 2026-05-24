@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_iWv76xP7ju
 createdAt: 2026-05-16T06:28:47.676388900
-updatedAt: 2026-05-17T07:38:31.719059900
+updatedAt: 2026-05-24T11:41:39.988711400
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -12,7 +12,7 @@ bodyType: null
 description: ''
 headers: []
 method: GET
-name: ''
+name: 127.0.0.1:4050/v1/grade?id=1
 sortPriority: 42000.0
-url: 127.0.0.1:4040/v1/grade?id=1
+url: 127.0.0.1:4050/v1/grade?id=6
 urlParameters: []

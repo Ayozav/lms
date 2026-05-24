@@ -40,10 +40,17 @@ public interface UsersDAO {
 
     @SqlQuery(
             "SELECT id, open_id, first_name, last_name, patronymic, birth_date " +
-            "FROM users " +
-            "WHERE id = :id"
+                    "FROM users " +
+                    "WHERE id = :id"
     )
     Optional<User> getUserById(@Bind("id") int id);
+
+    @SqlQuery(
+            "SELECT id, open_id, first_name, last_name, patronymic, birth_date " +
+                    "FROM users " +
+                    "WHERE open_id = :open_id"
+    )
+    Optional<User> getUserByOpenId(@Bind("open_id") UUID openID);
 
     @SqlUpdate(
             "DELETE FROM users WHERE id = :id"

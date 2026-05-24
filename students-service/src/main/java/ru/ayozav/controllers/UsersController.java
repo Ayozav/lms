@@ -51,7 +51,7 @@ public class UsersController {
             return;
         }
         try {
-            int newUserID = this.usersEventRepository.addUser(
+            int newUserID = this.usersEventRepository.add(
                     openID, firstName, lastName, patronymic, birthDate
             );
 
@@ -75,7 +75,7 @@ public class UsersController {
             ctx.status(400).json(new BadArgumentsAnswer("'page' должен быть положительным."));
             return;
         }
-        ctx.status(200).json(this.usersEventRepository.getUsers(page));
+        ctx.status(200).json(this.usersEventRepository.getPage(page));
     }
 
     public void deleteUser(Context ctx) {
@@ -87,7 +87,7 @@ public class UsersController {
             return;
         }
 
-        Optional<User> user = this.usersEventRepository.getUserById(id);
+        Optional<User> user = this.usersEventRepository.getById(id);
         if (user.isEmpty()) {
             ctx.status(404).json(new BadArgumentsAnswer(
                     "Нет пользователя к удалению с 'id' " + id
@@ -95,7 +95,7 @@ public class UsersController {
             return;
         }
 
-        this.usersEventRepository.deleteUserById(id);
+        this.usersEventRepository.deleteById(id);
         ctx.status(200);
     }
 
@@ -113,7 +113,7 @@ public class UsersController {
             return;
         }
 
-        Optional<User> user = this.usersEventRepository.getUserById(id);
+        Optional<User> user = this.usersEventRepository.getById(id);
 
         if (user.isEmpty()) {
             ctx.status(404);
@@ -176,7 +176,7 @@ public class UsersController {
             }
 
             // check existence
-            Optional<User> existing = usersEventRepository.getUserById(id);
+            Optional<User> existing = usersEventRepository.getById(id);
             if (existing.isEmpty()) {
                 ctx.status(404).json(new BadArgumentsAnswer("Пользователь с id=" + id + " не найден"));
                 return;

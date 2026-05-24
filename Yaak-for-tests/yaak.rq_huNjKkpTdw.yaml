@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_huNjKkpTdw
 createdAt: 2026-05-16T05:47:10.949421400
-updatedAt: 2026-05-17T07:38:31.573967500
+updatedAt: 2026-05-23T15:53:39.314276100
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -14,5 +14,5 @@ headers: []
 method: GET
 name: 127.0.0.1:4040/v1/semesters
 sortPriority: 1000.0
-url: 127.0.0.1:4040/v1/semesters?page=1
+url: http://localhost/api/v1/semesters?page=1
 urlParameters: []

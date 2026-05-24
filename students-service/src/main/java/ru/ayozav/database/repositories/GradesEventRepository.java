@@ -17,7 +17,7 @@ public class GradesEventRepository {
 
     private static final Logger log = LoggerFactory.getLogger(GradesEventRepository.class);
     private final GradesDAO dao;
-    private final int GRADES_PER_PAGE = 20;
+    private final int PER_PAGE = 20;
 
 
     public GradesEventRepository(HikariConnectionFactory factory) {
@@ -44,8 +44,8 @@ public class GradesEventRepository {
     public List<Grade> getList(int page) {
         log.info("Trying to get page of grades, page={}", page);
         return this.dao.getPage(
-                this.GRADES_PER_PAGE,
-                (page - 1) * this.GRADES_PER_PAGE
+                this.PER_PAGE,
+                (page - 1) * this.PER_PAGE
         );
     }
 
