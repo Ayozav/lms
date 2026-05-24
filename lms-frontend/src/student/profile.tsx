@@ -1,8 +1,10 @@
+
 import type { 
     // student_profile, 
     ProfileProps 
 } from "./student_profile";
 import { beautyPhoneNumber } from "./student_profile";
+import StudentImage from "../assets/student_photo.jpg";
 
 import React from 'react';
 import {Box,
@@ -42,12 +44,14 @@ const Profile: React.FC<ProfileProps> = ({profileData}) => {
                 <Paper elevation={3} sx={{borderRadius:3, overflow:'hidden'}}></Paper>
                 {/* ????????????????????????? */}
                 <Box sx={{
+                    // width: {md:'300'}, ширина ЛИНАР ГРАДИЕНТАА
                     background:'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                     p:4,
+                    // display:,
                     color:'white'
                 }}>
                     <Box sx={{width: {xs:'100%', sm:'50%', md:'33%'}, p:{xs:1, md:3}, display:'flex'}} >
-                        <Avatar sx={{bgcolor:deepPurple[500],
+                        <Avatar alt='student' src={StudentImage} sx={{bgcolor:deepPurple[500],
                                 width:200,
                                 height:200,
                                 fontSize:'500%'
@@ -55,8 +59,6 @@ const Profile: React.FC<ProfileProps> = ({profileData}) => {
                     </Box>
 
                     <Box sx={{width: {xs: '100%', sm: '50%', md:'33%'}, p:{xs:1, md:3}, display:'table-row'}}>
-                        {/* тупые ОТСТУПЫ ОДАААААА потому что я идиотка тупая хызвъ-фаошщуфвылХХ
-                        ХЗВЯэхыеащзшмржщлидолсьлдщпб эс.рВЗДВЫПЩЗАЬИККАЛАОАОАГАГУАШКГШЩУВЩОВЫАЛОЫВЛОАВЩШГВОШВЩ */}
                         <Typography variant="h4" gutterBottom sx={{fontVariant: 'full-width', mt:2}}> 
                             {profileData.full_name}
                         </Typography>
