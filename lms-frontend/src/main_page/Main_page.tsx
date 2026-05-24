@@ -5,6 +5,8 @@ import Timetable from '../timetable/Timetable.tsx'
 // import TeacherProps from '../teachers/teachers_component.tsx';
 import { TeacherProfile } from '../teachers/teachers.tsx'; 
 
+// import Home from '../Home.tsx';
+
 import {
   AppBar,
   Box,
@@ -22,6 +24,7 @@ import {
   Grid,
   useTheme,
   useMediaQuery,
+  Button,
 } from '@mui/material';
 
 import {
@@ -31,17 +34,27 @@ import {
   AccountCircle as AccountIcon,
   People as TeachersIcon,
 } from '@mui/icons-material';
+import App from '../App.tsx';
+import { useLogto } from '@logto/react';
 
 const drawerWidth = 240;
 
-const menu_items = [
+
+function Main_page() {
+
+  // внутри компонента Main_page
+  // const { signOut, isAuthenticated } = useLogto();
+
+// добавьте где-то кнопку:
+  // <Button color="primary" onClick={signOut}>Выйти</Button>
+
+  const menu_items = [
   { text: 'Знание', icon: <KnowledgeIcon />, id: 'knowledge' },
   { text: 'Расписание', icon: <ScheduleIcon />, id: 'schedule' },
   { text: 'Личный кабинет', icon: <AccountIcon />, id: 'profile' },
   { text: 'Преподаватели', icon: <TeachersIcon />, id: 'teachers' },
 ];
 
-function Main_page() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -56,14 +69,15 @@ function Main_page() {
     if (isMobile) setMobileOpen(false);
   }
 
-  const squares = [
+
+    const squares = [
     { id: 1, title: 'Расписание', color: '#FF6B6B', content: 'Расписание группы', tabId: 'schedule' },
     { id: 2, title: 'Вход в систему', color: '#4ECDC4', content: 'Личный кабинет', tabId: 'profile' },
     { id: 3, title: 'Моя группа', color: '#45B7D1', content: 'Я и мой детский садик', tabId: 'knowledge' },
     { id: 4, title: '(Что-то ещё)', color: '#96CEB4', content: 'здесь могла быть ваша реклама', tabId: 'knowledge' },
   ];
 
-  const drawer = (
+    const drawer = (
     <div>
       <Toolbar>
         <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
@@ -85,7 +99,6 @@ function Main_page() {
       </List>
     </div>
   );
-
   // !!СВИТЧ ВЫБОРА!!
   const render = () => {
     switch (selectedTab) {

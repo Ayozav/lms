@@ -24,7 +24,11 @@ export interface ProfileProps {
 export const beautyPhoneNumber = (phone: Number, country: String): string => {
     const phoneStr = String(phone);
     if (country == "ru") {
-        return '+'+ phone;
+        return '+7'+ phone;
     }
+    if (phone = 7) {
+        return '+' + phone;
+    }
+
     return phoneStr; //to be continied?
 }

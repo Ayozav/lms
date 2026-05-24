@@ -29,10 +29,9 @@ import {Box,
 // } from '@mui/icons-material';
 import { deepPurple } from "@mui/material/colors";
 
-const PersonBox = {
-
-
-};
+// const PersonBox = {
+        // sx: 
+// };
 
 
 
