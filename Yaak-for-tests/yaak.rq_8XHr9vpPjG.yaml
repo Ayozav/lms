@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_8XHr9vpPjG
 createdAt: 2026-05-09T08:09:37.612154100
-updatedAt: 2026-05-24T11:43:55.054012400
+updatedAt: 2026-05-24T12:41:42.042718100
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -14,29 +14,25 @@ headers: []
 method: POST
 name: http://127.0.0.1:4050/v1/user
 sortPriority: 3000.0
-url: http://127.0.0.1:4050/v1/user
+url: http://127.0.0.1:4040/v1/user
 urlParameters:
 - enabled: true
   name: first_name
   value: Сергей
-  id: RkpeHGhTh6
+  id: NJFXh0HaMy
 - enabled: true
   name: last_name
   value: Старков
-  id: eaQB0jS4u7
+  id: 96m4D3xgHg
 - enabled: true
   name: patronymic
   value: Олегович
-  id: aKEQJ35Yr3
+  id: apWmAB0xGs
 - enabled: true
   name: open_id
   value: cc47e223-97e8-485c-bb52-bd513a25
-  id: wYgDw0vwTy
+  id: ekPWHPQw2Y
 - enabled: true
   name: birth_date
   value: 01.01.1999
-  id: P6V0CHcaVA
-- enabled: true
-  name: ''
-  value: ''
-  id: E3MPwXxHiq
+  id: XCcCCu8CEp

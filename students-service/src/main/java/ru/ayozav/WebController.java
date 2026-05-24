@@ -17,8 +17,8 @@ public class WebController {
 
     private Javalin app;
 
-    // private UsersController usersController;
-    // private GradesController gradesController;
+    private UsersController usersController;
+    private GradesController gradesController;
     private SemestersController semestersController;
     private DisciplinesController disciplinesController;
     private GroupsController groupsController;
@@ -49,8 +49,8 @@ public class WebController {
         DatabaseMigrator databaseMigrator = new DatabaseMigrator(factory);
         databaseMigrator.runMigrations();
 
-        // this.usersController = new UsersController(factory);
-        // this.gradesController = new GradesController(factory);
+        this.usersController = new UsersController(factory);
+        this.gradesController = new GradesController(factory);
         this.semestersController = new SemestersController(factory);
         this.disciplinesController = new DisciplinesController(factory);
         this.groupsController = new GroupsController(factory);
@@ -72,17 +72,17 @@ public class WebController {
                         );
                     }));
 
-                    // javalinConfig.routes.get("/v1/users", this.usersController::getUsers);
-                    // javalinConfig.routes.get("/v1/user", this.usersController::getUser);
-                    // javalinConfig.routes.post("/v1/user", this.usersController::addUser);
-                    // javalinConfig.routes.delete("/v1/user", this.usersController::deleteUser);
-                    // javalinConfig.routes.put("/v1/user", this.usersController::updateUser);
+                    javalinConfig.routes.get("/v1/users", this.usersController::getUsers);
+                    javalinConfig.routes.get("/v1/user", this.usersController::getUser);
+                    javalinConfig.routes.post("/v1/user", this.usersController::addUser);
+                    javalinConfig.routes.delete("/v1/user", this.usersController::deleteUser);
+                    javalinConfig.routes.put("/v1/user", this.usersController::updateUser);
 
-                    // javalinConfig.routes.post("/v1/grade", this.gradesController::addGrade);
-                    // javalinConfig.routes.delete("/v1/grade", this.gradesController::deleteGrade);
-                    // javalinConfig.routes.get("/v1/grade", this.gradesController::getGradeById);
-                    // javalinConfig.routes.get("/v1/grades", this.gradesController::getAllGrades);
-                    // javalinConfig.routes.put("/v1/grade", this.gradesController::updateGrade);
+                    javalinConfig.routes.post("/v1/grade", this.gradesController::addGrade);
+                    javalinConfig.routes.delete("/v1/grade", this.gradesController::deleteGrade);
+                    javalinConfig.routes.get("/v1/grade", this.gradesController::getGradeById);
+                    javalinConfig.routes.get("/v1/grades", this.gradesController::getAllGrades);
+                    javalinConfig.routes.put("/v1/grade", this.gradesController::updateGrade);
 
                     javalinConfig.routes.post("/v1/semester", this.semestersController::addSemester);
                     javalinConfig.routes.delete("/v1/semester", this.semestersController::deleteSemester);
@@ -161,5 +161,9 @@ public class WebController {
 
     public void run(int port) {
         this.app.start("0.0.0.0", port);
+    }
+
+    public void stop() {
+        this.app.stop();
     }
 }

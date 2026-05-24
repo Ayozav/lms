@@ -181,63 +181,63 @@ services:
 
     # И помимо этого мы постараемся сделать так, чтобы наш сервис не умер
     # от чрезмерных нагрузок и работал достаточно хорошо.
-    kafka:
-        image: confluentinc/cp-kafka:7.7.7
-        ports:
-            - "9092:9092"
-            - "9093:9093"
-        environment:
-            KAFKA_NODE_ID: 1
-            KAFKA_PROCESS_ROLES: broker,controller
-            KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
-            KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
-            KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
-            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
-            KAFKA_CONTROLLER_QUORUM_VOTERS: "1@kafka:9093"
-            KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-            KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
-            KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
-            KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
-            CLUSTER_ID: "MkU3OThGNTcwNTJENDM2Dg"  # произвольный ID кластера для KRaft
-        volumes:
-            - kafka1_data:/var/lib/kafka/data
-        networks:
-            - lms-network
-
-
-    # А это нам надо, чтобы отслеживать жизнь Кафки (манной).
-    kafka-ui:
-        image: kafbat/kafka-ui:latest
-        container_name: kafka-ui
-        ports:
-            - "9090:8080"
-        depends_on:
-            - kafka
-        environment:
-            KAFKA_NODE_ID: 1
-            KAFKA_PROCESS_ROLES: broker,controller
-            KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
-            KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
-            KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
-            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
-            KAFKA_CONTROLLER_QUORUM_VOTERS: "1@kafka:9093"
-            KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-            KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
-            KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
-            KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
-            KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
-            # Опционально: аутентификация (если нужна)
-            # AUTH_TYPE: "BASIC"
-            # AUTH_BASIC_USERNAME: "admin"
-            # AUTH_BASIC_PASSWORD: "password"
-        networks:
-            - lms-network
-
-        deploy:
-            resources:
-                limits:
-                    cpus: 1
-                    memory: 512M
+#    kafka:
+#        image: confluentinc/cp-kafka:7.7.7
+#        ports:
+#            - "9092:9092"
+#            - "9093:9093"
+#        environment:
+#            KAFKA_NODE_ID: 1
+#            KAFKA_PROCESS_ROLES: broker,controller
+#            KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+#            KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
+#            KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+#            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
+#            KAFKA_CONTROLLER_QUORUM_VOTERS: "1@kafka:9093"
+#            KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+#            KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+#            KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+#            KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+#            CLUSTER_ID: "MkU3OThGNTcwNTJENDM2Dg"  # произвольный ID кластера для KRaft
+#        volumes:
+#            - kafka1_data:/var/lib/kafka/data
+#        networks:
+#            - lms-network
+#
+#
+#    # А это нам надо, чтобы отслеживать жизнь Кафки (манной).
+#    kafka-ui:
+#        image: kafbat/kafka-ui:latest
+#        container_name: kafka-ui
+#        ports:
+#            - "9090:8080"
+#        depends_on:
+#            - kafka
+#        environment:
+#            KAFKA_NODE_ID: 1
+#            KAFKA_PROCESS_ROLES: broker,controller
+#            KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+#            KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
+#            KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+#            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
+#            KAFKA_CONTROLLER_QUORUM_VOTERS: "1@kafka:9093"
+#            KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+#            KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+#            KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+#            KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+#            KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+#            # Опционально: аутентификация (если нужна)
+#            # AUTH_TYPE: "BASIC"
+#            # AUTH_BASIC_USERNAME: "admin"
+#            # AUTH_BASIC_PASSWORD: "password"
+#        networks:
+#            - lms-network
+#
+#        deploy:
+#            resources:
+#                limits:
+#                    cpus: 1
+#                    memory: 512M
 
     # А это мы попытаемся потом оформить...
     oauth2-proxy:
