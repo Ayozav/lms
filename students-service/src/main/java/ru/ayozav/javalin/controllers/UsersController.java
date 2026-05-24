@@ -1,0 +1,190 @@
+package ru.ayozav.javalin.controllers;
+
+import io.javalin.http.Context;
+import ru.ayozav.answers.BadArgumentsAnswer;
+import ru.ayozav.answers.SuccessUpdateAnswer;
+import ru.ayozav.database.HikariConnectionFactory;
+import ru.ayozav.database.exceptions.DatabaseException;
+import ru.ayozav.database.repositories.UsersEventRepository;
+import ru.ayozav.kafka.producers.UserProducer;
+import ru.ayozav.models.User;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
+
+public class UsersController {
+
+    private final UsersEventRepository usersEventRepository;
+    private final UserProducer userProducer;
+
+    public UsersController(HikariConnectionFactory factory, String kafka_bootstrap_server) {
+        this.usersEventRepository = new UsersEventRepository(factory);
+        this.userProducer = new UserProducer(kafka_bootstrap_server);
+    }
+
+    public void addUser(Context ctx) {
+        String firstName = ctx.queryParam("first_name");
+        String lastName = ctx.queryParam("last_name");
+        String patronymic = ctx.queryParam("patronymic");
+        LocalDate birthDate;
+        try {
+            birthDate = LocalDate.parse(
+                    Objects.requireNonNull(ctx.queryParam("birth_date")),
+                    DateTimeFormatter.ofPattern("dd.MM.yyyy")
+            );
+        }
+        catch (DateTimeParseException | NumberFormatException | NullPointerException exc) {
+            ctx.status(400).json(new BadArgumentsAnswer("'birth_date' должен быть в формате ДД.ММ.ГГГГ"));
+            return;
+        }
+
+        UUID openID;
+        try {
+            openID = UUID.fromString(
+                    Objects.requireNonNull(ctx.queryParam("open_id"))
+            );
+        }
+        catch (IllegalArgumentException | NullPointerException exc) {
+            ctx.status(400).json(new BadArgumentsAnswer("'open_id' неверный"));
+            return;
+        }
+
+        User user = new User(0, openID, firstName, lastName, patronymic, birthDate);
+        ctx.status(200);
+        this.userProducer.produceAddUser(openID.toString(), user);
+
+
+    }
+
+    public void getUsers(Context ctx) {
+        int page;
+        try {
+            page = Integer.parseInt(Objects.requireNonNull(ctx.queryParam("page")));
+        } catch (NumberFormatException | NullPointerException e) {
+            ctx.status(400).json(new BadArgumentsAnswer("'page' должен быть целым положительным числом"));
+            return;
+        }
+
+        if (page <= 0) {
+            ctx.status(400).json(new BadArgumentsAnswer("'page' должен быть положительным."));
+            return;
+        }
+        ctx.status(200).json(this.usersEventRepository.getUsers(page));
+    }
+
+    public void deleteUser(Context ctx) {
+        int id;
+        try {
+            id = Integer.parseInt(Objects.requireNonNull(ctx.queryParam("id")));
+        } catch (NumberFormatException | NullPointerException e) {
+            ctx.status(400).json(new BadArgumentsAnswer("'id' должен быть целым положительным"));
+            return;
+        }
+
+        Optional<User> user = this.usersEventRepository.getUserById(id);
+        if (user.isEmpty()) {
+            ctx.status(404).json(new BadArgumentsAnswer(
+                    "Нет пользователя к удалению с 'id' " + id
+            ));
+            return;
+        }
+
+        this.usersEventRepository.deleteUserById(id);
+        ctx.status(200);
+    }
+
+    public void getUser(Context ctx) {
+        int id;
+        try {
+            id = Integer.parseInt(Objects.requireNonNull(ctx.queryParam("id")));
+        } catch (NumberFormatException | NullPointerException e) {
+            ctx.status(400).json(new BadArgumentsAnswer("'id' должен быть целым положительным"));
+            return;
+        }
+
+        if (id <= 0) {
+            ctx.status(404);
+            return;
+        }
+
+        Optional<User> user = this.usersEventRepository.getUserById(id);
+
+        if (user.isEmpty()) {
+            ctx.status(404);
+            return;
+        }
+        ctx.status(200).json(user.get());
+    }
+
+    // Helper methods
+    private int parsePositiveInt(Context ctx, String paramName) {
+        try {
+            int value = Integer.parseInt(Objects.requireNonNull(ctx.queryParam(paramName)));
+            if (value <= 0) throw new NumberFormatException();
+            return value;
+        } catch (NumberFormatException | NullPointerException e) {
+            ctx.status(400).json(new BadArgumentsAnswer("'" + paramName + "' должен быть положительным целым числом"));
+            return -1;
+        }
+    }
+
+    public void updateUser(Context ctx) {
+        try {
+            int id = parsePositiveInt(ctx, "id");
+            if (id == -1) return;
+
+            String openIdStr = ctx.queryParam("open_id");
+            if (openIdStr == null || openIdStr.isBlank()) {
+                ctx.status(400).json(new BadArgumentsAnswer("'open_id' обязателен"));
+                return;
+            }
+            UUID openID;
+            try {
+                openID = UUID.fromString(openIdStr);
+            } catch (IllegalArgumentException e) {
+                ctx.status(400).json(new BadArgumentsAnswer("'open_id' должен быть валидным UUID"));
+                return;
+            }
+
+            String firstName = ctx.queryParam("first_name");
+            if (firstName == null || firstName.isBlank()) {
+                ctx.status(400).json(new BadArgumentsAnswer("'first_name' не может быть пустым"));
+                return;
+            }
+
+            String lastName = ctx.queryParam("last_name");
+            if (lastName == null || lastName.isBlank()) {
+                ctx.status(400).json(new BadArgumentsAnswer("'last_name' не может быть пустым"));
+                return;
+            }
+
+            String patronymic = ctx.queryParam("patronymic"); // nullable
+
+            String birthDateStr = ctx.queryParam("birth_date");
+            LocalDate birthDate;
+            try {
+                birthDate = LocalDate.parse(Objects.requireNonNull(birthDateStr));
+            } catch (DateTimeParseException | NullPointerException e) {
+                ctx.status(400).json(new BadArgumentsAnswer("'birth_date' должен быть в формате ГГГГ-ММ-ДД"));
+                return;
+            }
+
+            // check existence
+            Optional<User> existing = usersEventRepository.getUserById(id);
+            if (existing.isEmpty()) {
+                ctx.status(404).json(new BadArgumentsAnswer("Пользователь с id=" + id + " не найден"));
+                return;
+            }
+
+            usersEventRepository.update(id, openID, firstName, lastName, patronymic, birthDate);
+            ctx.status(200).json(new SuccessUpdateAnswer("Пользователь", id));
+
+        } catch (DatabaseException e) {
+            ctx.status(400).json(new BadArgumentsAnswer("Не удалось обновить пользователя: " + e.getMessage()));
+        }
+    }
+}

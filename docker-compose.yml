@@ -1,6 +1,19 @@
 volumes:
     postgres_data:
-        # Создаём том для данных Postgres.
+        name: lms_postgres_data
+
+    kafka1_data:
+        name: lms_kafka1_data
+    kafka2_data:
+        name: lms_kafka2_data
+
+    redis_master_data:
+        name: redis_master_data
+    redis_replica_data:
+        name: redis_replica_data
+    redisinsight_data:
+        name: redisinsight_data
+
 
 networks:
     lms-network:
@@ -68,6 +81,7 @@ services:
             - LMS_DOMAIN=${LMS_DOMAIN}
             - AUTH_DOMAIN=${AUTH_DOMAIN}
             - ADMIN_DOMAIN=${ADMIN_DOMAIN}
+            - KAFKA_DOMAIN=${KAFKA_DOMAIN}
         ports:
             # Пробрасываем 80 порт в контейнер.
             - "80:80"
@@ -106,7 +120,7 @@ services:
                 # LMS собирается в jar'ник, поэтому надо каждый раз пересобирать...
                 -   path: ./students-service/src/
                     action: rebuild
-        restart: on-failure
+        restart: no
 
         deploy:
             resources:
@@ -164,3 +178,132 @@ services:
             interval: 10s
             timeout: 5s
             retries: 5
+
+    # И помимо этого мы постараемся сделать так, чтобы наш сервис не умер
+    # от чрезмерных нагрузок и работал достаточно хорошо.
+    kafka:
+        image: confluentinc/cp-kafka:7.7.7
+        ports:
+            - "9092:9092"
+            - "9093:9093"
+        environment:
+            KAFKA_NODE_ID: 1
+            KAFKA_PROCESS_ROLES: broker,controller
+            KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+            KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
+            KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
+            KAFKA_CONTROLLER_QUORUM_VOTERS: "1@kafka:9093"
+            KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+            KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+            KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+            KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+            CLUSTER_ID: "MkU3OThGNTcwNTJENDM2Dg"  # произвольный ID кластера для KRaft
+        volumes:
+            - kafka1_data:/var/lib/kafka/data
+        networks:
+            - lms-network
+
+
+    # А это нам надо, чтобы отслеживать жизнь Кафки (манной).
+    kafka-ui:
+        image: kafbat/kafka-ui:latest
+        container_name: kafka-ui
+        ports:
+            - "9090:8080"
+        depends_on:
+            - kafka
+        environment:
+            KAFKA_NODE_ID: 1
+            KAFKA_PROCESS_ROLES: broker,controller
+            KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+            KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
+            KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
+            KAFKA_CONTROLLER_QUORUM_VOTERS: "1@kafka:9093"
+            KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+            KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+            KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+            KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+            KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+            # Опционально: аутентификация (если нужна)
+            # AUTH_TYPE: "BASIC"
+            # AUTH_BASIC_USERNAME: "admin"
+            # AUTH_BASIC_PASSWORD: "password"
+        networks:
+            - lms-network
+
+        deploy:
+            resources:
+                limits:
+                    cpus: 1
+                    memory: 512M
+
+    # А это мы попытаемся потом оформить...
+    oauth2-proxy:
+        image: quay.io/oauth2-proxy/oauth2-proxy:v7.15.2
+        restart: no
+        ports:
+            - "4180:4180"
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+        volumes:
+            - ./oauth2-proxy/config.toml:/etc/oauth2-proxy/oauth2-proxy.toml:ro
+        command:
+            - --config=/etc/oauth2-proxy/oauth2-proxy.toml
+
+        networks:
+            - lms-network
+
+        environment:
+            OAUTH_PROXY_LOGTO_APP_ID: ${OAUTH_PROXY_LOGTO_APP_ID}
+            $OAUTH_PROXY_LOGTO_SECRET: ${OAUTH_PROXY_LOGTO_SECRET}
+            OIDC_ISSUER_URN: ${OIDC_ISSUER_URN}
+            REDIRECT_URN: ${REDIRECT_URN}
+            LOGIN_URN: ${LOGIN_URN}
+            REDEEM_URN: ${REDEEM_URN}
+            OIDC_JWKS_URN: ${OIDC_JWKS_URN}
+            PROFILE_URN: ${PROFILE_URN}
+
+        deploy:
+            resources:
+                limits:
+                    cpus: 1
+                    memory: 512M
+
+    # Для прокси это нужно...
+    redis-master:
+        image: redis:8.6.0
+        container_name: redis-master
+        restart: no
+        command:
+            - redis-server
+            - --save 60 1                   # RDB: снимок каждые 60 сек, если изменился хотя бы 1 ключ
+            - --appendonly yes              # Включаем AOF (Append-Only File)
+            - --appendfsync everysec        # AOF: fsync каждую секунду (хороший баланс надёжности и производительности)
+            - --maxmemory 512mb             # Ограничение памяти
+            - --maxmemory-policy volatile-ttl   # При нехватке памяти удаляем ключи с TTL, у которых TTL ближе к истечению
+            - --maxmemory-samples 5         # Количество проверяемых ключей при eviction (по умолчанию 5)
+            #     - --active-expire enabled _____ # Включаем активное истечение ключей (более не требуется - включено по-умолчанию)
+            - --port 6379
+            - --bind 0.0.0.0                # Слушаем на всех интерфейсах внутри контейнера
+        ports:
+            - "6379:6379"                   # Пробрасываем порт мастера наружу (удобно для подключения)
+        volumes:
+            - redis_master_data:/data
+
+        networks:
+            - lms-network
+
+        deploy:
+            resources:
+                limits:
+                    cpus: 1                    # Ограничиваем cpu с запасом на дополнительные нужды
+                    memory: 640M                # Жёсткий лимит памяти контейнера (больше maxmemory для служебных нужд)
+
+        healthcheck:
+            test: [ "CMD", "redis-cli", "ping" ]
+            interval: 10s
+            timeout: 5s
+            retries: 3
+            start_period: 20s
