@@ -1,7 +1,14 @@
 package ru.ayozav.models;
 
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
 
+@Data
+@NoArgsConstructor
+@Builder
 public class Semester {
     private int id;
     private String name;
