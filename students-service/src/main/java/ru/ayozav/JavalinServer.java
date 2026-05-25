@@ -56,7 +56,7 @@ public class JavalinServer {
     }
 
     public void start() {
-        app.start(4050);
+        app.start(4040);
     }
     public void stop() {
         app.stop();
@@ -73,6 +73,7 @@ public class JavalinServer {
         SemestersController semestersController = new SemestersController(this.factory, JavalinServer.KAFKA_BOOTSTRAP_SERVER);
         DisciplinesController disciplinesController = new DisciplinesController(this.factory, JavalinServer.KAFKA_BOOTSTRAP_SERVER);
         EnrollmentsController enrollmentsController = new EnrollmentsController(this.factory, JavalinServer.KAFKA_BOOTSTRAP_SERVER);
+        GroupsController groupsController = new GroupsController(this.factory, JavalinServer.KAFKA_BOOTSTRAP_SERVER);
 
         return Javalin.create(
 
@@ -112,6 +113,12 @@ public class JavalinServer {
                     javalinConfig.routes.post("/v1/enrollment", enrollmentsController::add);
                     javalinConfig.routes.delete("/v1/enrollment", enrollmentsController::delete);
                     javalinConfig.routes.put("/v1/enrollment", enrollmentsController::update);
+
+                    javalinConfig.routes.get("/v1/group", groupsController::getById);
+                    javalinConfig.routes.get("/v1/groups", groupsController::getPage);
+                    javalinConfig.routes.post("/v1/group", groupsController::add);
+                    javalinConfig.routes.delete("/v1/group", groupsController::delete);
+                    javalinConfig.routes.put("/v1/group", groupsController::update);
 
                 }
         );
