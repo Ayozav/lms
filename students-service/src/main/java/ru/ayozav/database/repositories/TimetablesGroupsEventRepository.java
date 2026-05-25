@@ -47,16 +47,6 @@ public class TimetablesGroupsEventRepository {
         }
     }
 
-    public List<TimetableGroupLink> getGroupsForTimetable(int timetableId) {
-        log.info("Getting groups for timetable id={}", timetableId);
-        return dao.getByTimetableId(timetableId);
-    }
-
-    public List<TimetableGroupLink> getTimetablesForGroup(int groupId) {
-        log.info("Getting timetables for group id={}", groupId);
-        return dao.getByGroupId(groupId);
-    }
-
     public List<TimetableGroupLink> getPage(int page) {
         log.info("Getting page {} of timetable-group links", page);
         return dao.getPage(LINKS_PER_PAGE, (page - 1) * LINKS_PER_PAGE);

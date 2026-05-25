@@ -97,14 +97,4 @@ public class TeachersAbilitiesController extends ControllerSkeleton {
             new ErrorResponse(ctx, exc.getCode(), exc.getMessage());
         }
     }
-
-    public void getAllAbilities(Context ctx) {
-        try {
-            int page = this.parsePositiveInt(ctx, "page");
-            List<TeachersAbility> abilities = this.repository.getPage(page);
-            new PageResponse<>(ctx, abilities);
-        } catch (GreatException exc) {
-            new ErrorResponse(ctx, exc.getCode(), exc.getMessage());
-        }
-    }
 }
