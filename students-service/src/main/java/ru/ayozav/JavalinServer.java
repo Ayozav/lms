@@ -6,10 +6,10 @@ import io.javalin.http.Context;
 import kotlin.IgnorableReturnValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.ayozav.answers.EchoAnswer;
 import ru.ayozav.database.DatabaseMigrator;
 import ru.ayozav.database.HikariConnectionFactory;
 import ru.ayozav.javalin.controllers.*;
+import ru.ayozav.javalin.responses.OkResponse;
 
 
 public class JavalinServer {
@@ -92,7 +92,7 @@ public class JavalinServer {
                     javalinConfig.routes.before(this::preHandler);
 
                     javalinConfig.routes.get(
-                            "/echo", ctx -> ctx.status(200).json(new EchoAnswer())
+                            "/echo", OkResponse::new
                     );
 
                     // CRUD операции с User
