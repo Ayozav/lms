@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import ru.ayozav.database.HikariConnectionFactory;
 import ru.ayozav.database.dao.TimetablesGroupsDAO;
 import ru.ayozav.database.exceptions.DatabaseException;
-import ru.ayozav.models.TimetableGroup;
+import ru.ayozav.models.TimetableGroupLink;
 
 import java.util.List;
 
@@ -21,6 +21,10 @@ public class TimetablesGroupsEventRepository {
         Jdbi jdbi = Jdbi.create(factory.getDataSource());
         jdbi.installPlugin(new SqlObjectPlugin());
         this.dao = jdbi.onDemand(TimetablesGroupsDAO.class);
+    }
+
+    public boolean get(int timetableId, int groupId) {
+        return !dao.get(timetableId, groupId).isEmpty();
     }
 
     public void addLink(int timetableId, int groupId) throws DatabaseException {
@@ -43,17 +47,17 @@ public class TimetablesGroupsEventRepository {
         }
     }
 
-    public List<TimetableGroup> getGroupsForTimetable(int timetableId) {
+    public List<TimetableGroupLink> getGroupsForTimetable(int timetableId) {
         log.info("Getting groups for timetable id={}", timetableId);
         return dao.getByTimetableId(timetableId);
     }
 
-    public List<TimetableGroup> getTimetablesForGroup(int groupId) {
+    public List<TimetableGroupLink> getTimetablesForGroup(int groupId) {
         log.info("Getting timetables for group id={}", groupId);
         return dao.getByGroupId(groupId);
     }
 
-    public List<TimetableGroup> getPage(int page) {
+    public List<TimetableGroupLink> getPage(int page) {
         log.info("Getting page {} of timetable-group links", page);
         return dao.getPage(LINKS_PER_PAGE, (page - 1) * LINKS_PER_PAGE);
     }

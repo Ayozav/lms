@@ -5,9 +5,10 @@ import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 import ru.ayozav.database.mappers.TimetablesGroupsMapper;
-import ru.ayozav.models.TimetableGroup;
+import ru.ayozav.models.TimetableGroupLink;
 
 import java.util.List;
+
 
 @RegisterRowMapper(TimetablesGroupsMapper.class)
 public interface TimetablesGroupsDAO {
@@ -17,6 +18,12 @@ public interface TimetablesGroupsDAO {
                     "VALUES (:timetable_id, :group_id)"
     )
     void insert(@Bind("timetable_id") int timetableId, @Bind("group_id") int groupId);
+
+    @SqlQuery(
+            "SELECT FROM timetables_groups " +
+                    "WHERE group_id = :group_id AND " +
+                    "timetable_id = :timetable_id")
+    List<TimetableGroupLink> get(@Bind("timetable_id") int timetableId, @Bind("group_id") int groupId);
 
     @SqlUpdate(
             "DELETE FROM timetables_groups " +
@@ -28,17 +35,17 @@ public interface TimetablesGroupsDAO {
             "SELECT timetable_id, group_id FROM timetables_groups " +
                     "WHERE timetable_id = :timetable_id"
     )
-    List<TimetableGroup> getByTimetableId(@Bind("timetable_id") int timetableId);
+    List<TimetableGroupLink> getByTimetableId(@Bind("timetable_id") int timetableId);
 
     @SqlQuery(
             "SELECT timetable_id, group_id FROM timetables_groups " +
                     "WHERE group_id = :group_id"
     )
-    List<TimetableGroup> getByGroupId(@Bind("group_id") int groupId);
+    List<TimetableGroupLink> getByGroupId(@Bind("group_id") int groupId);
 
     @SqlQuery(
             "SELECT timetable_id, group_id FROM timetables_groups " +
                     "LIMIT :limit OFFSET :offset"
     )
-    List<TimetableGroup> getPage(@Bind("limit") int limit, @Bind("offset") int offset);
+    List<TimetableGroupLink> getPage(@Bind("limit") int limit, @Bind("offset") int offset);
 }

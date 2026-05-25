@@ -1,0 +1,46 @@
+type: http_request
+model: http_request
+id: rq_Nb8NjxGWVY
+createdAt: 2026-05-24T08:45:23.342783400
+updatedAt: 2026-05-25T12:35:17.444026700
+workspaceId: wk_TsG5TkW2Jb
+folderId: null
+authentication: {}
+authenticationType: null
+body: {}
+bodyType: null
+description: ''
+headers: []
+method: PUT
+name: /v1/user
+sortPriority: 3000.001
+url: 127.0.0.1:4040/v1/user
+urlParameters:
+- enabled: true
+  name: id
+  value: '3'
+  id: BSCDCZ62S0
+- enabled: true
+  name: first_name
+  value: Сергей
+  id: RkpeHGhTh6
+- enabled: true
+  name: last_name
+  value: Ермаков
+  id: eaQB0jS4u7
+- enabled: true
+  name: patronymic
+  value: Владимирович
+  id: aKEQJ35Yr3
+- enabled: true
+  name: open_id
+  value: cc47e223-97e8-485c-bb52-bd513a21
+  id: wYgDw0vwTy
+- enabled: true
+  name: birth_date
+  value: 31.12.2000
+  id: P6V0CHcaVA
+- enabled: true
+  name: ''
+  value: ''
+  id: mJPFwkG7bK

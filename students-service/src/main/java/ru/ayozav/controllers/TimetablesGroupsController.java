@@ -6,7 +6,7 @@ import ru.ayozav.answers.SuccessUpdateAnswer;
 import ru.ayozav.database.HikariConnectionFactory;
 import ru.ayozav.database.exceptions.DatabaseException;
 import ru.ayozav.database.repositories.TimetablesGroupsEventRepository;
-import ru.ayozav.models.TimetableGroup;
+import ru.ayozav.models.TimetableGroupLink;
 
 import java.util.List;
 import java.util.Objects;
@@ -56,7 +56,7 @@ public class TimetablesGroupsController {
         int timetableId = parsePositiveInt(ctx, "timetable_id");
         if (timetableId == -1) return;
 
-        List<TimetableGroup> groups = repository.getGroupsForTimetable(timetableId);
+        List<TimetableGroupLink> groups = repository.getGroupsForTimetable(timetableId);
         ctx.status(200).json(groups);
     }
 
@@ -64,7 +64,7 @@ public class TimetablesGroupsController {
         int groupId = parsePositiveInt(ctx, "group_id");
         if (groupId == -1) return;
 
-        List<TimetableGroup> timetables = repository.getTimetablesForGroup(groupId);
+        List<TimetableGroupLink> timetables = repository.getTimetablesForGroup(groupId);
         ctx.status(200).json(timetables);
     }
 

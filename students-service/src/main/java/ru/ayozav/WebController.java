@@ -57,6 +57,7 @@ public class WebController {
         this.groupsController = new GroupsController(factory);
         this.timetablesController = new TimetablesController(factory);
         this.enrollmentsController = new EnrollmentsController(factory);
+
         this.timetablesGroupsController = new TimetablesGroupsController(factory);
         this.lessonsController = new LessonsController(factory);
         this.teachersAbilitiesController = new TeachersAbilitiesController(factory);

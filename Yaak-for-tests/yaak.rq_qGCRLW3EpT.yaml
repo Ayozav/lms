@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_qGCRLW3EpT
 createdAt: 2026-05-17T07:07:53.707541900
-updatedAt: 2026-05-25T13:10:52.892618600
+updatedAt: 2026-05-25T13:45:39.195426700
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -13,7 +13,7 @@ description: ''
 headers: []
 method: DELETE
 name: 127.0.0.1:4040/v1/timetable
-sortPriority: 40000.0
+sortPriority: 33037.03703703704
 url: 127.0.0.1:4040/v1/timetable
 urlParameters:
 - enabled: true

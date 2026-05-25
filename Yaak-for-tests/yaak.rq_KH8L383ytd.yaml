@@ -1,8 +1,8 @@
 type: http_request
 model: http_request
-id: rq_Qhf9W9PywQ
-createdAt: 2026-05-16T08:17:36.300936300
-updatedAt: 2026-05-25T13:46:39.506498500
+id: rq_KH8L383ytd
+createdAt: 2026-05-17T07:37:45.772081800
+updatedAt: 2026-05-17T07:38:31.622929
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -12,7 +12,7 @@ bodyType: null
 description: ''
 headers: []
 method: GET
-name: 127.0.0.1:4040/v1/timetable
-sortPriority: 23333.333333333332
-url: 127.0.0.1:4040/v1/timetable?id=2
+name: 127.0.0.1:4040/v1/mark
+sortPriority: 15000.0
+url: 127.0.0.1:4040/v1/mark?id=1
 urlParameters: []

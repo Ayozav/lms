@@ -75,6 +75,8 @@ public class JavalinServer {
         EnrollmentsController enrollmentsController = new EnrollmentsController(this.factory, JavalinServer.KAFKA_BOOTSTRAP_SERVER);
         GroupsController groupsController = new GroupsController(this.factory, JavalinServer.KAFKA_BOOTSTRAP_SERVER);
         TimetablesController timetablesController = new TimetablesController(this.factory, JavalinServer.KAFKA_BOOTSTRAP_SERVER);
+        TimetableGroupLinkController timetableGroupLinkController = new TimetableGroupLinkController(this.factory, JavalinServer.KAFKA_BOOTSTRAP_SERVER);
+
 
         return Javalin.create(
 
@@ -85,51 +87,55 @@ public class JavalinServer {
                             "/echo", ctx -> ctx.status(200).json(new EchoAnswer())
                     );
 
+                    // CRUD операции с User
                     javalinConfig.routes.get("/v1/user", usersController::getById);
                     javalinConfig.routes.get("/v1/users", usersController::getPage);
                     javalinConfig.routes.post("/v1/user", usersController::add);
                     javalinConfig.routes.delete("/v1/user", usersController::delete);
                     javalinConfig.routes.put("/v1/user", usersController::update);
-
+                    // CRUD операции с Grade (уровень подготовки)
                     javalinConfig.routes.get("/v1/grade", gradesController::getById);
                     javalinConfig.routes.get("/v1/grades", gradesController::getPage);
                     javalinConfig.routes.post("/v1/grade", gradesController::add);
                     javalinConfig.routes.delete("/v1/grade", gradesController::delete);
                     javalinConfig.routes.put("/v1/grade", gradesController::update);
-
+                    // CRUD операции с Semester
                     javalinConfig.routes.get("/v1/semester", semestersController::getById);
                     javalinConfig.routes.get("/v1/semesters", semestersController::getPage);
                     javalinConfig.routes.post("/v1/semester", semestersController::add);
                     javalinConfig.routes.delete("/v1/semester", semestersController::delete);
                     javalinConfig.routes.put("/v1/semester", semestersController::update);
-
+                    // CRUD операции с Discipline
                     javalinConfig.routes.get("/v1/discipline", disciplinesController::getById);
                     javalinConfig.routes.get("/v1/disciplines", disciplinesController::getPage);
                     javalinConfig.routes.post("/v1/discipline", disciplinesController::add);
                     javalinConfig.routes.delete("/v1/discipline", disciplinesController::delete);
                     javalinConfig.routes.put("/v1/discipline", disciplinesController::update);
-
+                    // CRUD операции с Enrollment
                     javalinConfig.routes.get("/v1/enrollment", enrollmentsController::getById);
                     javalinConfig.routes.get("/v1/enrollments", enrollmentsController::getPage);
                     javalinConfig.routes.post("/v1/enrollment", enrollmentsController::add);
                     javalinConfig.routes.delete("/v1/enrollment", enrollmentsController::delete);
                     javalinConfig.routes.put("/v1/enrollment", enrollmentsController::update);
-
+                    // CRUD операции с Group
                     javalinConfig.routes.get("/v1/group", groupsController::getById);
                     javalinConfig.routes.get("/v1/groups", groupsController::getPage);
                     javalinConfig.routes.post("/v1/group", groupsController::add);
                     javalinConfig.routes.delete("/v1/group", groupsController::delete);
                     javalinConfig.routes.put("/v1/group", groupsController::update);
 
+                    // CRUD операции с Timetable И TimetableGroupLink!
                     javalinConfig.routes.get("/v1/timetable", timetablesController::getById);
                     javalinConfig.routes.get("/v1/timetable/group", timetablesController::getByGroup);
+                    // Привязка к расписанию группы на месте
+                    javalinConfig.routes.post("/v1/timetable/group", timetableGroupLinkController::addLink);
+                    javalinConfig.routes.delete("/v1/timetable/group", timetableGroupLinkController::deleteLink);
+                    // И другие CRUD с Timetable...
                     javalinConfig.routes.get("/v1/timetable/teacher", timetablesController::getByTeacher);
-                    javalinConfig.routes.get("/v1/timetables", timetablesController::getPage);
+                    javalinConfig.routes.get("/v1/timetables", timetablesController::getPage); // Перечень вообще всеобщего расписания
                     javalinConfig.routes.post("/v1/timetable", timetablesController::add);
                     javalinConfig.routes.delete("/v1/timetable", timetablesController::delete);
                     javalinConfig.routes.put("/v1/timetable", timetablesController::update);
-
-
 
                 }
         );

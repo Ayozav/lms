@@ -1,8 +1,8 @@
 type: http_request
 model: http_request
-id: rq_hvbZm9JK3m
-createdAt: 2026-05-17T07:07:53.709747900
-updatedAt: 2026-05-25T13:44:59.080658600
+id: rq_3bPYSXfk4b
+createdAt: 2026-05-25T13:45:37.415639200
+updatedAt: 2026-05-25T13:45:46.686238200
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -11,9 +11,9 @@ body: {}
 bodyType: null
 description: ''
 headers: []
-method: POST
+method: DELETE
 name: 127.0.0.1:4040/v1/timetable/group
-sortPriority: 33333.333333333336
+sortPriority: 33333.33433333333
 url: 127.0.0.1:4040/v1/timetable/group
 urlParameters:
 - enabled: true

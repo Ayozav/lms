@@ -1,8 +1,8 @@
 type: http_request
 model: http_request
-id: rq_FYUM8gsfJH
-createdAt: 2026-05-17T07:07:53.702791500
-updatedAt: 2026-05-25T13:44:38.420445900
+id: rq_M8jhjRYV36
+createdAt: 2026-05-25T13:08:05.165616100
+updatedAt: 2026-05-25T15:24:23.755716200
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -12,13 +12,13 @@ bodyType: null
 description: ''
 headers: []
 method: GET
-name: 127.0.0.1:4040/v1/timetable/group
-sortPriority: 33111.11111111111
-url: 127.0.0.1:4040/v1/timetable/group
+name: 127.0.0.1:4040/v1/timetable/teacher
+sortPriority: 33061.72839506173
+url: 127.0.0.1:4040/v1/timetable/teacher
 urlParameters:
 - enabled: true
-  name: group_id
-  value: '21'
+  name: teacher_id
+  value: '2'
   id: TiUHKASN5Y
 - enabled: true
   name: page
@@ -27,4 +27,4 @@ urlParameters:
 - enabled: true
   name: ''
   value: ''
-  id: AXnNIx0Pzd
+  id: N9g3SfT9Hd
