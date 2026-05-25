@@ -9,8 +9,8 @@ import org.slf4j.LoggerFactory;
 import ru.ayozav.answers.EchoAnswer;
 import ru.ayozav.database.DatabaseMigrator;
 import ru.ayozav.database.HikariConnectionFactory;
-import ru.ayozav.javalin.controllers.GradesController;
-import ru.ayozav.javalin.controllers.UsersController;
+import ru.ayozav.javalin.controllers.*;
+
 
 public class JavalinServer {
 
@@ -70,6 +70,9 @@ public class JavalinServer {
 
         UsersController usersController = new UsersController(this.factory, JavalinServer.KAFKA_BOOTSTRAP_SERVER);
         GradesController gradesController = new GradesController(this.factory, JavalinServer.KAFKA_BOOTSTRAP_SERVER);
+        SemestersController semestersController = new SemestersController(this.factory, JavalinServer.KAFKA_BOOTSTRAP_SERVER);
+        DisciplinesController disciplinesController = new DisciplinesController(this.factory, JavalinServer.KAFKA_BOOTSTRAP_SERVER);
+        EnrollmentsController enrollmentsController = new EnrollmentsController(this.factory, JavalinServer.KAFKA_BOOTSTRAP_SERVER);
 
         return Javalin.create(
 
@@ -91,6 +94,25 @@ public class JavalinServer {
                     javalinConfig.routes.post("/v1/grade", gradesController::add);
                     javalinConfig.routes.delete("/v1/grade", gradesController::delete);
                     javalinConfig.routes.put("/v1/grade", gradesController::update);
+
+                    javalinConfig.routes.get("/v1/semester", semestersController::getById);
+                    javalinConfig.routes.get("/v1/semesters", semestersController::getPage);
+                    javalinConfig.routes.post("/v1/semester", semestersController::add);
+                    javalinConfig.routes.delete("/v1/semester", semestersController::delete);
+                    javalinConfig.routes.put("/v1/semester", semestersController::update);
+
+                    javalinConfig.routes.get("/v1/discipline", disciplinesController::getById);
+                    javalinConfig.routes.get("/v1/disciplines", disciplinesController::getPage);
+                    javalinConfig.routes.post("/v1/discipline", disciplinesController::add);
+                    javalinConfig.routes.delete("/v1/discipline", disciplinesController::delete);
+                    javalinConfig.routes.put("/v1/discipline", disciplinesController::update);
+
+                    javalinConfig.routes.get("/v1/enrollment", enrollmentsController::getById);
+                    javalinConfig.routes.get("/v1/enrollments", enrollmentsController::getPage);
+                    javalinConfig.routes.post("/v1/enrollment", enrollmentsController::add);
+                    javalinConfig.routes.delete("/v1/enrollment", enrollmentsController::delete);
+                    javalinConfig.routes.put("/v1/enrollment", enrollmentsController::update);
+
                 }
         );
     }

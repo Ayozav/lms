@@ -5,6 +5,7 @@ import ru.ayozav.database.repositories.UsersEventRepository;
 import ru.ayozav.javalin.exceptions.*;
 import ru.ayozav.models.User;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -73,11 +74,9 @@ public class ControllerSkeleton {
         }
     }
 
-
     public User getUser(int userID, UsersEventRepository repository) {
         Optional<User> user = repository.getById(userID);
         if (user.isEmpty()) throw new UserNotExistingException(userID);
         return user.get();
-
     }
 }
