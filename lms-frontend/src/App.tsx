@@ -7,7 +7,7 @@ import Home from './LogTo/Home';
 
 function App() {
     const config: LogtoConfig = {
-        endpoint: 'https://auth.localhost/',
+        endpoint: 'https://sign-in.localhost/',
         appId: 'a8j7o75zsqw60mnsjpls0',
     };
 
