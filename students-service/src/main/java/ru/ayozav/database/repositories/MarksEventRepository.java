@@ -17,7 +17,7 @@ public class MarksEventRepository {
 
     private static final Logger log = LoggerFactory.getLogger(MarksEventRepository.class);
     private final MarksDAO dao;
-    private final int MARKS_PER_PAGE = 20;
+    public final int MARKS_PER_PAGE = 20;
 
     public MarksEventRepository(HikariConnectionFactory factory) {
         Jdbi jdbi = Jdbi.create(factory.getDataSource());

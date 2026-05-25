@@ -15,7 +15,7 @@ public class TimetablesGroupsEventRepository {
 
     private static final Logger log = LoggerFactory.getLogger(TimetablesGroupsEventRepository.class);
     private final TimetablesGroupsDAO dao;
-    private final int LINKS_PER_PAGE = 20;
+    public final int LINKS_PER_PAGE = 20;
 
     public TimetablesGroupsEventRepository(HikariConnectionFactory factory) {
         Jdbi jdbi = Jdbi.create(factory.getDataSource());

@@ -14,7 +14,6 @@ import ru.ayozav.javalin.responses.OkResponse;
 import ru.ayozav.javalin.responses.PageResponse;
 import ru.ayozav.kafka.producers.GroupProducer;
 import ru.ayozav.models.Group;
-import ru.ayozav.models.User;
 
 public class GroupsController extends ControllerSkeleton {
 

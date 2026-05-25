@@ -15,7 +15,7 @@ public class TeachersAbilitiesEventRepository {
 
     private static final Logger log = LoggerFactory.getLogger(TeachersAbilitiesEventRepository.class);
     private final TeachersAbilitiesDAO dao;
-    private final int LINKS_PER_PAGE = 20;
+    public final int LINKS_PER_PAGE = 20;
 
     public TeachersAbilitiesEventRepository(HikariConnectionFactory factory) {
         Jdbi jdbi = Jdbi.create(factory.getDataSource());
