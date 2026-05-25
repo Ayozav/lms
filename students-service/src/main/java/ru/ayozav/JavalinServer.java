@@ -80,6 +80,9 @@ public class JavalinServer {
         TeachersAbilitiesController teachersAbilitiesController = new TeachersAbilitiesController(this.factory, JavalinServer.KAFKA_BOOTSTRAP_SERVER);
         MarksController marksController = new MarksController(this.factory, JavalinServer.KAFKA_BOOTSTRAP_SERVER);
         HomeworksController homeworksController = new HomeworksController(this.factory, JavalinServer.KAFKA_BOOTSTRAP_SERVER);
+        AttachedHomeworksController attachedHomeworksController = new AttachedHomeworksController(this.factory, JavalinServer.KAFKA_BOOTSTRAP_SERVER);
+        CommentsController commentsController = new CommentsController(this.factory, JavalinServer.KAFKA_BOOTSTRAP_SERVER);
+
 
 
 
@@ -168,6 +171,17 @@ public class JavalinServer {
                     javalinConfig.routes.delete("/v1/homework", homeworksController::delete);
                     javalinConfig.routes.put("/v1/homework", homeworksController::update);
 
+                    javalinConfig.routes.post("/v1/homework/attach", attachedHomeworksController::add);
+                    javalinConfig.routes.delete("/v1/homework/attach", attachedHomeworksController::delete);
+                    javalinConfig.routes.put("/v1/homework/attach", attachedHomeworksController::update);
+                    javalinConfig.routes.get("/v1/homework/attached", attachedHomeworksController::getById);
+                    javalinConfig.routes.get("/v1/homeworks/attached/all", attachedHomeworksController::getPage);
+
+                    javalinConfig.routes.post("/v1/comment", commentsController::add);
+                    javalinConfig.routes.delete("/v1/comment", commentsController::delete);
+                    javalinConfig.routes.get("/v1/comment", commentsController::getById);
+                    javalinConfig.routes.get("/v1/comments", commentsController::getPage);
+                    javalinConfig.routes.put("/v1/comment", commentsController::update);
                 }
         );
     }

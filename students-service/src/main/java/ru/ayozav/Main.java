@@ -5,7 +5,6 @@ import ru.ayozav.kafka.consumers.*;
 public class Main {
 
     public static void main(String[] args) {
-        // WebController oldWebController = new WebController();
 
         JavalinServer server = new JavalinServer();
         UserConsumer userConsumer = new UserConsumer(
@@ -47,12 +46,11 @@ public class Main {
         HomeworkConsumer homeworkConsumer = new HomeworkConsumer(
                 JavalinServer.KAFKA_BOOTSTRAP_SERVER, server.getFactory()
         );
+        AttachedHomeworkConsumer attachedHomeworkConsumer = new AttachedHomeworkConsumer(
+                JavalinServer.KAFKA_BOOTSTRAP_SERVER, server.getFactory()
+        );
 
         try {
-            // Deprecated реализация: да, работает, но оно слишком... Синхронное.
-            // oldWebController.initialize();
-            // oldWebController.run(4040);
-
             userConsumer.start();
             gradeConsumer.start();
             semesterConsumer.start();
@@ -65,12 +63,11 @@ public class Main {
             teachersAbilityConsumer.start();
             markConsumer.start();
             homeworkConsumer.start();
-
+            attachedHomeworkConsumer.start();
 
             server.start();
 
         } catch (RuntimeException e) {
-            // oldWebController.stop();
             server.stop();
             userConsumer.close();
             gradeConsumer.close();
@@ -84,6 +81,7 @@ public class Main {
             teachersAbilityConsumer.close();
             markConsumer.close();
             homeworkConsumer.close();
+            attachedHomeworkConsumer.close();
 
             throw new RuntimeException(e);
         }
