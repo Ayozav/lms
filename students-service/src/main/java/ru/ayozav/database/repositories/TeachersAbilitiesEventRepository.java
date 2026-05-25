@@ -33,6 +33,10 @@ public class TeachersAbilitiesEventRepository {
         }
     }
 
+    public boolean exists(int teacherId, int disciplineId) {
+        return !dao.get(teacherId, disciplineId).isEmpty();
+    }
+
     public void deleteLink(int teacherId, int disciplineId) throws DatabaseException {
         try {
             log.info("Deleting ability: teacher {} no longer teaches discipline {}", teacherId, disciplineId);

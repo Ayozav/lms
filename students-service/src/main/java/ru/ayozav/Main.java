@@ -38,6 +38,10 @@ public class Main {
                 JavalinServer.KAFKA_BOOTSTRAP_SERVER, server.getFactory()
         );
 
+        TeachersAbilityConsumer teachersAbilityConsumer = new TeachersAbilityConsumer(
+                JavalinServer.KAFKA_BOOTSTRAP_SERVER, server.getFactory()
+        );
+
         try {
             // Deprecated реализация: да, работает, но оно слишком... Синхронное.
             // oldWebController.initialize();
@@ -52,6 +56,7 @@ public class Main {
             timetableConsumer.start();
             timetableGroupLinkConsumer.start();
             lessonConsumer.start();
+            teachersAbilityConsumer.start();
 
             server.start();
 
@@ -67,6 +72,7 @@ public class Main {
             timetableConsumer.close();
             timetableGroupLinkConsumer.close();
             lessonConsumer.close();
+            teachersAbilityConsumer.close();
 
             throw new RuntimeException(e);
         }

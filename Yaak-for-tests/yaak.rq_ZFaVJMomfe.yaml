@@ -1,8 +1,8 @@
 type: http_request
 model: http_request
-id: rq_KvW7m2zTFf
-createdAt: 2026-05-17T07:33:08.677781
-updatedAt: 2026-05-17T07:38:31.616263500
+id: rq_ZFaVJMomfe
+createdAt: 2026-05-25T19:24:14.547056
+updatedAt: 2026-05-25T19:29:24.007835500
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -11,20 +11,20 @@ body: {}
 bodyType: null
 description: ''
 headers: []
-method: DELETE
-name: 127.0.0.1:4040/v1/teacher_ability
-sortPriority: 13000.0
-url: 127.0.0.1:4040/v1/teacher_ability
+method: POST
+name: /v1/teacher/ability
+sortPriority: 10000.001
+url: 127.0.0.1:4040/v1/teacher/ability
 urlParameters:
 - enabled: true
   name: teacher_id
-  value: '1'
-  id: x9QxsysX3W
+  value: '2'
+  id: jvd5xKjZxK
 - enabled: true
   name: discipline_id
-  value: '2'
-  id: RB4Y4ySp5Z
+  value: '8'
+  id: yDFkCT5WMN
 - enabled: true
   name: ''
   value: ''
-  id: Ja0E2n6hf2
+  id: pNnbzIT5Mq

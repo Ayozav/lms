@@ -77,6 +77,8 @@ public class JavalinServer {
         TimetablesController timetablesController = new TimetablesController(this.factory, JavalinServer.KAFKA_BOOTSTRAP_SERVER);
         TimetableGroupLinkController timetableGroupLinkController = new TimetableGroupLinkController(this.factory, JavalinServer.KAFKA_BOOTSTRAP_SERVER);
         LessonsController lessonsController = new LessonsController(this.factory, JavalinServer.KAFKA_BOOTSTRAP_SERVER);
+        TeachersAbilitiesController teachersAbilitiesController = new TeachersAbilitiesController(this.factory, JavalinServer.KAFKA_BOOTSTRAP_SERVER);
+
 
 
         return Javalin.create(
@@ -144,6 +146,12 @@ public class JavalinServer {
                     javalinConfig.routes.post("/v1/lesson", lessonsController::add);
                     javalinConfig.routes.delete("/v1/lesson", lessonsController::delete);
                     javalinConfig.routes.put("/v1/lesson", lessonsController::update);
+
+                    // CRD операции с TeachersAbilities
+                    javalinConfig.routes.get("/v1/teacher/ability", teachersAbilitiesController::getDisciplinesByTeacher);
+                    javalinConfig.routes.post("/v1/teacher/ability", teachersAbilitiesController::addAbility);
+                    javalinConfig.routes.delete("/v1/teacher/ability", teachersAbilitiesController::deleteAbility);
+
 
                 }
         );

@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_FoPRd7DTqM
 createdAt: 2026-05-17T07:31:29.323109
-updatedAt: 2026-05-17T07:38:31.602560400
+updatedAt: 2026-05-25T19:24:45.471161700
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -12,7 +12,15 @@ bodyType: null
 description: ''
 headers: []
 method: GET
-name: 127.0.0.1:4040/v1/teacher_ability/teachers
+name: /v1/teacher/ability
 sortPriority: 10000.0
-url: 127.0.0.1:4040/v1/teacher_ability/teachers?discipline_id=2
-urlParameters: []
+url: 127.0.0.1:4040/v1/teacher/ability
+urlParameters:
+- enabled: true
+  name: teacher_id
+  value: '2'
+  id: jvd5xKjZxK
+- enabled: true
+  name: ''
+  value: ''
+  id: DbZiVuh8dY
