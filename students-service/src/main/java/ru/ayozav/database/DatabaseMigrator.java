@@ -3,9 +3,11 @@ package ru.ayozav.database;
 import liquibase.Liquibase;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.resource.ClassLoaderResourceAccessor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
 
+@Slf4j
 public class DatabaseMigrator {
     private final HikariConnectionFactory connectionFactory;
 
@@ -26,6 +28,7 @@ public class DatabaseMigrator {
             liquibase.update();
             System.out.println("Миграции успешно применены!");
         } catch (Exception e) {
+            log.error("[DATABASE MIGRATOR ERROR]: ", e);
             throw new RuntimeException("Ошибка при выполнении миграций", e);
         }
     }
