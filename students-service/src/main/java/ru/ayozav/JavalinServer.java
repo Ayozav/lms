@@ -79,6 +79,7 @@ public class JavalinServer {
         LessonsController lessonsController = new LessonsController(this.factory, JavalinServer.KAFKA_BOOTSTRAP_SERVER);
         TeachersAbilitiesController teachersAbilitiesController = new TeachersAbilitiesController(this.factory, JavalinServer.KAFKA_BOOTSTRAP_SERVER);
         MarksController marksController = new MarksController(this.factory, JavalinServer.KAFKA_BOOTSTRAP_SERVER);
+        HomeworksController homeworksController = new HomeworksController(this.factory, JavalinServer.KAFKA_BOOTSTRAP_SERVER);
 
 
 
@@ -161,6 +162,11 @@ public class JavalinServer {
                     javalinConfig.routes.delete("/v1/mark", marksController::delete);
                     javalinConfig.routes.put("/v1/mark", marksController::update);
 
+                    javalinConfig.routes.get("/v1/homework", homeworksController::getById);
+                    javalinConfig.routes.get("/v1/homeworks", homeworksController::getPage);
+                    javalinConfig.routes.post("/v1/homework", homeworksController::add);
+                    javalinConfig.routes.delete("/v1/homework", homeworksController::delete);
+                    javalinConfig.routes.put("/v1/homework", homeworksController::update);
 
                 }
         );

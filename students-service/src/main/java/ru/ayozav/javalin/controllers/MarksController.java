@@ -36,7 +36,7 @@ public class MarksController extends ControllerSkeleton {
         try {
             int timetableId = this.parsePositiveInt(ctx, "timetable_id");
             int studentId = this.parsePositiveInt(ctx, "student_id");
-            LocalDate lessonRealDate = this.parseDate(this.queryParam(ctx, "lesson_real_date"));
+            LocalDate lessonRealDate = this.parseDate("lesson_real_date", this.queryParam(ctx, "lesson_real_date"));
 
             String attendanceStatus = this.queryParam(ctx, "attendance_status");
             if (!AttendanceStatuses.exists(attendanceStatus)) {
@@ -89,8 +89,8 @@ public class MarksController extends ControllerSkeleton {
     public void getByStudentID(Context ctx) {
         try {
             int studentID = this.parsePositiveInt(ctx, "student_id");
-            LocalDate start = this.parseDate(ctx.queryParam("start_date"));
-            LocalDate end = this.parseDate(ctx.queryParam("end_date"));
+            LocalDate start = this.parseDate("start_date", ctx.queryParam("start_date"));
+            LocalDate end = this.parseDate("end_date", ctx.queryParam("end_date"));
 
             new ObjectResponse<>(ctx, this.repository.getByStudent(studentID, start, end));
         }
@@ -118,7 +118,7 @@ public class MarksController extends ControllerSkeleton {
             int id = this.parsePositiveInt(ctx, "id");
             int timetableId = this.parsePositiveInt(ctx, "timetable_id");
             int studentId = this.parsePositiveInt(ctx, "student_id");
-            LocalDate lessonRealDate = this.parseDate(this.queryParam(ctx, "lesson_real_date"));
+            LocalDate lessonRealDate = this.parseDate("lesson_real_date", this.queryParam(ctx, "lesson_real_date"));
 
             String attendanceStatus = this.queryParam(ctx, "attendance_status");
             if (!AttendanceStatuses.exists(attendanceStatus)) {

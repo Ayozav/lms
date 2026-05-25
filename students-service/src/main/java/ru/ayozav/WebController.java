@@ -60,8 +60,8 @@ public class WebController {
         this.timetablesGroupsController = new TimetablesGroupsController(factory);
         this.lessonsController = new LessonsController(factory);
         this.teachersAbilitiesController = new TeachersAbilitiesController(factory);
-
         this.marksController = new MarksController(factory);
+
         this.homeworksController = new HomeworksController(factory);
         this.attachedHomeworksController = new AttachedHomeworksController(factory);
         this.commentsController = new CommentsController(factory);

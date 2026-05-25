@@ -38,7 +38,7 @@ public class ControllerSkeleton {
         }
     }
 
-    public LocalDate parseDate(String paramValue) throws FollowDateFormatException{
+    public LocalDate parseDate(String paramName, String paramValue) throws FollowDateFormatException{
         LocalDate dateParam;
         try {
             dateParam = LocalDate.parse(
@@ -48,7 +48,7 @@ public class ControllerSkeleton {
             return dateParam;
         }
         catch (DateTimeParseException | NumberFormatException | NullPointerException exc) {
-            throw new FollowDateFormatException("ДД.ММ.ГГГГ");
+            throw new FollowDateFormatException("ДД.ММ.ГГГГ", paramName);
         }
     }
 

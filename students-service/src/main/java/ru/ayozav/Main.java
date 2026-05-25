@@ -44,6 +44,9 @@ public class Main {
         MarkConsumer markConsumer = new MarkConsumer(
                 JavalinServer.KAFKA_BOOTSTRAP_SERVER, server.getFactory()
         );
+        HomeworkConsumer homeworkConsumer = new HomeworkConsumer(
+                JavalinServer.KAFKA_BOOTSTRAP_SERVER, server.getFactory()
+        );
 
         try {
             // Deprecated реализация: да, работает, но оно слишком... Синхронное.
@@ -61,6 +64,8 @@ public class Main {
             lessonConsumer.start();
             teachersAbilityConsumer.start();
             markConsumer.start();
+            homeworkConsumer.start();
+
 
             server.start();
 
@@ -78,6 +83,7 @@ public class Main {
             lessonConsumer.close();
             teachersAbilityConsumer.close();
             markConsumer.close();
+            homeworkConsumer.close();
 
             throw new RuntimeException(e);
         }
