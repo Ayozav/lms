@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_6kn5bXASE9
 createdAt: 2026-05-17T07:26:03.727436300
-updatedAt: 2026-05-17T07:38:31.647804600
+updatedAt: 2026-05-25T15:45:23.172185700
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -18,11 +18,11 @@ url: 127.0.0.1:4040/v1/lesson
 urlParameters:
 - enabled: true
   name: id
-  value: '8'
+  value: '1'
   id: 9HrpwZ2I6F
 - enabled: true
   name: discipline_id
-  value: '2'
+  value: '7'
   id: VQ2ZSX5IRq
 - enabled: true
   name: ordered_number
@@ -39,4 +39,4 @@ urlParameters:
 - enabled: true
   name: ''
   value: ''
-  id: bFvptWuNBg
+  id: KKCzJU4hpN
