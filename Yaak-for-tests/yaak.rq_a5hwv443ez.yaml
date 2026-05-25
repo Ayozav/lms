@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_a5hwv443ez
 createdAt: 2026-05-16T08:17:36.298947900
-updatedAt: 2026-05-17T07:38:31.708328400
+updatedAt: 2026-05-25T20:09:33.150371
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -13,6 +13,6 @@ description: ''
 headers: []
 method: DELETE
 name: 127.0.0.1:4040/v1/enrollment
-sortPriority: 39000.0
+sortPriority: 44000.0
 url: 127.0.0.1:4040/v1/enrollment?id=3
 urlParameters: []

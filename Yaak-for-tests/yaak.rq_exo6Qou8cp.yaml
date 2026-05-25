@@ -1,8 +1,8 @@
 type: http_request
 model: http_request
-id: rq_Dw9zom8cMG
-createdAt: 2026-05-09T10:57:05.884469100
-updatedAt: 2026-05-25T20:09:32.962815700
+id: rq_exo6Qou8cp
+createdAt: 2026-05-25T20:05:19.992710700
+updatedAt: 2026-05-25T20:09:33.022865700
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -12,15 +12,15 @@ bodyType: null
 description: ''
 headers: []
 method: GET
-name: /v1/user?id=6
-sortPriority: 0.0
-url: http://127.0.0.1:4040/v1/user
+name: /v1/mark
+sortPriority: 15000.0
+url: 127.0.0.1:4040/v1/mark
 urlParameters:
 - enabled: true
   name: id
-  value: '3'
-  id: PGXiWzgkKP
+  value: '1'
+  id: 4bMDF0EWHb
 - enabled: true
   name: ''
   value: ''
-  id: BXP35f0Xrc
+  id: vUXTpcvrZP

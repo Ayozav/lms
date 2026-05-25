@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_adZZPgQeNS
 createdAt: 2026-05-17T07:00:58.812092500
-updatedAt: 2026-05-25T12:38:54.160552800
+updatedAt: 2026-05-25T20:09:33.076831500
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -13,6 +13,6 @@ description: ''
 headers: []
 method: GET
 name: /v1/enrollments
-sortPriority: 25000.0
+sortPriority: 30000.0
 url: http://127.0.0.1:4040/v1/enrollments?page=1
 urlParameters: []

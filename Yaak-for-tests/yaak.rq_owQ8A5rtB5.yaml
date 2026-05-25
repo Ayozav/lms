@@ -1,0 +1,42 @@
+type: http_request
+model: http_request
+id: rq_owQ8A5rtB5
+createdAt: 2026-05-25T20:05:41.258089100
+updatedAt: 2026-05-25T20:09:33.029428800
+workspaceId: wk_TsG5TkW2Jb
+folderId: null
+authentication: {}
+authenticationType: null
+body: {}
+bodyType: null
+description: ''
+headers: []
+method: POST
+name: /v1/mark
+sortPriority: 17000.0
+url: 127.0.0.1:4040/v1/mark
+urlParameters:
+- enabled: true
+  name: timetable_id
+  value: '2'
+  id: 4bMDF0EWHb
+- enabled: true
+  name: student_id
+  value: '3'
+  id: QzDghUb5wU
+- enabled: true
+  name: lesson_real_date
+  value: 10.02.1999
+  id: PrywzmcNJZ
+- enabled: true
+  name: attendance_status
+  value: EXCUSED
+  id: ITFraKVqcY
+- enabled: true
+  name: mark
+  value: '100'
+  id: CQcKSDqEQW
+- enabled: true
+  name: ''
+  value: ''
+  id: XRVUezy7Vt

@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_jBHiN7RVtg
 createdAt: 2026-05-17T07:17:01.992388100
-updatedAt: 2026-05-25T15:40:22.875584600
+updatedAt: 2026-05-25T20:09:33.050909200
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -13,7 +13,7 @@ description: ''
 headers: []
 method: POST
 name: /v1/lesson
-sortPriority: 19000.0
+sortPriority: 23000.0
 url: 127.0.0.1:4040/v1/lesson
 urlParameters:
 - enabled: true

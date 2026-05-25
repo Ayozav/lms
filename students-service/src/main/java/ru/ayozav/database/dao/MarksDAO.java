@@ -41,6 +41,19 @@ public interface MarksDAO {
     )
     Optional<Mark> getById(@Bind("id") int id);
 
+
+    @SqlQuery(
+            "SELECT id, timetable_id, student_id, lesson_real_date, updated_at, attendance_status, mark " +
+                    "FROM marks " +
+                    "WHERE student_id = :student_id AND lesson_real_date BETWEEN :start_date AND :end_date " +
+                    "ORDER BY lesson_real_date"
+    )
+    List<Mark> getByStudentIdAndDateRange(
+            @Bind("student_id") int studentId,
+            @Bind("start_date") LocalDate startDate,
+            @Bind("end_date") LocalDate endDate
+    );
+
     @SqlUpdate("DELETE FROM marks WHERE id = :id")
     void deleteById(@Bind("id") int id);
 

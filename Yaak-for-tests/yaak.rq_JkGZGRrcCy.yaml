@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_JkGZGRrcCy
 createdAt: 2026-05-17T07:38:04.232534
-updatedAt: 2026-05-17T07:38:31.619458300
+updatedAt: 2026-05-25T20:09:33.019317100
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -12,7 +12,7 @@ bodyType: null
 description: ''
 headers: []
 method: GET
-name: 127.0.0.1:4040/v1/marks
+name: /v1/marks
 sortPriority: 14000.0
 url: 127.0.0.1:4040/v1/marks?page=1
 urlParameters: []

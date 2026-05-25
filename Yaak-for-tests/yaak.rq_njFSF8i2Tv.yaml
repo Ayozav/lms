@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_njFSF8i2Tv
 createdAt: 2026-05-16T06:09:40.606757700
-updatedAt: 2026-05-25T11:29:16.700445
+updatedAt: 2026-05-25T20:09:33.046921900
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -13,7 +13,7 @@ description: ''
 headers: []
 method: POST
 name: 127.0.0.1:4040/v1/discipline
-sortPriority: 18000.0
+sortPriority: 22000.0
 url: http://localhost:4050/v1/discipline
 urlParameters:
 - enabled: true

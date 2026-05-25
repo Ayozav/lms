@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_Bu579ZJWjs
 createdAt: 2026-05-09T10:36:56.741558
-updatedAt: 2026-05-25T11:36:22.204258200
+updatedAt: 2026-05-25T20:09:32.983335100
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -13,6 +13,6 @@ description: ''
 headers: []
 method: GET
 name: /v1/users?page=1
-sortPriority: 2333.3333333333335
+sortPriority: 3000.0
 url: http://127.0.0.1:4040/v1/users?page=1
 urlParameters: []

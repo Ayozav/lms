@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_dWNPvXohL8
 createdAt: 2026-05-16T06:09:40.609058100
-updatedAt: 2026-05-25T11:30:57.728591300
+updatedAt: 2026-05-25T20:09:33.054448200
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -13,7 +13,7 @@ description: ''
 headers: []
 method: DELETE
 name: 127.0.0.1:4040/v1/discipline
-sortPriority: 20000.0
+sortPriority: 24000.0
 url: http://127.0.0.1:4050/v1/discipline
 urlParameters:
 - enabled: true

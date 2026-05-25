@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_Nb8NjxGWVY
 createdAt: 2026-05-24T08:45:23.342783400
-updatedAt: 2026-05-25T12:35:17.444026700
+updatedAt: 2026-05-25T20:09:32.990704600
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -13,7 +13,7 @@ description: ''
 headers: []
 method: PUT
 name: /v1/user
-sortPriority: 3000.001
+sortPriority: 5000.0
 url: 127.0.0.1:4040/v1/user
 urlParameters:
 - enabled: true

@@ -47,6 +47,11 @@ public class MarksEventRepository {
         return dao.getById(id);
     }
 
+    public List<Mark> getByStudent(int studentID, LocalDate start, LocalDate end) {
+        log.info("Getting marks for student={}", studentID);
+        return dao.getByStudentIdAndDateRange(studentID, start, end);
+    }
+
     public void deleteById(int id) throws DatabaseException {
         try {
             log.info("Deleting mark id={}", id);
