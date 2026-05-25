@@ -47,6 +47,21 @@ public interface TimetablesDAO {
     )
     Optional<Timetable> getById(@Bind("id") int id);
 
+
+    @SqlQuery("SELECT t.* FROM timetables t " +
+            "JOIN groups g ON g.first_semester_id = t.semester_id " +
+            "WHERE g.id = :groupId " +
+            "LIMIT :limit OFFSET :offset")
+    List<Timetable> getByGroup(@Bind("groupId") int groupId,
+                               @Bind("limit") int limit,
+                               @Bind("offset") int offset);
+
+    @SqlQuery("SELECT * FROM timetables WHERE teacher_id = :teacherId " +
+            "LIMIT :limit OFFSET :offset")
+    List<Timetable> getByTeacher(@Bind("teacherId") int teacherId,
+                                 @Bind("limit") int limit,
+                                 @Bind("offset") int offset);
+
     @SqlUpdate(
             "DELETE FROM timetables WHERE id = :id"
     )

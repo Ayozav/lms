@@ -22,6 +22,7 @@ public class WebController {
     private SemestersController semestersController;
     private DisciplinesController disciplinesController;
     private GroupsController groupsController;
+
     private TimetablesController timetablesController;
     private EnrollmentsController enrollmentsController;
     private TimetablesGroupsController timetablesGroupsController;

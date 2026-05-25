@@ -74,6 +74,7 @@ public class JavalinServer {
         DisciplinesController disciplinesController = new DisciplinesController(this.factory, JavalinServer.KAFKA_BOOTSTRAP_SERVER);
         EnrollmentsController enrollmentsController = new EnrollmentsController(this.factory, JavalinServer.KAFKA_BOOTSTRAP_SERVER);
         GroupsController groupsController = new GroupsController(this.factory, JavalinServer.KAFKA_BOOTSTRAP_SERVER);
+        TimetablesController timetablesController = new TimetablesController(this.factory, JavalinServer.KAFKA_BOOTSTRAP_SERVER);
 
         return Javalin.create(
 
@@ -119,6 +120,16 @@ public class JavalinServer {
                     javalinConfig.routes.post("/v1/group", groupsController::add);
                     javalinConfig.routes.delete("/v1/group", groupsController::delete);
                     javalinConfig.routes.put("/v1/group", groupsController::update);
+
+                    javalinConfig.routes.get("/v1/timetable", timetablesController::getById);
+                    javalinConfig.routes.get("/v1/timetable/group", timetablesController::getByGroup);
+                    javalinConfig.routes.get("/v1/timetable/teacher", timetablesController::getByTeacher);
+                    javalinConfig.routes.get("/v1/timetables", timetablesController::getPage);
+                    javalinConfig.routes.post("/v1/timetable", timetablesController::add);
+                    javalinConfig.routes.delete("/v1/timetable", timetablesController::delete);
+                    javalinConfig.routes.put("/v1/timetable", timetablesController::update);
+
+
 
                 }
         );

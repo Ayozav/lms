@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_ifNZ55kfCH
 createdAt: 2026-05-16T08:02:24.840615900
-updatedAt: 2026-05-17T07:38:31.653759300
+updatedAt: 2026-05-25T11:41:07.578877900
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -12,7 +12,7 @@ bodyType: null
 description: ''
 headers: []
 method: GET
-name: 127.0.0.1:4040/v1/groups
+name: /v1/groups
 sortPriority: 23000.0
 url: 127.0.0.1:4040/v1/groups?page=1
 urlParameters: []

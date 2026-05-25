@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_qGCRLW3EpT
 createdAt: 2026-05-17T07:07:53.707541900
-updatedAt: 2026-05-17T07:38:31.711668400
+updatedAt: 2026-05-25T13:10:52.892618600
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -12,19 +12,19 @@ bodyType: null
 description: ''
 headers: []
 method: DELETE
-name: 127.0.0.1:4040/v1/timetable_group
+name: 127.0.0.1:4040/v1/timetable
 sortPriority: 40000.0
-url: 127.0.0.1:4040/v1/timetable_group
+url: 127.0.0.1:4040/v1/timetable
 urlParameters:
 - enabled: true
-  name: timetable_id
-  value: '3'
+  name: id
+  value: '1'
   id: cxqIWxSRKU
 - enabled: true
-  name: group_id
-  value: '3'
+  name: ''
+  value: ''
   id: SAuzEZM202
 - enabled: true
   name: ''
   value: ''
-  id: mjaPuVTvkv
+  id: wWTTcxUhEn

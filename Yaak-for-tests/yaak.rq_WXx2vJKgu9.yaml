@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_WXx2vJKgu9
 createdAt: 2026-05-16T08:02:17.231954300
-updatedAt: 2026-05-17T07:38:31.681182500
+updatedAt: 2026-05-25T11:41:03.923624200
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -12,7 +12,7 @@ bodyType: null
 description: ''
 headers: []
 method: POST
-name: 127.0.0.1:4040/v1/group
+name: /v1/group
 sortPriority: 31000.0
 url: 127.0.0.1:4040/v1/group
 urlParameters:
@@ -22,7 +22,7 @@ urlParameters:
   id: Nv9snuRC3X
 - enabled: true
   name: headman_id
-  value: '1'
+  value: '2'
   id: RUiKKb64tC
 - enabled: true
   name: first_semester_id
@@ -34,9 +34,9 @@ urlParameters:
   id: Xw9pvXJtj9
 - enabled: true
   name: grade_id
-  value: '1'
+  value: '2'
   id: MrwvtN3yZR
 - enabled: true
   name: ''
   value: ''
-  id: qQ4aehE4Dw
+  id: sRZ5B3QzMZ

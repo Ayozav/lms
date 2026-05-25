@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_kyqjf53q8E
 createdAt: 2026-05-09T10:50:52.448784100
-updatedAt: 2026-05-24T11:44:08.267953200
+updatedAt: 2026-05-25T05:03:47.728955700
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -12,19 +12,15 @@ bodyType: null
 description: ''
 headers: []
 method: DELETE
-name: http://127.0.0.1:4050/v1/user
+name: /v1/user
 sortPriority: 4000.0
 url: 127.0.0.1:4050/v1/user
 urlParameters:
 - enabled: true
   name: id
-  value: '5'
+  value: '1'
   id: 6JygMqcdNJ
 - enabled: true
   name: ''
   value: ''
-  id: 498Fcd775N
-- enabled: true
-  name: ''
-  value: ''
-  id: 2gimq8T40c
+  id: S4Ica9k6TB

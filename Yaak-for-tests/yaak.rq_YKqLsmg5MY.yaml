@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_YKqLsmg5MY
 createdAt: 2026-05-09T15:20:57.942322400
-updatedAt: 2026-05-24T11:41:51.260480200
+updatedAt: 2026-05-25T05:04:54.039943700
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -30,9 +30,9 @@ urlParameters:
   id: nfcC0Q5jDy
 - enabled: true
   name: supervisor_id
-  value: '7'
+  value: '2'
   id: AH87YxrnsV
 - enabled: true
   name: ''
   value: ''
-  id: MuYwiunbQj
+  id: VdjNqj37db

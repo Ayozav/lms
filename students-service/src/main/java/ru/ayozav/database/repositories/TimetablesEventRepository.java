@@ -72,4 +72,14 @@ public class TimetablesEventRepository {
             throw new DatabaseException("Обновить запись расписания с id=" + id + " не вышло: " + e.getMessage());
         }
     }
+
+    public List<Timetable> getByGroup(int groupId, int page) {
+        log.info("Trying to get timetables for group {} page {}", groupId, page);
+        return dao.getByGroup(groupId, TIMETABLES_PER_PAGE, (page - 1) * TIMETABLES_PER_PAGE);
+    }
+
+    public List<Timetable> getByTeacher(int teacherId, int page) {
+        log.info("Trying to get timetables for teacher {} page {}", teacherId, page);
+        return dao.getByTeacher(teacherId, TIMETABLES_PER_PAGE, (page - 1) * TIMETABLES_PER_PAGE);
+    }
 }

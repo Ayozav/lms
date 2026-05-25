@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_PB9Zo9Sxez
 createdAt: 2026-05-16T08:17:36.303129300
-updatedAt: 2026-05-17T07:38:31.684549500
+updatedAt: 2026-05-25T13:08:44.503303800
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -22,11 +22,11 @@ urlParameters:
   id: rjN8emBhCx
 - enabled: true
   name: discipline_id
-  value: '2'
+  value: '7'
   id: xErrjEwyHs
 - enabled: true
   name: teacher_id
-  value: '1'
+  value: '2'
   id: ZTY00dnaxE
 - enabled: true
   name: day_of_week
@@ -51,4 +51,4 @@ urlParameters:
 - enabled: true
   name: ''
   value: ''
-  id: PGKzDzGiQp
+  id: GEh9tJUepY

@@ -5,11 +5,10 @@ import ru.ayozav.database.repositories.UsersEventRepository;
 import ru.ayozav.javalin.exceptions.*;
 import ru.ayozav.models.User;
 
-import javax.swing.text.html.Option;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -50,6 +49,15 @@ public class ControllerSkeleton {
         }
         catch (DateTimeParseException | NumberFormatException | NullPointerException exc) {
             throw new FollowDateFormatException("ДД.ММ.ГГГГ");
+        }
+    }
+
+    public LocalTime parseTime(Context ctx, String paramName) throws FollowTimeFormatException, ParamMustBeException {
+        try {
+            String timeStr = this.queryParam(ctx, paramName);
+            return LocalTime.parse(timeStr);
+        } catch (DateTimeParseException e) {
+            throw new FollowTimeFormatException(paramName, "HH:MM[:SS]");
         }
     }
 
