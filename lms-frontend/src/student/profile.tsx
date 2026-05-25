@@ -77,13 +77,8 @@ function Profile(profileData: ProfileProps) {
                         <CustomBadge text={`${profileData.age} полных лет`}/>
                     </Box>
             </Box>
-            <Typography component="div">
-                    <Box>
-                        <Typography>
-                            hello there :D
-                        </Typography>
-                    </Box>
-            </Typography>
+            
+
         </Box>
     </Box>;
 }
