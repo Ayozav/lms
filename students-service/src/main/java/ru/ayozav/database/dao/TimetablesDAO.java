@@ -49,8 +49,8 @@ public interface TimetablesDAO {
 
 
     @SqlQuery("SELECT t.* FROM timetables t " +
-            "JOIN groups g ON g.first_semester_id = t.semester_id " +
-            "WHERE g.id = :groupId " +
+            "JOIN timetables_groups tg ON tg.timetable_id = t.id " +
+            "WHERE tg.group_id = :groupId " +
             "LIMIT :limit OFFSET :offset")
     List<Timetable> getByGroup(@Bind("groupId") int groupId,
                                @Bind("limit") int limit,
