@@ -1,18 +1,10 @@
 volumes:
     postgres_data:
         name: lms_postgres_data
-
     kafka1_data:
         name: lms_kafka1_data
-    kafka2_data:
-        name: lms_kafka2_data
-
-    redis_master_data:
-        name: redis_master_data
-    redis_replica_data:
-        name: redis_replica_data
-    redisinsight_data:
-        name: redisinsight_data
+    redis_data:
+        name: lms_redis_data
 
 
 networks:
@@ -77,31 +69,25 @@ services:
             # Используем переменные окружения, чтобы при развёртывании своего домена мы не плаки-плаки.
             - ./nginx/default.conf.template:/etc/nginx/templates/default.conf.template:ro
             - ./lms-frontend/dist/:/usr/share/nginx/html:ro
+        depends_on:
+            students-service:
+                condition: service_healthy
+            oauth2-proxy:
+                condition: service_started
+
         environment:
             - LMS_DOMAIN=${LMS_DOMAIN}
             - AUTH_DOMAIN=${AUTH_DOMAIN}
             - LOGTO_AUTH_DOMAIN=${LOGTO_AUTH_DOMAIN}
             - ADMIN_DOMAIN=${ADMIN_DOMAIN}
             - KAFKA_DOMAIN=${KAFKA_DOMAIN}
+            - SPA_DOMAIN=${SPA_DOMAIN}
         ports:
-            # Пробрасываем 80 порт в контейнер.
-            - "80:80"
-        # Прежде чем поднять Nginx - все сервисы должны подняться.
-        # Тогда пользователи гарантированно получат рабочие ответы!
-        depends_on:
-            postgres:
-                condition: service_healthy
-            students-service:
-                condition: service_healthy
-            logto:
-                condition: service_started
+            # Пробрасываем ${MAIN_NGINX_PORT} порт в контейнер.
+            - "${MAIN_NGINX_PORT}:80"
 
         networks:
-            lms-network:
-                aliases:
-                    - localhost
-                    - auth.localhost
-                    - admin.localhost
+            - lms-network
 
         deploy:
             resources:
@@ -113,6 +99,8 @@ services:
 
     students-service:
         # Оказывается, во время разработки можно использовать утилиту:
+        # UPD: ТЕПЕРЬ НЕ РЕКОМЕНДУЕТСЯ, ПОСКОЛЬКУ ОН КАЖДЫЙ РАЗ БИЛДИТ ПРОЕКТ ПО НОВОЙ
+        # Потом удивляемся, почему Докер роняет всё с сетевой ошибкой.
         # docker compose watch
         # Но, чтобы её настроить следует её подложить в описании к devlop'у.
         # Поскольку все изменения обычно лежат в /src'шнике, то и путь я укажу туда
@@ -133,13 +121,14 @@ services:
             postgres:
                 condition: service_healthy
 
-        image: ayozav-students-service:0.0.2
+        image: ayozav-students-service:0.0.3
         build:
             context: ./students-service
 
         container_name: "LMS.students-service"
-        ports:
-            - "4040:4040"
+        # Скрипач не нужен, у нас есть network.
+        # ports:
+        #    - "4040:4040"
 
         networks:
             - lms-network
@@ -156,9 +145,10 @@ services:
                 condition: service_healthy
         image: svhd/logto:latest
         entrypoint: ["sh", "-c", "npm run cli db seed -- --swe && npm start"]
+        # А вот ему проброс портов нужен.
         ports:
-            - "3001:3001"
-            - "3002:3002"
+            - "3001:3001"  # Общая система авторизации
+            - "3002:3002"  # Для админов ИС
         environment:
             TRUST_PROXY_HEADER: 1
             DB_URL: ${LOGTO_DATABASE_URL}
@@ -175,7 +165,8 @@ services:
             - lms-network
 
         healthcheck:
-            test: [ "CMD", "curl", "-f", "http://localhost:3001/status" ]
+            # test: [ "CMD", "curl", "-f", "http://localhost:3001/status" ]
+            test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3001/status"]
             interval: 10s
             timeout: 5s
             retries: 5
@@ -205,13 +196,13 @@ services:
         networks:
             - lms-network
 
-
     # А это нам надо, чтобы отслеживать жизнь Кафки (манной).
     kafka-ui:
         image: kafbat/kafka-ui:latest
         container_name: kafka-ui
-        ports:
-            - "9090:8080"
+        # Скрипач не нужен, у нас общая сеть.
+        # ports:
+        #    - "9090:8080"
         depends_on:
             - kafka
         environment:
@@ -244,14 +235,28 @@ services:
     oauth2-proxy:
         image: quay.io/oauth2-proxy/oauth2-proxy:v7.15.2
         restart: no
+        # А вот ему порты нужны...
         ports:
-            - "4180:4180"
-        extra_hosts:
-            - "host.docker.internal:host-gateway"
+            - "${OAUTH2_PROXY_PORT}:4180"
+        # extra_hosts:
+        #    - "host.docker.internal:host-gateway"
+
         volumes:
             - ./oauth2-proxy/config.toml:/etc/oauth2-proxy/oauth2-proxy.toml:ro
         command:
             - --config=/etc/oauth2-proxy/oauth2-proxy.toml
+
+        depends_on:
+            logto:
+                condition: service_healthy
+
+        healthcheck:
+#            test: [ "CMD", "curl", "-f", "http://localhost:4180/oauth2/health" ]
+            test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:4180/oauth2/health"]
+            interval: 10s
+            timeout: 5s
+            retries: 10
+
 
         networks:
             - lms-network
@@ -262,7 +267,7 @@ services:
                     cpus: 1
                     memory: 512M
 
-    # Для прокси это нужно...
+    # Для reverse-прокси это нужно...
     redis-master:
         image: redis:8.6.0
         container_name: redis-master
@@ -277,11 +282,12 @@ services:
             - --maxmemory-samples 5         # Количество проверяемых ключей при eviction (по умолчанию 5)
             #     - --active-expire enabled _____ # Включаем активное истечение ключей (более не требуется - включено по-умолчанию)
             - --port 6379
-            - --bind 0.0.0.0                # Слушаем на всех интерфейсах внутри контейнера
-        ports:
-            - "6379:6379"                   # Пробрасываем порт мастера наружу (удобно для подключения)
+            - --bind 0.0.0.0  # Слушаем на всех интерфейсах внутри контейнера
+        # Скрипач не нужен.
+        # ports:
+        #    - "6379:6379  # Пробрасываем порт мастера наружу (удобно для подключения)
         volumes:
-            - redis_master_data:/data
+            - redis_data:/data
 
         networks:
             - lms-network
@@ -289,8 +295,8 @@ services:
         deploy:
             resources:
                 limits:
-                    cpus: 1                    # Ограничиваем cpu с запасом на дополнительные нужды
-                    memory: 640M                # Жёсткий лимит памяти контейнера (больше maxmemory для служебных нужд)
+                    cpus: 1  # Ограничиваем cpu с запасом на дополнительные нужды
+                    memory: 512M  # Жёсткий лимит памяти контейнера (больше maxmemory для служебных нужд)
 
         healthcheck:
             test: [ "CMD", "redis-cli", "ping" ]

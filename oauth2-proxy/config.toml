@@ -1,63 +1,109 @@
-provider = "oidc"
-http_address = "0.0.0.0:4180"
+# Основано на:
+# 1. https://github.com/oauth2-proxy/oauth2-proxy/blob/master/contrib/oauth2-proxy.cfg.example
+# 2. https://oauth2-proxy.github.io/oauth2-proxy/configuration/providers/openid_connect
+# 3. https://oauth2-proxy.github.io/oauth2-proxy/ (У нас вариант -- middleware)
 
+# Только внутри контейнера ставим прослушку: Nginx сам обратится к нему.
+http_address = "0.0.0.0:4180"
+# https_address = ":443"
+reverse_proxy = true  # Он работает за nginx'ом! Он работает вторым!
+
+# For prod.
+# tls_cert_file = ""
+# tls_key_file = ""
+
+# Внутряночные сервера, которым надо.
+upstreams = [
+    "http://nginx/",
+]
+
+
+# pass HTTP Basic Auth, X-Forwarded-User and X-Forwarded-Email information to upstream
+pass_basic_auth = true  # Нам надо знать, какой конкретно пользователь
+pass_user_headers = true  # Всё ещё очень надо знать
+# pass the request Host Header to upstream
+# when disabled the upstream Host is used as the Host Header
+pass_host_header = true
+
+# Нам нравятся все почтовые адреса.
+email_domains = ["*"]
+
+# Вот тут в игру вступает LogTo
+# The OAuth Client ID, Secret
+provider = "oidc"
 client_id = "buf8jnenp4dmiyf6zlpow"
 client_secret = "u5I8tqNzFCT6eDAkyiol4riSSQmprwzI"
 
-redirect_url = "http://localhost/"
+# Точка встречи: то, куда отправят пользователя после аутентификации.
+# OAuth2-Proxy redirect
+redirect_url = "http://localhost/oauth2/callback"
+# Задача белого списка - ограничить домены,
+# куда можно перенаправить пользователя ПОСЛЕ ВХОДА.
+whitelist_domains = [
+    "localhost",
+    ".localhost",
+]
+
+# Подбрасываем настройки из LogTo (то есть Nginx отдаёт auth.localhost/oidc,):
 oidc_issuer_url = "http://auth.localhost/oidc"
 
+# Вообще говоря, товарищ LogTo поддерживает discovery.
 skip_oidc_discovery = true
 # Это browser redirect URL, поэтому здесь должен быть localhost, а не host.docker.internal.
-login_url = "http://auth.localhost/oidc/auth"
-redeem_url = "http://auth.localhost/oidc/token"
+# Эти ссылки были эмпирически получены и нагуглены, но путь был проще...
+# login_url = "http://auth.localhost/oidc/auth"
+# redeem_url = "http://auth.localhost/oidc/token"
 oidc_jwks_url = "http://auth.localhost/oidc/jwks"
-profile_url = "http://auth.localhost/oidc/me"
+# profile_url = "http://auth.localhost/oidc/me"
 
-scope = "openid profile email"
-email_domains = ["*"]
-skip_provider_button = true
 
-upstreams = [
-    "http://host.docker.internal:80/"
-]
+# Scopes Added to the request
+# It has the same behavior as the --scope flag
+# Мы очень хотим получить это всё и, до кучи, очень хотим roles.
+scope = "openid profile email roles"
+insecure_oidc_allow_unverified_email = true
+#skip_claims_from_profile_url=false
 
-# Для API не делаем redirect на login, чтобы frontend получал 401.
-api_routes = [
-    "^/api/"
-]
-
-# GET-маршруты остаются публичными, но при наличии валидной сессии хедеры все равно будут добавлены.
-skip_auth_routes = [
-
-    "GET=^/assets/.*$",
-    "GET=^/favicon.svg$",
-    "GET=^/icons.svg$",
-    "GET=^/oauth2/callback$",
-    "GET=^/oidc/auth$",
-]
-
-session_store_type = "redis"
-redis_connection_url = "redis://host.docker.internal:6379"
-
-pass_user_headers = true
-pass_basic_auth = false
+# Pass OAuth Access token to upstream via "X-Forwarded-Access-Token"
+# Мы лучше не будем передавать токен недостоверным сервисам.
+# Кто знает, что там сервис наворотит?
 pass_access_token = false
-pass_authorization_header = false
-set_authorization_header = false
-set_xauthrequest = false
+# bypass authentication for requests that match the method & path. Format: method=path_regex OR path_regex alone for all methods
+skip_auth_routes = [
+    "GET=^/assets/*$",
+    # Все пути должны быть авторизованными.
+]
 
-cookie_name = "_oauth2_proxy_jbcd"
-cookie_secret = "MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWY="
-cookie_secure = false
-cookie_httponly = true
+# mark paths as API routes to get HTTP Status code 401 instead of redirect to login page
+api_routes = [
+    "^/api"
+]
+
+# Cookie Settings
+# Name     - the cookie name
+# Secret   - the seed string for secure cookies; should be 16, 24, or 32 bytes
+#            for use with an AES cipher when cookie_refresh or pass_access_token
+#            is set
+# Domain   - (optional) cookie domain to force cookies to (ie: .yourcompany.com)
+# Expire   - (duration) expire timeframe for cookie
+# Refresh  - (duration) refresh the cookie when duration has elapsed after cookie was initially set.
+#            Should be less than cookie_expire; set to 0 to disable.
+#            On refresh, OAuth token is re-validated.
+#            (ie: 1h means tokens are refreshed on request 1hr+ after it was set)
+# Secure   - secure cookies are only sent by the browser of a HTTPS connection (recommended)
+# HttpOnly - httponly cookies are not readable by javascript (recommended)
+cookie_name = "_oauth2_proxy_lms"
+cookie_secret = "fZ1x8-fmfv0EcT1Gc1mmjqlibeAlJUT4vjPsw6eFDnw="
+cookie_domains = ["localhost", "app.localhost", "auth.localhost", "sign-in.localhost"]  # В прод версии поменять.
+cookie_expire = "24h"
+cookie_refresh = "1h"
+cookie_secure = false  # Вернуть в проде, чтобы избежать дыры в виде XSS
+cookie_httponly = false  # Аналогично...
 cookie_samesite = "lax"
-cookie_csrf_expire = "15m"
+cookie_csrf_expire = "15m"  # Защита от CSRF-атак.
 cookie_csrf_per_request = true
 cookie_csrf_samesite = "lax"
 
-whitelist_domains = [
-    "localhost:4180",
-    "auth.localhost"  # Обратите внимание на точку в начале
-
-]
+# И это ништяк
+session_store_type = "redis"
+redis_connection_url = "redis://redis-master:6379"
