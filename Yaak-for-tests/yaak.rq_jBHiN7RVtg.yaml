@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_jBHiN7RVtg
 createdAt: 2026-05-17T07:17:01.992388100
-updatedAt: 2026-05-17T07:38:31.636707500
+updatedAt: 2026-05-25T20:09:33.050909200
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -12,13 +12,13 @@ bodyType: null
 description: ''
 headers: []
 method: POST
-name: 127.0.0.1:4040/v1/lesson
-sortPriority: 19000.0
+name: /v1/lesson
+sortPriority: 23000.0
 url: 127.0.0.1:4040/v1/lesson
 urlParameters:
 - enabled: true
   name: discipline_id
-  value: '2'
+  value: '7'
   id: 2g08APcT2R
 - enabled: true
   name: ordered_number
@@ -55,4 +55,4 @@ urlParameters:
 - enabled: true
   name: ''
   value: ''
-  id: DDx3QjCYhn
+  id: ar8nddagN9

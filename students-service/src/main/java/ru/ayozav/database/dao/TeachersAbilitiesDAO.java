@@ -26,6 +26,14 @@ public interface TeachersAbilitiesDAO {
 
     @SqlQuery(
             "SELECT teacher_id, discipline_id FROM teachers_abilities " +
+            "WHERE discipline_id = :disciplineId AND teacher_id = :teacherId")
+    List<TeachersAbility> get(
+            @Bind("teacherId") int teacherId,
+            @Bind("disciplineId") int disciplineId
+    );
+
+    @SqlQuery(
+            "SELECT teacher_id, discipline_id FROM teachers_abilities " +
                     "WHERE teacher_id = :teacher_id"
     )
     List<TeachersAbility> getByTeacherId(@Bind("teacher_id") int teacherId);

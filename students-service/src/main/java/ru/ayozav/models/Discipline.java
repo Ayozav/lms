@@ -1,8 +1,14 @@
 package ru.ayozav.models;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+@Data
+@NoArgsConstructor
+@Builder
 public class Discipline {
     private int id;
     private String disciplineName;
@@ -19,22 +25,4 @@ public class Discipline {
         this.semesterId = semesterId;
         this.gradeId = gradeId;
     }
-
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
-
-    public String getDisciplineName() { return disciplineName; }
-    public void setDisciplineName(String disciplineName) { this.disciplineName = disciplineName; }
-
-    public int getSupervisorId() { return supervisorId; }
-    public void setSupervisorId(int supervisorId) { this.supervisorId = supervisorId; }
-
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
-
-    public int getSemesterId() { return semesterId; }
-    public void setSemesterId(int semesterId) { this.semesterId = semesterId; }
-
-    public int getGradeId() { return gradeId; }
-    public void setGradeId(int gradeId) { this.gradeId = gradeId; }
 }

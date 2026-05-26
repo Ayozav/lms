@@ -1,0 +1,34 @@
+type: http_request
+model: http_request
+id: rq_yPKi7SFnXc
+createdAt: 2026-05-25T20:09:04.148819800
+updatedAt: 2026-05-25T20:11:41.713098700
+workspaceId: wk_TsG5TkW2Jb
+folderId: null
+authentication: {}
+authenticationType: null
+body: {}
+bodyType: null
+description: ''
+headers: []
+method: GET
+name: /v1/marks/student
+sortPriority: 14333.333333333334
+url: 127.0.0.1:4040/v1/marks/student
+urlParameters:
+- enabled: true
+  name: student_id
+  value: '3'
+  id: 4bMDF0EWHb
+- enabled: true
+  name: start_date
+  value: 01.01.1900
+  id: WyqbP0MCh8
+- enabled: true
+  name: end_date
+  value: 30.12.2025
+  id: QbftQRE7MR
+- enabled: true
+  name: ''
+  value: ''
+  id: 5n535PvDpE

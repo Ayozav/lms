@@ -17,7 +17,7 @@ public class MarksEventRepository {
 
     private static final Logger log = LoggerFactory.getLogger(MarksEventRepository.class);
     private final MarksDAO dao;
-    private final int MARKS_PER_PAGE = 20;
+    public final int MARKS_PER_PAGE = 20;
 
     public MarksEventRepository(HikariConnectionFactory factory) {
         Jdbi jdbi = Jdbi.create(factory.getDataSource());
@@ -45,6 +45,11 @@ public class MarksEventRepository {
     public Optional<Mark> getById(int id) {
         log.info("Getting mark by id={}", id);
         return dao.getById(id);
+    }
+
+    public List<Mark> getByStudent(int studentID, LocalDate start, LocalDate end) {
+        log.info("Getting marks for student={}", studentID);
+        return dao.getByStudentIdAndDateRange(studentID, start, end);
     }
 
     public void deleteById(int id) throws DatabaseException {

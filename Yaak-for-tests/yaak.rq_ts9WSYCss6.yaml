@@ -1,0 +1,26 @@
+type: http_request
+model: http_request
+id: rq_ts9WSYCss6
+createdAt: 2026-05-25T20:38:33.050624
+updatedAt: 2026-05-25T20:41:39.005010800
+workspaceId: wk_TsG5TkW2Jb
+folderId: null
+authentication: {}
+authenticationType: null
+body: {}
+bodyType: null
+description: ''
+headers: []
+method: GET
+name: /v1/homework
+sortPriority: 18000.0
+url: 127.0.0.1:4040/v1/homework
+urlParameters:
+- enabled: true
+  name: id
+  value: '1'
+  id: jkfwe0p83c
+- enabled: true
+  name: ''
+  value: ''
+  id: skx7JzNWDK

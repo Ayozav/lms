@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_kgxUnAmobR
 createdAt: 2026-05-16T08:17:36.294595100
-updatedAt: 2026-05-17T07:38:31.657765600
+updatedAt: 2026-05-25T20:09:33.072616
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -13,6 +13,6 @@ description: ''
 headers: []
 method: GET
 name: 127.0.0.1:4040/v1/timetables
-sortPriority: 24000.0
+sortPriority: 29000.0
 url: 127.0.0.1:4040/v1/timetables?page=1
 urlParameters: []

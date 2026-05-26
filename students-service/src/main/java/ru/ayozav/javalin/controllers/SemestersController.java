@@ -28,8 +28,8 @@ public class SemestersController extends ControllerSkeleton {
     public void add(Context ctx) {
         try {
             String name = this.queryParam(ctx, "name");
-            LocalDate start = this.parseDate(this.queryParam(ctx, "start"));
-            LocalDate end = this.parseDate(this.queryParam(ctx, "end"));
+            LocalDate start = this.parseDate("start", this.queryParam(ctx, "start"));
+            LocalDate end = this.parseDate("end", this.queryParam(ctx, "end"));
 
             if (start.isAfter(end)) {
                 throw new DateRangeException();
@@ -81,8 +81,8 @@ public class SemestersController extends ControllerSkeleton {
         try {
             int id = this.parsePositiveInt(ctx, "id");
             String name = this.queryParam(ctx, "name");
-            LocalDate start = this.parseDate(this.queryParam(ctx, "start"));
-            LocalDate end = this.parseDate(this.queryParam(ctx, "end"));
+            LocalDate start = this.parseDate("start", this.queryParam(ctx, "start"));
+            LocalDate end = this.parseDate("end", this.queryParam(ctx, "end"));
 
             if (start.isAfter(end)) {
                 throw new DateRangeException();

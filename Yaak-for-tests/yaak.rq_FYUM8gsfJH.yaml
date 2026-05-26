@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_FYUM8gsfJH
 createdAt: 2026-05-17T07:07:53.702791500
-updatedAt: 2026-05-17T07:38:31.664506300
+updatedAt: 2026-05-25T20:09:33.112964400
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -12,7 +12,19 @@ bodyType: null
 description: ''
 headers: []
 method: GET
-name: 127.0.0.1:4040/v1/timetable_groups
-sortPriority: 26000.0
-url: 127.0.0.1:4040/v1/timetable_groups?page=1
-urlParameters: []
+name: 127.0.0.1:4040/v1/timetable/group
+sortPriority: 38000.0
+url: 127.0.0.1:4040/v1/timetable/group
+urlParameters:
+- enabled: true
+  name: group_id
+  value: '21'
+  id: TiUHKASN5Y
+- enabled: true
+  name: page
+  value: '1'
+  id: sSgfd7ahqi
+- enabled: true
+  name: ''
+  value: ''
+  id: AXnNIx0Pzd

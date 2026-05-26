@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_9VzDcihz63
 createdAt: 2026-05-17T07:00:58.820086400
-updatedAt: 2026-05-17T07:38:31.691264400
+updatedAt: 2026-05-25T20:09:33.135331400
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -13,12 +13,12 @@ description: ''
 headers: []
 method: POST
 name: 127.0.0.1:4040/v1/enrollment
-sortPriority: 34000.0
-url: 127.0.0.1:4040/v1/enrollment
+sortPriority: 41000.0
+url: http://127.0.0.1:4040/v1/enrollment
 urlParameters:
 - enabled: true
   name: student_id
-  value: '1'
+  value: '3'
   id: y0zb5tRfAT
 - enabled: true
   name: group_id
@@ -31,4 +31,4 @@ urlParameters:
 - enabled: true
   name: ''
   value: ''
-  id: xwxHWyimEU
+  id: WV7NCpwnCN

@@ -6,9 +6,9 @@ import ru.ayozav.javalin.exceptions.*;
 import ru.ayozav.models.User;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -38,7 +38,7 @@ public class ControllerSkeleton {
         }
     }
 
-    public LocalDate parseDate(String paramValue) throws FollowDateFormatException{
+    public LocalDate parseDate(String paramName, String paramValue) throws FollowDateFormatException{
         LocalDate dateParam;
         try {
             dateParam = LocalDate.parse(
@@ -48,7 +48,16 @@ public class ControllerSkeleton {
             return dateParam;
         }
         catch (DateTimeParseException | NumberFormatException | NullPointerException exc) {
-            throw new FollowDateFormatException("ДД.ММ.ГГГГ");
+            throw new FollowDateFormatException("ДД.ММ.ГГГГ", paramName);
+        }
+    }
+
+    public LocalTime parseTime(Context ctx, String paramName) throws FollowTimeFormatException, ParamMustBeException {
+        try {
+            String timeStr = this.queryParam(ctx, paramName);
+            return LocalTime.parse(timeStr);
+        } catch (DateTimeParseException e) {
+            throw new FollowTimeFormatException(paramName, "HH:MM[:SS]");
         }
     }
 
@@ -73,11 +82,9 @@ public class ControllerSkeleton {
         }
     }
 
-
     public User getUser(int userID, UsersEventRepository repository) {
         Optional<User> user = repository.getById(userID);
         if (user.isEmpty()) throw new UserNotExistingException(userID);
         return user.get();
-
     }
 }

@@ -9,6 +9,8 @@ version = "0.0.1"
 
 repositories {
     mavenCentral()
+    maven { url 'https://repo1.maven.org/maven2/' }
+//    maven { url 'https://maven.google.com' } // иногда помогает
 }
 
 application {
@@ -22,26 +24,41 @@ tasks.named('run') {
 }
 
 dependencies {
-    // For Unit-tests
-    testImplementation platform("org.junit:junit-bom:5.10.0")
-    testImplementation "org.junit.jupiter:junit-jupiter"
+    // JUnit 5
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
+
+    // Testcontainers
+    def testcontainersVersion = '1.21.4'
+    testImplementation "org.testcontainers:testcontainers:$testcontainersVersion"
+    testImplementation "org.testcontainers:junit-jupiter:$testcontainersVersion"
+    testImplementation "org.testcontainers:postgresql:$testcontainersVersion"
+    testImplementation "org.testcontainers:kafka:$testcontainersVersion"
+
     // Javalin for web
     implementation "io.javalin:javalin:7.0.0"
     // Extra dependency from Javalin for JSON answers.
     implementation "com.fasterxml.jackson.core:jackson-databind:2.20.1"
     implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.2"
+
     // For easy code gen
-    implementation "org.projectlombok:lombok:1.18.42"
+    compileOnly 'org.projectlombok:lombok:1.18.42'
+    annotationProcessor 'org.projectlombok:lombok:1.18.42'
+    testCompileOnly 'org.projectlombok:lombok:1.18.42'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.42'
+
     // For logging
     implementation "org.slf4j:slf4j-simple:2.0.17"
     // Database driver
     implementation "org.postgresql:postgresql:42.7.10"
+
     // For Connection pools
     implementation 'com.zaxxer:HikariCP:7.0.2'
     // For easy queries
     implementation platform("org.jdbi:jdbi3-bom:3.46.0")
     implementation "org.jdbi:jdbi3-core:3.46.0"
     implementation "org.jdbi:jdbi3-sqlobject"
+
     // For easy migrations and controlling database.
     implementation "org.liquibase:liquibase-core:4.31.1"
 

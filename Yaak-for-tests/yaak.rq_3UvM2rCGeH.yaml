@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_3UvM2rCGeH
 createdAt: 2026-05-16T05:56:25.794385600
-updatedAt: 2026-05-17T07:38:31.593353700
+updatedAt: 2026-05-25T20:09:32.999767400
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -13,7 +13,7 @@ description: ''
 headers: []
 method: DELETE
 name: ''
-sortPriority: 7000.0
+sortPriority: 8000.0
 url: 127.0.0.1:4040/v1/semester
 urlParameters:
 - enabled: true

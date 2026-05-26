@@ -32,7 +32,7 @@ public class UsersController extends ControllerSkeleton {
             String firstName = this.queryParam(ctx, "first_name");
             String lastName = this.queryParam(ctx, "last_name");
             String patronymic = this.queryParam(ctx, "patronymic");
-            LocalDate birthDate = this.parseDate(this.queryParam(ctx, "birth_date"));
+            LocalDate birthDate = this.parseDate("birth_date", this.queryParam(ctx, "birth_date"));
 
             UUID openID = this.parseUIID(
                     "open_id",
@@ -90,7 +90,7 @@ public class UsersController extends ControllerSkeleton {
             String firstName = this.queryParam(ctx, "first_name");
             String lastName = this.queryParam(ctx, "last_name");
             String patronymic = this.queryParam(ctx, "patronymic");
-            LocalDate birthDate = this.parseDate(this.queryParam(ctx, "birth_date"));
+            LocalDate birthDate = this.parseDate("birth_date", this.queryParam(ctx, "birth_date"));
             UUID openID = this.parseUIID(
                     "open_id",
                     this.queryParam(ctx, "open_id")

@@ -15,7 +15,7 @@ public class TeachersAbilitiesEventRepository {
 
     private static final Logger log = LoggerFactory.getLogger(TeachersAbilitiesEventRepository.class);
     private final TeachersAbilitiesDAO dao;
-    private final int LINKS_PER_PAGE = 20;
+    public final int LINKS_PER_PAGE = 20;
 
     public TeachersAbilitiesEventRepository(HikariConnectionFactory factory) {
         Jdbi jdbi = Jdbi.create(factory.getDataSource());
@@ -31,6 +31,10 @@ public class TeachersAbilitiesEventRepository {
             log.warn("[FAILED to add ability] teacher={}, discipline={}: {}", teacherId, disciplineId, e.getMessage());
             throw new DatabaseException("Не удалось добавить способность преподавателя.");
         }
+    }
+
+    public boolean exists(int teacherId, int disciplineId) {
+        return !dao.get(teacherId, disciplineId).isEmpty();
     }
 
     public void deleteLink(int teacherId, int disciplineId) throws DatabaseException {

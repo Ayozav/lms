@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_YCcMnvTevr
 createdAt: 2026-05-16T05:50:08.317480700
-updatedAt: 2026-05-17T07:38:31.589882800
+updatedAt: 2026-05-25T20:09:32.996749600
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -13,8 +13,8 @@ description: ''
 headers: []
 method: POST
 name: 127.0.0.1:4040/v1/semester
-sortPriority: 6000.0
-url: 127.0.0.1:4040/v1/semester
+sortPriority: 7000.0
+url: http://localhost:4050/v1/semester
 urlParameters:
 - enabled: true
   name: name
@@ -22,13 +22,13 @@ urlParameters:
   id: MfSEUrACIS
 - enabled: true
   name: start
-  value: 2008-02-01
+  value: 01.09.2007
   id: 3PB6HuBaiR
 - enabled: true
   name: end
-  value: 2008-07-31
+  value: 01.01.2008
   id: eY47CYwUXT
 - enabled: true
   name: ''
   value: ''
-  id: TI3KGWMPNJ
+  id: j2NadwCSdA

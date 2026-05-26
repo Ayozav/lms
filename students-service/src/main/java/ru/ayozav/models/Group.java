@@ -1,8 +1,14 @@
 package ru.ayozav.models;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+@Data
+@NoArgsConstructor
+@Builder
 public class Group {
     private int id;
     private String groupName;
@@ -17,54 +23,6 @@ public class Group {
         this.headmanId = headmanId;
         this.firstSemesterId = firstSemesterId;
         this.courseLevel = courseLevel;
-        this.gradeId = gradeId;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getGroupName() {
-        return groupName;
-    }
-
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
-    }
-
-    public int getHeadmanId() {
-        return headmanId;
-    }
-
-    public void setHeadmanId(int headmanId) {
-        this.headmanId = headmanId;
-    }
-
-    public int getFirstSemesterId() {
-        return firstSemesterId;
-    }
-
-    public void setFirstSemesterId(int firstSemesterId) {
-        this.firstSemesterId = firstSemesterId;
-    }
-
-    public int getCourseLevel() {
-        return courseLevel;
-    }
-
-    public void setCourseLevel(int courseLevel) {
-        this.courseLevel = courseLevel;
-    }
-
-    public int getGradeId() {
-        return gradeId;
-    }
-
-    public void setGradeId(int gradeId) {
         this.gradeId = gradeId;
     }
 }

@@ -1,0 +1,30 @@
+type: http_request
+model: http_request
+id: rq_ZFaVJMomfe
+createdAt: 2026-05-25T19:24:14.547056
+updatedAt: 2026-05-25T20:09:33.012568300
+workspaceId: wk_TsG5TkW2Jb
+folderId: null
+authentication: {}
+authenticationType: null
+body: {}
+bodyType: null
+description: ''
+headers: []
+method: POST
+name: /v1/teacher/ability
+sortPriority: 12000.0
+url: 127.0.0.1:4040/v1/teacher/ability
+urlParameters:
+- enabled: true
+  name: teacher_id
+  value: '2'
+  id: jvd5xKjZxK
+- enabled: true
+  name: discipline_id
+  value: '8'
+  id: yDFkCT5WMN
+- enabled: true
+  name: ''
+  value: ''
+  id: pNnbzIT5Mq

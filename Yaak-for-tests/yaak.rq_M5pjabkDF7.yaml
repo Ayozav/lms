@@ -1,0 +1,26 @@
+type: http_request
+model: http_request
+id: rq_M5pjabkDF7
+createdAt: 2026-05-25T20:41:31.269654100
+updatedAt: 2026-05-25T20:47:47.731463100
+workspaceId: wk_TsG5TkW2Jb
+folderId: null
+authentication: {}
+authenticationType: null
+body: {}
+bodyType: null
+description: ''
+headers: []
+method: GET
+name: /v1/homeworks
+sortPriority: 18000.001
+url: 127.0.0.1:4040/v1/homeworks
+urlParameters:
+- enabled: true
+  name: page
+  value: '1'
+  id: jkfwe0p83c
+- enabled: true
+  name: ''
+  value: ''
+  id: hR8bTeSMSX

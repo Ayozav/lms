@@ -1,0 +1,30 @@
+type: http_request
+model: http_request
+id: rq_3bPYSXfk4b
+createdAt: 2026-05-25T13:45:37.415639200
+updatedAt: 2026-05-25T20:09:33.129822500
+workspaceId: wk_TsG5TkW2Jb
+folderId: null
+authentication: {}
+authenticationType: null
+body: {}
+bodyType: null
+description: ''
+headers: []
+method: DELETE
+name: 127.0.0.1:4040/v1/timetable/group
+sortPriority: 40000.0
+url: 127.0.0.1:4040/v1/timetable/group
+urlParameters:
+- enabled: true
+  name: group_id
+  value: '21'
+  id: N30gT7P5qX
+- enabled: true
+  name: timetable_id
+  value: '2'
+  id: Sg3X3hJSpw
+- enabled: true
+  name: ''
+  value: ''
+  id: DKG4xW8I0x

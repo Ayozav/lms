@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_YsQ2a5aNcP
 createdAt: 2026-05-16T08:36:50.051999800
-updatedAt: 2026-05-17T07:38:31.687929100
+updatedAt: 2026-05-25T20:09:33.099173700
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -13,12 +13,12 @@ description: ''
 headers: []
 method: PUT
 name: 127.0.0.1:4040/v1/timetable
-sortPriority: 33000.0
+sortPriority: 35000.0
 url: 127.0.0.1:4040/v1/timetable
 urlParameters:
 - enabled: true
   name: id
-  value: '4'
+  value: '1'
   id: DXx5pm0aje
 - enabled: true
   name: semester_id
@@ -26,11 +26,11 @@ urlParameters:
   id: rjN8emBhCx
 - enabled: true
   name: discipline_id
-  value: '2'
+  value: '8'
   id: xErrjEwyHs
 - enabled: true
   name: teacher_id
-  value: '1'
+  value: '2'
   id: ZTY00dnaxE
 - enabled: true
   name: day_of_week
@@ -55,4 +55,4 @@ urlParameters:
 - enabled: true
   name: ''
   value: ''
-  id: A2tj7IBSTm
+  id: W0EDM2mnKk

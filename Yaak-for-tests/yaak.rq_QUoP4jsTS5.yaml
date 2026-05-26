@@ -1,0 +1,26 @@
+type: http_request
+model: http_request
+id: rq_QUoP4jsTS5
+createdAt: 2026-05-25T20:09:09.000135800
+updatedAt: 2026-05-25T20:09:33.036259200
+workspaceId: wk_TsG5TkW2Jb
+folderId: null
+authentication: {}
+authenticationType: null
+body: {}
+bodyType: null
+description: ''
+headers: []
+method: DELETE
+name: /v1/mark
+sortPriority: 19000.0
+url: 127.0.0.1:4040/v1/mark
+urlParameters:
+- enabled: true
+  name: id
+  value: '2'
+  id: BAekAtPYDU
+- enabled: true
+  name: ''
+  value: ''
+  id: WZvSRi69vG

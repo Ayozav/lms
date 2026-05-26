@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_pSSoxHqeWo
 createdAt: 2026-05-16T06:09:40.604181700
-updatedAt: 2026-05-17T07:38:31.596538900
+updatedAt: 2026-05-25T20:09:33.002793800
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -12,7 +12,7 @@ bodyType: null
 description: ''
 headers: []
 method: GET
-name: 127.0.0.1:4040/v1/disciplines
-sortPriority: 8000.0
-url: 127.0.0.1:4040/v1/disciplines?page=1
+name: /v1/disciplines
+sortPriority: 9000.0
+url: http://localhost:4050/v1/disciplines?page=1
 urlParameters: []

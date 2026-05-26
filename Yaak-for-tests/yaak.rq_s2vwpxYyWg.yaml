@@ -1,0 +1,38 @@
+type: http_request
+model: http_request
+id: rq_s2vwpxYyWg
+createdAt: 2026-05-25T20:41:47.010518800
+updatedAt: 2026-05-25T20:47:40.834679400
+workspaceId: wk_TsG5TkW2Jb
+folderId: null
+authentication: {}
+authenticationType: null
+body: {}
+bodyType: null
+description: ''
+headers: []
+method: POST
+name: /v1/homework
+sortPriority: 18000.001
+url: 127.0.0.1:4040/v1/homework
+urlParameters:
+- enabled: true
+  name: lesson_id
+  value: '1'
+  id: jkfwe0p83c
+- enabled: true
+  name: semester_id
+  value: '1'
+  id: 0cYTvd9vEa
+- enabled: true
+  name: deadline_date
+  value: 31.12.2006
+  id: pnBExB7GBF
+- enabled: true
+  name: deadline_time
+  value: 12:00
+  id: nfW49S3IAg
+- enabled: true
+  name: ''
+  value: ''
+  id: wHkC2XfShq
