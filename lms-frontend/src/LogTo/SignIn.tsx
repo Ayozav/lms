@@ -10,16 +10,16 @@ const SignIn = () => {
     }
 
     return (
-        // <Box
-        //     sx={{
-        //         backgroundImage: 'url("../assets/bg_blured.png")',
-        //         backgroundSize: 'cover',
-        //         backgroundPosition: 'center',
-        //         backgroundRepeat: 'no-repeat',
-        //         minHeight: '100vh',
-        //         width: '100%',
-        //     }}
-        // >
+        <Box
+            sx={{
+                backgroundImage: 'url("../assets/bg_blured.png")',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                minHeight: '100vh',
+                width: '100%',
+            }}
+        >
 
         <Box 
             className="bg_pic"
@@ -56,6 +56,7 @@ const SignIn = () => {
                 </Paper>
             </Box>
         </Box>    
+        </Box>
     );
 }
 
