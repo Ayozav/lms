@@ -1,11 +1,19 @@
-import { useState, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import Profile from '../student/Profile.tsx';
 import Timetable from '../timetable/Timetable.tsx';
 import { mockTeachers } from '../teachers/Teacher.tsx';
 import TeachersTable from '../teachers/TeachersTable.tsx';
-import PesronalNote from '../notes/PesronalNote.tsx';
+import PesronalNote from '../pero/PesronalNote.tsx';
 // import Welcome from './Welcome_component.tsx';
 import StudentImage from '../assets/student_photo.jpg';
+
+//profile + user
+import {userService} from '../api/servieces/usesrService.tsx';
+import {type User} from '../api/modules/user.tsx';
+// import { type Grade } from '../api/modules/grade.tsx';
+
+//teachers + 
+// import {} from 
 
 import {
     Box, CssBaseline,
@@ -29,6 +37,7 @@ import {
     Logout,
     FolderShared as TeachersIcon,
 } from '@mui/icons-material';
+import { gradeService } from '../api/servieces/gradeService.tsx';
 
 const drawerWidth = 240;
 
@@ -45,7 +54,7 @@ const menu_items = [
 //я честно хз как выход вписать в общество, потому что эта нетакуся должна быть снизу
 const logout_button = {text: 'Выйти', icon: <Logout/>, id: 'logout'}
 
-
+// цветовые темы
 const LmsDarkTheme = createTheme({
     palette: {
         mode: 'dark', 
@@ -60,7 +69,6 @@ const LmsDarkTheme = createTheme({
     }
     
 })
-
 // ToDO: подобрать цвета на светлую тему
 const LmsLigthTheme = createTheme({
     palette: {
@@ -178,23 +186,63 @@ function TimetableFrame() {
 }
 
 function ProfileFrame() {
+    const [profile, setProfile] = useState<User | null>(null);
+    // const [loading] = useState(true);
+
+  useEffect(() => {
+    userService.getById(0)
+      .then(data => {
+        setProfile(data);
+      })
+      .catch(error => console.error('Ошибка загрузки профиля:', error))
+    //   .finally(() => setLoading(false));
+  }, []);
+
+    if (!profile) {
+        return <Typography sx={{ p: 5 }} color="error">Не удалось загрузить профиль</Typography>;
+    }
+
     return (
         <Profile
-            fullName="Ошеровская Дарья Викторовна"
-            age={20}
-            birthDate="03.07.2005"
-            course={3}
-            emailAddress="frontend.hater@yes.me"
-            gradeLevel="Бакалавриат"
-            group="ИС2-Б23"
-            institute="ОИКС"
-            phoneNumber="8 800 535 35 35"
-            program_code="09.03.02"
-            study_mode="Очная"
-            loading={false}
+            // fullName={`${profile.lastName} ${profile.firstName} ${profile.patronymic}`} ПОТОМУ ЧТО ДА СПАСИБО ДАША 
+            lastName={profile.lastName}
+            firstName={profile.firstName}
+            patronymic={profile.patronymic} //ToDo: sPSODKFIJODDJODPSOSKSKDIWU8278374ZBYD-[mino;liqhwckajsnck!OIQNWI!MLdnsdmd]
+            // age={calculateAge(profile?.birthDate)}
+            age={0}
+            birthDate={profile.birthDate}
+            // course={profile.course} )))))))))))))0
+            // emailAddress={'student@example.com'}
+            // gradeLevel={'нет'}
+            // group={}
+            // institute={}
+            // phoneNumber={}
+            // program_code={}
+            // study_mode={}
+            // loading={false}
         />
-    );
+  );
 }
+
+//статичный пропс (НА ВСЯКИЙ случай.)
+// function ProfileFrame() {
+//     return (
+        // <Profile
+        //     fullName="Ошеровская Дарья Викторовна"
+        //     age={20}
+        //     birthDate="03.07.2005"
+        //     course={3}
+        //     emailAddress="frontend.hater@yes.me"
+        //     gradeLevel="Бакалавриат"
+        //     group="ИС2-Б23"
+        //     institute="ОИКС"
+        //     phoneNumber="8 800 535 35 35"
+        //     program_code="09.03.02"
+        //     study_mode="Очная"
+        //     loading={false}
+        // />
+//     );
+// }
 
 function TeachersFrame() {
     return (
