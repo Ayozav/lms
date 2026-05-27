@@ -1,6 +1,6 @@
 // src/api/services/userService.ts
 import { BASE_URLS, request } from './api.tsx';
-import type { User, CreateUserDto, UpdateUserDto } from '../modules/user';
+import type { User, CreateUser, UpdateUser } from '../modules/user';
 
 const BASE = `${BASE_URLS.userGrade}/user`;
 
@@ -12,20 +12,20 @@ export const userService = {
     request(`${BASE_URLS.userGrade}/users`, { params: { page } }),
 
   // Если бэкенд ожидает JSON в теле
-  create: (data: CreateUserDto): Promise<User> =>
+  create: (data: CreateUser): Promise<User> =>
     request(BASE, {
       method: 'POST',
       body: JSON.stringify(data),
     }),
 
   // Если бэкенд ожидает query параметры (как в Yaak)
-  createAsQuery: (data: CreateUserDto): Promise<User> =>
+  createAsQuery: (data: CreateUser): Promise<User> =>
     request(BASE, {
       method: 'POST',
       params: data as any,
     }),
 
-  update: (id: number, data: UpdateUserDto): Promise<User> =>
+  update: (id: number, data: UpdateUser): Promise<User> =>
     request(BASE, {
       method: 'PUT',
       params: { id },

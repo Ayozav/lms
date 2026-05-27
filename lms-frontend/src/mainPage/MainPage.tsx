@@ -40,14 +40,14 @@ import {
 import {
     School as KnowledgeIcon,
     Schedule as ScheduleIcon,
-    People as OdnogruppnikiIcon,
+    // People as OdnogruppnikiIcon,
     Brightness4 as DarkModeIcon,
     Brightness7 as LightModeIcon,
     ModeEdit as PenIcon,
     Logout,
     FolderShared as TeachersIcon,
 } from '@mui/icons-material';
-import { gradeService } from '../api/servieces/gradeService.tsx';
+// import { gradeService } from '../api/servieces/gradeService.tsx';
 
 const drawerWidth = 240;
 
