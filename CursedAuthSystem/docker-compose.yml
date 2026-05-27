@@ -1,6 +1,7 @@
 include:
     - ./postgres/docker-compose.yml
-    - ./logto/docker-compose.yml
+    # - ./logto/docker-compose.yml
+    - ./dex/docker-compose.yml
     - ./oauth2-proxy/docker-compose.yml
     - ./nginx/docker-compose.yml
     

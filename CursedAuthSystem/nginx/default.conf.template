@@ -6,10 +6,12 @@ server {
 
     # Корневая страница (пример)
     location / {
+        add_header Content-Type text/html;
         return 200 "HIIIIIIIII, WORLD!!!";
     }
 
     location /api/ {
+        add_header Content-Type text/html;
         return 200 "HIIIIIIIII, API!!!";    
     }
 }
