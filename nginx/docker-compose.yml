@@ -15,8 +15,8 @@ services:
             # Явно указываем, что настройки лежат в проектной папке
             #            - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
             # Используем переменные окружения, чтобы при развёртывании своего домена мы не плаки-плаки.
-            - ./nginx/default.conf.template:/etc/nginx/templates/default.conf.template:ro
-            - ./lms-frontend/dist/:/usr/share/nginx/html:ro
+            - ./default.conf.template:/etc/nginx/templates/default.conf.template:ro
+            - ../lms-frontend/dist/:/usr/share/nginx/html:ro
         depends_on:
             students-service:
                 condition: service_healthy
@@ -30,9 +30,11 @@ services:
             - ADMIN_DOMAIN=${ADMIN_DOMAIN}
             - KAFKA_DOMAIN=${KAFKA_DOMAIN}
             - SPA_DOMAIN=${SPA_DOMAIN}
+        env_file:
+            -   ../.env
         ports:
             # Пробрасываем ${MAIN_NGINX_PORT} порт в контейнер.
-            - "${MAIN_NGINX_PORT}:80"
+             - "${MAIN_NGINX_PORT}:${MAIN_NGINX_PORT}"
 
         networks:
             - lms-network

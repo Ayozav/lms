@@ -8,7 +8,7 @@ storage:
 web:
     http: 0.0.0.0:5556
     allowedOrigins:
-        - http://localhost:8080
+        - http://localhost:80
     allowedHeaders:
         - Content-Type
         - Authorization
@@ -28,16 +28,16 @@ expiry:
 enablePasswordDB: true
 
 staticClients:
-    - id: jwt-frontend
-      public: true
-      name: JWT Frontend
-      redirectURIs:
-          - http://localhost:8080/login.html
+#    - id: jwt-frontend
+#      public: true
+#      name: JWT Frontend
+#      redirectURIs:
+#          - http://localhost:80/login/
     - id: sso-session-client
       secret: sso-session-secret
       name: SSO Session Client
       redirectURIs:
-          - http://localhost:8080/login/oauth2/code/dex
+          - http://localhost:80/login/oauth2/code/dex
     - id: oauth2-proxy
       secret: oauth2-proxy-secret
       name: OAuth2 Proxy
