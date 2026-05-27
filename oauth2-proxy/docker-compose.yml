@@ -1,3 +1,7 @@
+networks:
+    lms-network:
+        external: true
+
 volumes:
     redis-master-data:
         name: redis-master-data
@@ -8,45 +12,47 @@ volumes:
 
 
 services:
+    # А этот господин -- помощник нам с аутентификацией и авторизацией.
+    # Он требует уже живого LogTo для резолва к нему запросов.
+    # И ему важен доступ повсюду...
     oauth2-proxy:
         image: quay.io/oauth2-proxy/oauth2-proxy:v7.15.2
-        container_name: "LMS.OAuth2Proxy"
         restart: no
+        # А вот ему порты нужны...
         ports:
             - "${OAUTH2_PROXY_PORT}:4180"
-            - "4180:4180"
         extra_hosts:
             - "host.docker.internal:host-gateway"
 
-
-        depends_on:
-            dex:
-                condition: service_healthy
-            postgres:
-                condition: service_healthy
-
         volumes:
-            - ./dex_config.toml:/etc/oauth2-proxy/oauth2-proxy.toml:ro
+            - ./config.toml:/etc/oauth2-proxy/oauth2-proxy.toml:ro
         command:
             - --config=/etc/oauth2-proxy/oauth2-proxy.toml
 
+        depends_on:
+            - redis-master
+            - redis-replica
+            - redisinsight
 
         healthcheck:
-                test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:4180/oauth2/health"]
-                interval: 10s
-                timeout: 5s
-                retries: 10
+            test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:4180/oauth2/health"]
+            interval: 10s
+            timeout: 5s
+            retries: 10
+
+
+        networks:
+            - lms-network
 
         deploy:
             resources:
-                    limits:
-                        cpus: 1
-                        memory: 512M
-
+                limits:
+                    cpus: 1
+                    memory: 512M
 
     redis-master:
         image: redis:8.6.0
-        container_name: LMS.RedisMaster
+        container_name: redis-master
         restart: no
         command:
             - redis-server
@@ -56,6 +62,7 @@ services:
             - --maxmemory 512mb             # Ограничение памяти
             - --maxmemory-policy volatile-ttl   # При нехватке памяти удаляем ключи с TTL, у которых TTL ближе к истечению
             - --maxmemory-samples 5         # Количество проверяемых ключей при eviction (по умолчанию 5)
+            #     - --active-expire enabled _____ # Включаем активное истечение ключей (более не требуется - включено по-умолчанию)
             - --port 6379
             - --bind 0.0.0.0                # Слушаем на всех интерфейсах внутри контейнера
         ports:
@@ -68,7 +75,7 @@ services:
                     cpus: '2'                   # Ограничиваем cpu с запасом на дополнительные нужды
                     memory: 640M                # Жёсткий лимит памяти контейнера (больше maxmemory для служебных нужд)
         healthcheck:
-            test: ["CMD", "redis-cli", "ping"]
+            test: [ "CMD", "redis-cli", "ping" ]
             interval: 10s
             timeout: 5s
             retries: 3
@@ -76,7 +83,7 @@ services:
 
     redis-replica:
         image: redis:8.6.0
-        container_name: LMS.RedisReplica
+        container_name: redis-replica
         restart: no
         command:
             - redis-server
@@ -104,7 +111,7 @@ services:
                     cpus: '2'
                     memory: 640M
         healthcheck:
-            test: ["CMD", "redis-cli", "--no-auth-warning", "ping"]
+            test: [ "CMD", "redis-cli", "--no-auth-warning", "ping" ]
             interval: 10s
             timeout: 5s
             retries: 3
@@ -112,7 +119,7 @@ services:
 
     redisinsight:
         image: redis/redisinsight:latest
-        container_name: LMS.RedisInsight
+        container_name: redisinsight
         restart: no
         ports:
             - "5540:5540"
@@ -123,3 +130,11 @@ services:
                 condition: service_healthy
         volumes:
             - redisinsight-data:/data
+
+        deploy:
+            resources:
+                limits:
+                    cpus: 1
+                    memory: 512M
+
+

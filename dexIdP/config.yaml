@@ -1,0 +1,52 @@
+issuer: http://localhost:5556/dex
+
+storage:
+    type: sqlite3
+    config:
+        file: /var/dex/dex.db
+
+web:
+    http: 0.0.0.0:5556
+    allowedOrigins:
+        - http://localhost:8080
+    allowedHeaders:
+        - Content-Type
+        - Authorization
+
+oauth2:
+    skipApprovalScreen: true
+
+expiry:
+    idTokens: 2m
+    authRequests: 5m
+    signingKeys: 6h
+    refreshTokens:
+        validIfNotUsedFor: 24h
+        absoluteLifetime: 168h
+        reuseInterval: 3s
+
+enablePasswordDB: true
+
+staticClients:
+    - id: jwt-frontend
+      public: true
+      name: JWT Frontend
+      redirectURIs:
+          - http://localhost:8080/login.html
+    - id: sso-session-client
+      secret: sso-session-secret
+      name: SSO Session Client
+      redirectURIs:
+          - http://localhost:8080/login/oauth2/code/dex
+    - id: oauth2-proxy
+      secret: oauth2-proxy-secret
+      name: OAuth2 Proxy
+      redirectURIs:
+          - http://localhost:4180/oauth2/callback
+
+# Тестовый пользователь: student@example.com / password
+staticPasswords:
+    - email: student@example.com
+      hash: $2y$10$pmsGZiq0AzyRkY1CWFEpKe/MM/b9mt4mEQQUXgVKI.D2Y9ugPl922
+      username: student
+      userID: 08a8684b-db88-4b73-90a9-3cd1661f5466

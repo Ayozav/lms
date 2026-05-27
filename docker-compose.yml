@@ -1,116 +1,26 @@
-volumes:
-    postgres_data:
-        name: lms_postgres_data
-    kafka1_data:
-        name: lms_kafka1_data
-    redis_data:
-        name: lms_redis_data
-
-
 networks:
     lms-network:
         driver: bridge
+        external: false
+
+include:
+    -   kafka/docker-compose.yml
+    -   nginx/docker-compose.yml
+    -   oauth2-proxy/docker-compose.yml
+    -   postgres/docker-compose.yml
+    -   dexIdP/docker-compose.yml
 
 
 services:
-    # Он нам нужен для хранения вообще всей информации по LMS!
-    # Часть бизнеса тоже.
-    postgres:
-        image: postgres:18
-        container_name: "LMS.Postgres"
-        restart: no
-
-        environment:
-            POSTGRES_DB: ${DATABASE_NAME}
-            DATABASE_SCHEMA: ${DATABASE_SCHEMA}
-            DATABASE_NAME: ${DATABASE_NAME}
-            POSTGRES_USER: ${DATABASE_USERNAME}
-            POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-        ports:
-            - "${DATABASE_PORT}:5432"
-
-        # Для прод. версии следует убрать!
-        command: ["postgres", "-c", "log_statement=all"]
-
-        volumes:
-            - ./postgres/init.sql:/docker-entrypoint-initdb.d/init-db.sql
-            - postgres_data:/var/lib/postgresql  # Определяем, где будет лежать вся СУБД
-
-        # Задаём чёткий скрипт, который позволяет нам
-        # убедится, что сервис живой.
-        healthcheck:
-            # Внутри мы указываем порт в Докере.
-            # А товарищ Postgres по умолчанию на порту 5432 живёт.
-            test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB} -p 5432"]
-            interval: 3s
-            retries: 5
-            start_period: 15s
-            timeout: 5s
-
-        networks:
-            - lms-network
-
-        deploy:
-            resources:
-                limits:
-                    cpus: 1
-                    memory: 512M
-
-    # Он нам нужен, чтобы запросы агрегировать и переадресовывать туда,
-    # куда следует: проверять авторизацию через LogTo, отправлять
-    # нужные запросы нужным сервисам.
-    # Подгружать статику: для React-приложения, в частности.
-    nginx:
-        image: nginx:1.29.8
-        container_name: "LMS.Nginx"
-        volumes:
-            # Явно указываем, что настройки лежат в проектной папке
-            #            - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-            # Используем переменные окружения, чтобы при развёртывании своего домена мы не плаки-плаки.
-            - ./nginx/default.conf.template:/etc/nginx/templates/default.conf.template:ro
-            - ./lms-frontend/dist/:/usr/share/nginx/html:ro
-        depends_on:
-            students-service:
-                condition: service_healthy
-            oauth2-proxy:
-                condition: service_started
-
-        environment:
-            - LMS_DOMAIN=${LMS_DOMAIN}
-            - AUTH_DOMAIN=${AUTH_DOMAIN}
-            - LOGTO_AUTH_DOMAIN=${LOGTO_AUTH_DOMAIN}
-            - ADMIN_DOMAIN=${ADMIN_DOMAIN}
-            - KAFKA_DOMAIN=${KAFKA_DOMAIN}
-            - SPA_DOMAIN=${SPA_DOMAIN}
-        ports:
-            # Пробрасываем ${MAIN_NGINX_PORT} порт в контейнер.
-            - "${MAIN_NGINX_PORT}:80"
-
-        networks:
-            lms-network:
-                aliases:
-                    - localhost
-                    - auth.localhost
-                    - admin.localhost
-
-        deploy:
-            resources:
-                limits:
-                    cpus: 1
-                    memory: 512M
-
-        restart: no
-
     students-service:
-        # Оказывается, во время разработки можно использовать утилиту:
-        # UPD: ТЕПЕРЬ НЕ РЕКОМЕНДУЕТСЯ, ПОСКОЛЬКУ ОН КАЖДЫЙ РАЗ БИЛДИТ ПРОЕКТ ПО НОВОЙ
-        # Потом удивляемся, почему Докер роняет всё с сетевой ошибкой.
-        # docker compose watch
-        # Но, чтобы её настроить следует её подложить в описании к devlop'у.
-        # Поскольку все изменения обычно лежат в /src'шнике, то и путь я укажу туда
+        image: ayozav-students-service:0.1.0
+        build:
+            context: ./students-service
+        container_name: LMS.StudentsService
+
         develop:
             watch:
-                # LMS собирается в jar'ник, поэтому надо каждый раз пересобирать...
+                # LMS собирается в jar'ник...
                 -   path: ./students-service/src/
                     action: rebuild
         restart: no
@@ -124,185 +34,22 @@ services:
         depends_on:
             postgres:
                 condition: service_healthy
-
-        image: ayozav-students-service:0.0.3
-        build:
-            context: ./students-service
-
-        container_name: "LMS.students-service"
-        # Скрипач не нужен, у нас есть network.
-        # ports:
-        #    - "4040:4040"
-
-        networks:
-            - lms-network
-
-        env_file:
-            -   .env
-
-    logto:
-        container_name: "LMS.LogTo"
-        depends_on:
-            postgres:
+            kafka1:
                 condition: service_healthy
-            students-service:
+            kafka2:
                 condition: service_healthy
-        image: svhd/logto:latest
-        entrypoint: [ "sh", "-c", "npm run cli db seed -- --swe && npm start" ]
-        ports:
-            - "3001:3001"
-            - "3002:3002"
-        environment:
-            TRUST_PROXY_HEADER: 1
-            DB_URL: ${LOGTO_DATABASE_URL}
-            ENDPOINT: http://${LOGTO_AUTH_DOMAIN}
-            ADMIN_ENDPOINT: http://${ADMIN_DOMAIN}
-#        extra_hosts:
-#            - "host.docker.internal:host-gateway"
-        deploy:
-            resources:
-                limits:
-                    cpus: 1
-                    memory: 512M
-
-        networks:
-            - lms-network
+            kafka3:
+                condition: service_healthy
 
         healthcheck:
-            test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3001/status"]
-            interval: 10s
+            test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider",
+                "http://localhost:4040/echo"]
+            interval: 5s
             timeout: 5s
             retries: 5
 
-    # И помимо этого мы постараемся сделать так, чтобы наш сервис не умер
-    # от чрезмерных нагрузок и работал достаточно хорошо.
-    kafka:
-        image: confluentinc/cp-kafka:7.7.7
-        ports:
-            - "9092:9092"
-            - "9093:9093"
-        environment:
-            KAFKA_NODE_ID: 1
-            KAFKA_PROCESS_ROLES: broker,controller
-            KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
-            KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
-            KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
-            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
-            KAFKA_CONTROLLER_QUORUM_VOTERS: "1@kafka:9093"
-            KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-            KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
-            KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
-            KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
-            CLUSTER_ID: "MkU3OThGNTcwNTJENDM2Dg"  # произвольный ID кластера для KRaft
-        volumes:
-            - kafka1_data:/var/lib/kafka/data
-        networks:
-            - lms-network
-
-    # А это нам надо, чтобы отслеживать жизнь Кафки (манной).
-    kafka-ui:
-        image: kafbat/kafka-ui:latest
-        container_name: kafka-ui
-        # Скрипач не нужен, у нас общая сеть.
-        # ports:
-        #    - "9090:8080"
-        depends_on:
-            - kafka
-        environment:
-            KAFKA_NODE_ID: 1
-            KAFKA_PROCESS_ROLES: broker,controller
-            KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
-            KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
-            KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
-            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
-            KAFKA_CONTROLLER_QUORUM_VOTERS: "1@kafka:9093"
-            KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-            KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
-            KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
-            KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
-            KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
-            # Опционально: аутентификация (если нужна)
-            # AUTH_TYPE: "BASIC"
-            # AUTH_BASIC_USERNAME: "admin"
-            # AUTH_BASIC_PASSWORD: "password"
-        networks:
-            - lms-network
-
-        deploy:
-            resources:
-                limits:
-                    cpus: 1
-                    memory: 512M
-
-    # А этот господин -- помощник нам с аутентификацией и авторизацией.
-    # Он требует уже живого LogTo для резолва к нему запросов.
-    # И ему важен доступ повсюду...
-    oauth2-proxy:
-        image: quay.io/oauth2-proxy/oauth2-proxy:v7.15.2
-        restart: no
-        # А вот ему порты нужны...
-        ports:
-            - "${OAUTH2_PROXY_PORT}:4180"
-        extra_hosts:
-           - "host.docker.internal:host-gateway"
-
-        volumes:
-            - ./oauth2-proxy/config.toml:/etc/oauth2-proxy/oauth2-proxy.toml:ro
-
-        depends_on:
-            logto:
-                condition: service_healthy
-
-        healthcheck:
-            test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:4180/oauth2/health"]
-            interval: 10s
-            timeout: 5s
-            retries: 10
-
+        env_file:
+            - .env
 
         networks:
             - lms-network
-
-        deploy:
-            resources:
-                limits:
-                    cpus: 1
-                    memory: 512M
-
-    # Для reverse-прокси это нужно...
-    redis-master:
-        image: redis:8.6.0
-        container_name: redis-master
-        restart: no
-        command:
-            - redis-server
-            - --save 60 1                   # RDB: снимок каждые 60 сек, если изменился хотя бы 1 ключ
-            - --appendonly yes              # Включаем AOF (Append-Only File)
-            - --appendfsync everysec        # AOF: fsync каждую секунду (хороший баланс надёжности и производительности)
-            - --maxmemory 512mb             # Ограничение памяти
-            - --maxmemory-policy volatile-ttl   # При нехватке памяти удаляем ключи с TTL, у которых TTL ближе к истечению
-            - --maxmemory-samples 5         # Количество проверяемых ключей при eviction (по умолчанию 5)
-            #     - --active-expire enabled _____ # Включаем активное истечение ключей (более не требуется - включено по-умолчанию)
-            - --port 6379
-            - --bind 0.0.0.0  # Слушаем на всех интерфейсах внутри контейнера
-        # Скрипач не нужен.
-        # ports:
-        #    - "6379:6379  # Пробрасываем порт мастера наружу (удобно для подключения)
-        volumes:
-            - redis_data:/data
-
-        networks:
-            - lms-network
-
-        deploy:
-            resources:
-                limits:
-                    cpus: 1  # Ограничиваем cpu с запасом на дополнительные нужды
-                    memory: 512M  # Жёсткий лимит памяти контейнера (больше maxmemory для служебных нужд)
-
-        healthcheck:
-            test: [ "CMD", "redis-cli", "ping" ]
-            interval: 10s
-            timeout: 5s
-            retries: 3
-            start_period: 20s

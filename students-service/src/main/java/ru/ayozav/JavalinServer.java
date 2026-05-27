@@ -14,7 +14,7 @@ import ru.ayozav.javalin.responses.OkResponse;
 
 public class JavalinServer {
 
-    public static final String KAFKA_BOOTSTRAP_SERVER = "EXTERNAL://" + System.getenv("KAFKA_BOOTSTRAP_SERVER");
+    public static final String KAFKA_BOOTSTRAP_SERVER = System.getenv("KAFKA_BOOTSTRAP_SERVERS");
 
     private static final String DATABASE_PORT = System.getenv("DATABASE_PORT");
     private static final String DATABASE_NAME = System.getenv("DATABASE_NAME");

@@ -1,0 +1,28 @@
+volumes:
+    dex:
+        # ...
+
+
+services:
+    dex:
+        image: dexidp/dex:v2.45.1
+        container_name: LMS.DexIdP
+        restart: no
+        command: [ "dex", "serve", "/etc/dex/config.yaml" ]
+        ports:
+            - "5556:5556"
+        volumes:
+            - ./config.yaml:/etc/dex/config.yaml:ro
+            - dex:/var/dex
+        deploy:
+            resources:
+                limits:
+                    cpus: 1
+                    memory: 512M
+
+
+        healthcheck:
+            test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://0.0.0.0:5556/dex" ]
+            interval: 5s
+            timeout: 5s
+            retries: 5

@@ -1,0 +1,46 @@
+networks:
+    lms-network:
+        external: true
+
+
+services:
+    # Он нам нужен, чтобы запросы агрегировать и переадресовывать туда,
+    # куда следует: проверять авторизацию через LogTo, отправлять
+    # нужные запросы нужным сервисам.
+    # Подгружать статику: для React-приложения, в частности.
+    nginx:
+        image: nginx:1.29.8
+        container_name: "LMS.Nginx"
+        volumes:
+            # Явно указываем, что настройки лежат в проектной папке
+            #            - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+            # Используем переменные окружения, чтобы при развёртывании своего домена мы не плаки-плаки.
+            - ./nginx/default.conf.template:/etc/nginx/templates/default.conf.template:ro
+            - ./lms-frontend/dist/:/usr/share/nginx/html:ro
+        depends_on:
+            students-service:
+                condition: service_healthy
+            oauth2-proxy:
+                condition: service_started
+
+        environment:
+            - LMS_DOMAIN=${LMS_DOMAIN}
+            - AUTH_DOMAIN=${AUTH_DOMAIN}
+            - LOGTO_AUTH_DOMAIN=${LOGTO_AUTH_DOMAIN}
+            - ADMIN_DOMAIN=${ADMIN_DOMAIN}
+            - KAFKA_DOMAIN=${KAFKA_DOMAIN}
+            - SPA_DOMAIN=${SPA_DOMAIN}
+        ports:
+            # Пробрасываем ${MAIN_NGINX_PORT} порт в контейнер.
+            - "${MAIN_NGINX_PORT}:80"
+
+        networks:
+            - lms-network
+
+        deploy:
+            resources:
+                limits:
+                    cpus: 1
+                    memory: 512M
+
+        restart: no
