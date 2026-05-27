@@ -74,7 +74,7 @@ function TeachersTable(props: TeachersTableProps) {
         <Table sx={{ minWidth: 650 }} aria-label="таблица преподавателей">
             <TableHead>
                 {/* d4cbcb */}
-                <TableRow sx={{ backgroundColor: '#cccbd4' }}> 
+                <TableRow sx={{ backgroundColor: '#6691d567' }}> 
                     <TableCell>ФИО</TableCell>
                     <TableCell>Отделение</TableCell>
                     <TableCell>Должность</TableCell>
