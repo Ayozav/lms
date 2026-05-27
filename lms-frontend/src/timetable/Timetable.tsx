@@ -84,11 +84,11 @@ const Timetable: React.FC<TimetableProps> = ({
         <Table sx={{ minWidth: 600 }}>
           <TableHead>
             <TableRow>
-              <TableCell sx={{ fontWeight: 'bold', backgroundColor: 'rgba(195, 155, 106, 0.5)'}}>
+              <TableCell sx={{ fontWeight: 'bold', backgroundColor: 'rgba(204, 204, 204, 0.5)'}}>
                 Время / День
               </TableCell>
               {DAYS.map((day) => (
-                <TableCell key={day} align="center" sx={{ fontWeight: 'bold', backgroundColor: 'rgba(195, 155, 106, 0.5)' }}>
+                <TableCell key={day} align="center" sx={{ fontWeight: 'bold', backgroundColor: 'rgba(204, 204, 204, 0.5)' }}>
                   {day}
                 </TableCell>
               ))}

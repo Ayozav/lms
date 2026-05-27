@@ -7,6 +7,16 @@ import PesronalNote from '../pero/PesronalNote.tsx';
 // import Welcome from './Welcome_component.tsx';
 import StudentImage from '../assets/student_photo.jpg';
 
+//новые иконки (к сожалению все руинится)
+// import GroupIcon from "../assets/icons/Group.svg";
+// import TimetableIcon from "../assets/icons/Time.svg";
+// import KnowlegeIcon from "../assets/icons/Atom_light.svg";
+// import TeacherIcon from '../assets/icons/Tie.svg';
+// import Lightmode from '../assets/icons/Sun.svg';
+// import Darkmode from '../assets/icons/Moon.svg';
+// import PensIcon from '../assets/icons/Edit.svg';
+// import LogOut from '../assets/icons/Log_Out.svg';
+
 //profile + user
 import {userService} from '../api/servieces/usesrService.tsx';
 import {type User} from '../api/modules/user.tsx';
@@ -41,10 +51,11 @@ import { gradeService } from '../api/servieces/gradeService.tsx';
 
 const drawerWidth = 240;
 
+// animation="wave" 
 const menu_items = [
-    { text: 'Профиль', icon: <img src={StudentImage} alt="profile" style={{ width: 100, height: 100, borderRadius: 115, marginRight: '12px' }} />, id:'profile'},
-    {text: 'Моя группа', icon: <OdnogruppnikiIcon />, id: ''},
-    { text: 'Расписание', icon: <ScheduleIcon />, id: 'schedule' },
+    { text: 'Профиль', icon: <img src={StudentImage} alt="profile" style={{ width: 100, height: 100, borderRadius: 115, marginRight: '12px', fontFamily:'Jost'}} />, id:'profile'},
+    // {text: 'Моя группа', icon: <OdnogruppnikiIcon />, id: ''},
+    { text: 'Расписание', icon: <ScheduleIcon />, sx:{fontFamily:"Jost"}, id: 'schedule',},
     { text: 'Знание', icon: <KnowledgeIcon />, id: 'knowledge' },
     { text: 'Преподаватели', icon: <TeachersIcon />, id: 'teachers' },
     { text: 'Перо', icon: <PenIcon />, id: 'notes' },
@@ -69,19 +80,61 @@ const LmsDarkTheme = createTheme({
     }
     
 })
-// ToDO: подобрать цвета на светлую тему
+
 const LmsLigthTheme = createTheme({
     palette: {
         mode: 'light', 
         background: {
-            default:'#E6E6E6', //чуть серее 
+            // default:'#E6E6E6', //серее 
+            default:'#ebeaea', //чуть серее
             // paper:'#' // пока нет необходимости, но может в будущем
         },
         text: {
             primary:'#000000',
-        }
+        },
     }
-    
+})
+
+const LmsDrawnerThemeLight = createTheme({
+    palette: {
+        mode:'dark',
+        background: {
+            default:'#dedede',
+        },
+        text: {
+            primary:'#000000',
+        },
+        action: {
+            active: '#000000',       //обычные иконки
+            hover: '#c1c1c1',        //наведение
+            selected: '#000000',     //пункт выбран
+            disabled: '#999999',
+        },
+    },
+    typography: {
+        fontFamily: '"Jost", sans-serif',
+  },
+})
+
+const LmsDrawnerThemeDark = createTheme({
+    palette: {
+        mode:'light',
+        background: {
+            default: '#4b4b4b',
+        },
+        text: {
+            primary:'#ffff'
+        },
+        action: {
+            active: '#ffff',       // обычные иконки
+            hover: '#555555',        // при наведении
+            selected: '#ffffff',     // когда пункт выбран
+            disabled: '#999999',
+        },
+    },
+    typography: {
+        fontFamily: '"Jost", sans-serif',
+  },
 })
 
 
@@ -336,6 +389,7 @@ function MainPage() {
     };
 
     const theme = mode === 'dark' ? LmsDarkTheme : LmsLigthTheme;
+    const drawerTheme = mode === 'dark' ? LmsDrawnerThemeDark : LmsDrawnerThemeLight;
 
     const TabChange = (tabId: string) => {
         setSelectedTab(tabId);
@@ -403,7 +457,6 @@ function MainPage() {
                 return (
                     <>
                         {MainFrame(cards, TabChange)}
-                        {/* <Welcome /> */}
                     </>
                 );
         }
@@ -413,24 +466,23 @@ function MainPage() {
         <ThemeProvider theme={theme}>
             <CssBaseline />
             <Box sx={{ display: 'flex' }}>
-                <Box
-                    component="nav"
-                    sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-                >
-                    <Drawer
-                        variant="permanent"
-                        sx={{
-                            display: { xs: 'none', sm: 'block' },
-                            '& .MuiDrawer-paper': {
-                                boxSizing: 'border-box',
-                                width: drawerWidth,
-                                bgcolor: 'background.default'
-                            },
-                        }}
-                        open
-                    >
-                        {drawer}
-                    </Drawer>
+                <Box component="nav" sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}>
+                    <ThemeProvider theme={drawerTheme}> {/* Вложенный провайдер для drawer */}
+                        <Drawer
+                            variant="permanent"
+                            sx={{
+                                display: { xs: 'none', sm: 'block' },
+                                '& .MuiDrawer-paper': {
+                                    boxSizing: 'border-box',
+                                    width: drawerWidth,
+                                    bgcolor: 'background.default'
+                                },
+                            }}
+                            open
+                        >
+                            {drawer}
+                        </Drawer>
+                    </ThemeProvider>
                 </Box>
                 <Box component="main" sx={{ flexGrow: 1 }}>
                     {frameRender()}
