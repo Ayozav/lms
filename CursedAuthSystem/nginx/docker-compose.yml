@@ -1,0 +1,32 @@
+services:
+    nginx:
+        image: nginx:1.29.8
+        container_name: "LMS.Nginx"
+        volumes:
+            # Используем переменные окружения, чтобы при развёртывании своего домена мы не плаки-плаки.
+            - ./default.conf.template:/etc/nginx/templates/default.conf.template:ro
+            # - ./lms-frontend/dist/:/usr/share/nginx/html:ro
+        depends_on:
+            oauth2-proxy:
+                condition: service_started
+
+        environment:
+            - LMS_DOMAIN=${LMS_DOMAIN}
+            - AUTH_DOMAIN=${AUTH_DOMAIN}
+            - LOGTO_AUTH_DOMAIN=${LOGTO_AUTH_DOMAIN}
+            - ADMIN_DOMAIN=${ADMIN_DOMAIN}
+            - KAFKA_DOMAIN=${KAFKA_DOMAIN}
+            - SPA_DOMAIN=${SPA_DOMAIN}
+            - MAIN_NGINX_PORT=${MAIN_NGINX_PORT}
+        ports:
+            # Пробрасываем ${MAIN_NGINX_PORT} порт из контейнера.
+            # Очень хочется, чтобы там был ${MAIN_NGINX_PORT}
+            - "${MAIN_NGINX_PORT}:${MAIN_NGINX_PORT}"
+
+        deploy:
+            resources:
+                limits:
+                    cpus: 1
+                    memory: 512M
+
+        restart: no

@@ -6,6 +6,9 @@
 # Только внутри контейнера ставим прослушку: Nginx сам обратится к нему.
 http_address = "0.0.0.0:4180"
 # https_address = ":443"
+ssl_insecure_skip_verify=true
+errors_to_info_log=true
+show_debug_on_error=true
 reverse_proxy = true  # Он работает за nginx'ом! Он работает вторым!
 
 # For prod.
@@ -27,12 +30,13 @@ pass_host_header = true
 
 # Нам нравятся все почтовые адреса.
 email_domains = ["*"]
+allowed_groups = ["*"]
 
 # Вот тут в игру вступает LogTo
 # The OAuth Client ID, Secret
 provider = "oidc"
-client_id = "buf8jnenp4dmiyf6zlpow"
-client_secret = "u5I8tqNzFCT6eDAkyiol4riSSQmprwzI"
+client_id = "vhnlwdce8yei6xz677gys"
+client_secret = "225EYxI8p2OChosiUaRwVD0xfVRG6LsB"
 
 # Точка встречи: то, куда отправят пользователя после аутентификации.
 # OAuth2-Proxy redirect
@@ -40,21 +44,23 @@ redirect_url = "http://localhost/oauth2/callback"
 # Задача белого списка - ограничить домены,
 # куда можно перенаправить пользователя ПОСЛЕ ВХОДА.
 whitelist_domains = [
-    "localhost",
-    ".localhost",
+    "localhost"
 ]
 
 # Подбрасываем настройки из LogTo (то есть Nginx отдаёт auth.localhost/oidc,):
-oidc_issuer_url = "http://auth.localhost/oidc"
-
+# oidc_issuer_url = "http://auth.localhost/oidc"
+oidc_issuer_url = "http://localhost:3001/oidc"
 # Вообще говоря, товарищ LogTo поддерживает discovery.
 skip_oidc_discovery = true
 # Это browser redirect URL, поэтому здесь должен быть localhost, а не host.docker.internal.
 # Эти ссылки были эмпирически получены и нагуглены, но путь был проще...
-# login_url = "http://auth.localhost/oidc/auth"
-# redeem_url = "http://auth.localhost/oidc/token"
-oidc_jwks_url = "http://auth.localhost/oidc/jwks"
-# profile_url = "http://auth.localhost/oidc/me"
+login_url = "http://localhost:3001/oidc/auth"
+
+redeem_url = "http://logto:3001/oidc/token"
+oidc_jwks_url = "http://logto:3001/oidc/jwks"
+profile_url = "http://logto:3001/oidc/me"
+
+oidc_enabled_signing_algs = ["RS256", "ES384"]
 
 
 # Scopes Added to the request
@@ -70,7 +76,7 @@ insecure_oidc_allow_unverified_email = true
 pass_access_token = false
 # bypass authentication for requests that match the method & path. Format: method=path_regex OR path_regex alone for all methods
 skip_auth_routes = [
-    "GET=^/assets/*$",
+    "GET=^/assets/*$"
     # Все пути должны быть авторизованными.
 ]
 
@@ -94,7 +100,7 @@ api_routes = [
 # HttpOnly - httponly cookies are not readable by javascript (recommended)
 cookie_name = "_oauth2_proxy_lms"
 cookie_secret = "fZ1x8-fmfv0EcT1Gc1mmjqlibeAlJUT4vjPsw6eFDnw="
-cookie_domains = ["localhost", "app.localhost", "auth.localhost", "sign-in.localhost"]  # В прод версии поменять.
+# cookie_domains = "localhost"  # В прод версии поменять.
 cookie_expire = "24h"
 cookie_refresh = "1h"
 cookie_secure = false  # Вернуть в проде, чтобы избежать дыры в виде XSS
@@ -105,5 +111,5 @@ cookie_csrf_per_request = true
 cookie_csrf_samesite = "lax"
 
 # И это ништяк
-session_store_type = "redis"
-redis_connection_url = "redis://redis-master:6379"
+#session_store_type = "redis"
+#redis_connection_url = "redis://redis-master:6379"

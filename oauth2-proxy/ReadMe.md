@@ -15,4 +15,4 @@
 5. Переходим во вкладку Permissions, добавляем обязательно права!
 6. ОБЯЗАТЕЛЬНО СДЕЛАТЬ Sign in & account ПЕРЕД ЗАПУСКОМ! Иначе не взлетит.
 7. После настройки страницы входа -- открыть Sign-up and sign-in, промотать в самый низ
-8. Unknown session redirect URL установить http://sign-in.localhost/
+8. Unknown session redirect URL установить http://localhost/

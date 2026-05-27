@@ -1,0 +1,15 @@
+server {
+    # ЗДЕСЬ У НАС РАБОЧИЙ ТОВАРИЩ-ГОСПОДИН С авторизацией.
+    # Мы доверяем пришедшим запросам.
+    listen ${MAIN_NGINX_PORT};
+    server_name ${LMS_DOMAIN};
+
+    # Корневая страница (пример)
+    location / {
+        return 200 "HIIIIIIIII, WORLD!!!";
+    }
+
+    location /api/ {
+        return 200 "HIIIIIIIII, API!!!";    
+    }
+}

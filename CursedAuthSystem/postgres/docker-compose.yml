@@ -1,0 +1,42 @@
+volumes:
+    postgres_data:
+        # Postgres
+
+services:
+    postgres:
+        image: postgres:18
+        container_name: "LMS.Postgres"
+        restart: no
+
+        environment:
+            POSTGRES_DB: ${DATABASE_NAME}
+            DATABASE_SCHEMA: ${DATABASE_SCHEMA}
+            DATABASE_NAME: ${DATABASE_NAME}
+            POSTGRES_USER: ${DATABASE_USERNAME}
+            POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+        ports:
+            - "${DATABASE_PORT}:5432"
+
+        # Для прод. версии следует убрать!
+        command: ["postgres", "-c", "log_statement=all"]
+
+        volumes:
+            - ./init.sql:/docker-entrypoint-initdb.d/init-db.sql
+            - postgres_data:/var/lib/postgresql  # Определяем, где будет лежать вся СУБД
+
+        # Задаём чёткий скрипт, который позволяет нам
+        # убедится, что сервис живой.
+        healthcheck:
+            # Внутри мы указываем порт в Докере.
+            # А товарищ Postgres по умолчанию на порту 5432 живёт.
+            test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB} -p 5432"]
+            interval: 3s
+            retries: 5
+            start_period: 15s
+            timeout: 5s
+
+        deploy:
+            resources:
+                limits:
+                    cpus: 1
+                    memory: 512M

@@ -1,0 +1,72 @@
+# OAuth2-Proxy config for Docker environment with Logto, Nginx, Postgres
+
+http_address = "0.0.0.0:4180"
+reverse_proxy = true
+
+# Внутренний апстрим – Nginx (доступен по имени сервиса)
+upstreams = [
+    "http://host.docker.internal:85/"
+]
+
+# Передаём информацию о пользователе внутрь
+pass_basic_auth = true
+pass_user_headers = true
+pass_host_header = true
+
+# Доступ для всех email / групп
+email_domains = "*"
+allowed_groups = "*"
+
+# Провайдер – OIDC (Logto)
+provider = "oidc"
+client_id = "qol96ke7pv0nxjv8076wz"      # заменить на реальный
+client_secret = "AN6uRD907KvaKSA4PdE9ub5qHw0e0lhf"  # заменить
+
+# Внешний URL для браузера (Logto опубликован на порт 3001 хоста)
+oidc_issuer_url = "http://localhost:3001/oidc"
+
+# Используем автоматическое discovery (Logto его поддерживает)
+skip_oidc_discovery = true
+login_url = "http://localhost:3001/oidc/auth"
+redeem_url = "http://host.docker.internal:3001/oidc/token"
+oidc_jwks_url = "http://host.docker.internal:3001/oidc/jwks"
+profile_url = "http://host.docker.internal:3001/oidc/me"
+
+
+# Редирект после аутентификации – на внешний адрес OAuth2-Proxy
+redirect_url = "http://localhost/oauth2/callback"
+whitelist_domains = ["localhost:4180"]
+# LogTo отдаёт RS256
+oidc_enabled_signing_algs = ["RS256", "ES384"]
+# Запрашиваемые скоупы
+scope = "openid profile email roles"
+insecure_oidc_allow_unverified_email = true
+pass_access_token = false
+
+# Пути, не требующие аутентификации (например, статика Nginx)
+skip_auth_routes = ["GET=^/assets/*"]
+
+# API‑пути – отдавать 401 вместо редиректа
+api_routes = ["^/api"]
+
+# Настройки cookie
+cookie_name = "_oauth2_proxy_lms"
+cookie_secret = "fZ1x8-fmfv0EcT1Gc1mmjqlibeAlJUT4vjPsw6eFDnw="   # сгенерируйте свой!
+cookie_domains = "localhost"
+cookie_refresh = "5m"
+cookie_expire = "1h"
+cookie_secure = false     # для локального теста; в проде true (требуется HTTPS)
+cookie_httponly = false   # в проде лучше true
+cookie_samesite = "lax"
+cookie_csrf_expire = "15m"
+cookie_csrf_per_request = true
+cookie_csrf_samesite = "lax"
+
+# Отладочные флаги (можно убрать в проде)
+ssl_insecure_skip_verify = true
+errors_to_info_log = true
+show_debug_on_error = true
+
+session_store_type = "cookie"
+# session_store_type = "redis"
+# redis_connection_url = "redis://host.docker.internal:6379/0"

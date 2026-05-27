@@ -1,0 +1,29 @@
+services:
+    logto:
+        container_name: "LMS.LogTo"
+        depends_on:
+            postgres:
+                condition: service_healthy
+        image: svhd/logto:latest
+        entrypoint: [ "sh", "-c", "npm run cli db seed -- --swe && npm start" ]
+        ports:
+            - "3001:3001"  # Единая точка авторизации
+            - "3002:3002"  # Админка
+
+        environment:
+            TRUST_PROXY_HEADER: 1
+            DB_URL: postgresql://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@postgres:5432/logto
+            ENDPOINT: http://${LOGTO_AUTH_DOMAIN}
+            ADMIN_ENDPOINT: http://${ADMIN_DOMAIN}
+
+        deploy:
+            resources:
+                limits:
+                    cpus: 1
+                    memory: 512M
+
+        healthcheck:
+            test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3001/status"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
