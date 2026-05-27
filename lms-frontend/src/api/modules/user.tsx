@@ -1,10 +1,10 @@
 export interface User {
   id: number;
-  first_name: string;
-  last_name: string;
-  patronymic?: string;
+  firstName: string;
+  lastName: string;
+  patronymic: string;
   open_id: string;
-  birth_date: string;
+  birthDate: string;
 }
-export type CreateUserDto = Omit<User, 'id'>;
-export type UpdateUserDto = Partial<CreateUserDto>;
+export type CreateUser = Omit<User, 'id'>;
+export type UpdateUser = Partial<CreateUser>;

@@ -76,19 +76,19 @@ const Timetable: React.FC<TimetableProps> = ({
 
   // основной рендер таблицы
   return (
-    <Box sx={{ p: 2, width: '100%', overflowX: 'auto' }}>
+    <Box sx={{ p: 3.5, width: '100%', overflowX: 'auto', background: 'rgba(170, 170, 170, 0.25)', borderRadius:5}}>
       <Typography variant="h5" gutterBottom sx={{ mb: 2 }}>
         Расписание – {groupName}
       </Typography>
-      <TableContainer component={Paper} sx={{ boxShadow: 3 }}>
+      <TableContainer component={Paper} sx={{ boxShadow: 3, borderRadius:5 }}>
         <Table sx={{ minWidth: 600 }}>
           <TableHead>
             <TableRow>
-              <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#f0f0f0' }}>
+              <TableCell sx={{ fontWeight: 'bold', backgroundColor: 'rgba(195, 155, 106, 0.5)'}}>
                 Время / День
               </TableCell>
               {DAYS.map((day) => (
-                <TableCell key={day} align="center" sx={{ fontWeight: 'bold' }}>
+                <TableCell key={day} align="center" sx={{ fontWeight: 'bold', backgroundColor: 'rgba(195, 155, 106, 0.5)' }}>
                   {day}
                 </TableCell>
               ))}

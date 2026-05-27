@@ -9,7 +9,7 @@ export const semesterService = {
     request(BASE, { params: { id } }),
 
   getAll: (page: number = 1): Promise<{ data: Semester[] }> =>
-    request(`${BASE_URLS.main}/semesters`, { params: { page } }),
+    request(`${BASE_URLS.main}/semesters/${page}`),
 
   create: (data: CreateSemesterDto): Promise<Semester> =>
     request(BASE, {
@@ -25,5 +25,5 @@ export const semesterService = {
     }),
 
   delete: (id: number): Promise<void> =>
-    request(BASE, { method: 'DELETE', params: { id } }),
+     request(BASE, {method: 'DELETE', params: {id}}), 
 };
