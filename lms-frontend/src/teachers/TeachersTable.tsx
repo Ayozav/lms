@@ -17,11 +17,11 @@ import type { TeacherProps } from "./Teacher";
 
 // Все брейкпоинты MUI:
 // Ключ	Размер экрана	Тип устройства
-// xs	0px - 600px	    📱 Телефоны (маленькие)
-// sm	600px - 900px	📱 Телефоны (большие)
-// md	900px - 1200px	💻 Компьютеры (ноутбуки)
-// lg	1200px - 1536px	🖥 Компьютеры (большие мониторы)
-// xl	1536px+	        📺 Очень большие экраны / TV
+// xs	0px - 600px	    Телефоны (маленькие)
+// sm	600px - 900px	Телефоны (большие)
+// md	900px - 1200px	Компьютеры (ноутбуки)
+// lg	1200px - 1536px	Компьютеры (большие мониторы)
+// xl	1536px+	        Очень большие экраны / TV
 
 
 interface TeachersTableProps {
@@ -73,7 +73,8 @@ function TeachersTable(props: TeachersTableProps) {
     return <TableContainer component={Paper} sx={{ maxWidth: '100%', overflowX: 'auto' }}>
         <Table sx={{ minWidth: 650 }} aria-label="таблица преподавателей">
             <TableHead>
-                <TableRow sx={{ backgroundColor: '#f5f5f5' }}>
+                {/* d4cbcb */}
+                <TableRow sx={{ backgroundColor: '#cccbd4' }}> 
                     <TableCell>ФИО</TableCell>
                     <TableCell>Отделение</TableCell>
                     <TableCell>Должность</TableCell>
