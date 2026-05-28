@@ -30,7 +30,9 @@ api_routes = [
 # GET-маршруты остаются публичными, но при наличии валидной сессии хедеры все равно будут добавлены.
 skip_auth_routes = [
     "GET=^/$",
-#    "GET=^/login$"
+    "GET=^$",
+    "GET=^/assets/.*$",
+    "GET=^/favicon.svg$"
 ]
 
 session_store_type = "redis"

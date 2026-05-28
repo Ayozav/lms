@@ -5,6 +5,10 @@ public class ObjectNotFoundInDatabase extends GreatException {
         super(object + " (id=" + id + ") не был найден.");
     }
 
+    public ObjectNotFoundInDatabase(String object) {
+        super(object + " не был найден.");
+    }
+
     @Override
     public int getCode() {
         return 404;

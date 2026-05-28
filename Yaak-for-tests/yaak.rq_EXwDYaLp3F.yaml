@@ -1,8 +1,8 @@
 type: http_request
 model: http_request
-id: rq_Dw9zom8cMG
-createdAt: 2026-05-09T10:57:05.884469100
-updatedAt: 2026-05-28T06:54:08.185204300
+id: rq_EXwDYaLp3F
+createdAt: 2026-05-28T07:05:19.551064700
+updatedAt: 2026-05-28T07:15:07.752576100
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -12,15 +12,15 @@ bodyType: null
 description: ''
 headers: []
 method: GET
-name: /v1/user
-sortPriority: 0.0
-url: http://localhost:4040/v1/user
+name: /v1/userByOpenId
+sortPriority: 0.001
+url: http://localhost:4040/v1/userByOpenId
 urlParameters:
 - enabled: true
-  name: id
-  value: '1'
+  name: open_id
+  value: cc47e223-97e8-485c-bb52-0000bd513a24
   id: PGXiWzgkKP
 - enabled: true
   name: ''
   value: ''
-  id: NhWp43vUwh
+  id: B3cVY5uthX

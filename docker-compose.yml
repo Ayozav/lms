@@ -13,7 +13,7 @@ include:
 
 services:
     students-service:
-        image: ayozav-students-service:0.1.0
+        image: ayozav-students-service:0.1.1
         build:
             context: ./students-service
         container_name: LMS.StudentsService
@@ -24,6 +24,9 @@ services:
                 -   path: ./students-service/src/
                     action: rebuild
         restart: no
+
+        ports:
+            - "4040:4040"
 
         deploy:
             resources:

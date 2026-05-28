@@ -15,6 +15,14 @@ import path from 'path';
 
 export default defineConfig({
   plugins: [react(), svgr()],
+  build: {
+    rollupOptions: {
+      input: {
+        main: path.resolve(__dirname, 'index.html'),
+        preview: path.resolve(__dirname, 'preview.html'),
+      },
+    },
+  },
   resolve: {
     alias: {
       react: path.resolve(__dirname, 'node_modules/react'),
