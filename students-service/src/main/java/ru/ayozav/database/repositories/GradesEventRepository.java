@@ -2,9 +2,9 @@ package ru.ayozav.database.repositories;
 
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.sqlobject.SqlObjectPlugin;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import ru.ayozav.database.HikariConnectionFactory;
 import ru.ayozav.database.dao.GradesDAO;
 import ru.ayozav.database.exceptions.DatabaseException;
@@ -15,7 +15,7 @@ import java.util.Optional;
 
 public class GradesEventRepository {
 
-    private static final Logger log = LoggerFactory.getLogger(GradesEventRepository.class);
+    private static final Logger log = LogManager.getLogger(GradesEventRepository.class);
     private final GradesDAO dao;
     private final int PER_PAGE = 20;
 

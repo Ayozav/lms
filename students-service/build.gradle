@@ -49,6 +49,12 @@ dependencies {
 
     // For logging
     implementation "org.slf4j:slf4j-simple:2.0.17"
+    // For O2 loggers
+    implementation 'org.apache.logging.log4j:log4j-core:2.24.1'
+    implementation 'org.apache.logging.log4j:log4j-api:2.24.1'
+    // Logback Implementation (handles the actual logging locally)
+    implementation 'ch.qos.logback:logback-classic:1.5.16'
+
     // Database driver
     implementation "org.postgresql:postgresql:42.7.10"
 

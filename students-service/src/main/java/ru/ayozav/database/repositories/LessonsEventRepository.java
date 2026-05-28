@@ -2,8 +2,9 @@ package ru.ayozav.database.repositories;
 
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.sqlobject.SqlObjectPlugin;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import ru.ayozav.database.HikariConnectionFactory;
 import ru.ayozav.database.dao.LessonsDAO;
 import ru.ayozav.database.exceptions.DatabaseException;
@@ -14,7 +15,7 @@ import java.util.Optional;
 
 public class LessonsEventRepository {
 
-    private static final Logger log = LoggerFactory.getLogger(LessonsEventRepository.class);
+    private static final Logger log = LogManager.getLogger(LessonsEventRepository.class);
     private final LessonsDAO dao;
     private final int LESSONS_PER_PAGE = 20;
 

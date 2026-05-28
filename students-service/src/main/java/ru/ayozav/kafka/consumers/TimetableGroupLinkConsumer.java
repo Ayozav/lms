@@ -7,8 +7,9 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.errors.WakeupException;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import ru.ayozav.database.HikariConnectionFactory;
 import ru.ayozav.database.repositories.TimetablesGroupsEventRepository;
 import ru.ayozav.kafka.json.JsonDeserializer;
@@ -26,7 +27,7 @@ import java.util.concurrent.Executors;
  * Консьюмер Kafka для обработки событий связей расписания и групп (добавление, удаление, обновление).
  */
 public class TimetableGroupLinkConsumer implements AutoCloseable {
-    private static final Logger log = LoggerFactory.getLogger(TimetableGroupLinkConsumer.class);
+    private static final Logger log = LogManager.getLogger(TimetableGroupLinkConsumer.class);
 
     private final TimetablesGroupsEventRepository eventRepository;
 

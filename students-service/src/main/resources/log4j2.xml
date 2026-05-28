@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" packages="ru.ayozav">
+    <Properties>
+        <!-- Базовые настройки -->
+        <Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</Property>
+
+        <!-- OpenObserve подключение -->
+        <!-- Для безопасности используйте переменную окружения O2_AUTH_BASE64,
+             которая содержит "email:password" в base64.
+             Пример генерации: echo -n "admin@localhost.com:admin" | base64
+             Результат: YWRtaW5AbG9jYWxob3N0LmNvbTphZG1pbg== -->
+        <Property name="O2_AUTH_BASE64">${env:O2_AUTH_BASE64:-YWRtaW5AbG9jYWxob3N0LmNvbTphZG1pbg==}</Property>
+        <Property name="O2_URL">${env:O2_URL}</Property>
+    </Properties>
+
+    <Appenders>
+        <!-- Консольный аппендер (для локального просмотра) -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </Console>
+
+        <!-- Файловый аппендер с ротацией (для истории на диске) -->
+        <RollingFile name="RollingFile" fileName="logs/app.log"
+                     filePattern="logs/app-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+
+        <!-- HTTP аппендер для OpenObserve -->
+        <Http name="OpenObserve" url="${O2_URL}"
+              connectTimeoutMillis="1000" readTimeoutMillis="2000">
+            <Property name="Content-Type" value="application/json"/>
+            <Property name="Authorization" value="Basic ${O2_AUTH_BASE64}"/>
+
+            <!-- JSON Layout: каждая строка – одно событие -->
+            <JsonLayout compact="true" eventEol="true" properties="true">
+                <!-- Добавляем служебное поле "service" для фильтрации в OpenObserve -->
+                <KeyValuePair key="service" value="LMS"/>
+                <!-- Можно добавить другие статические поля, например окружение -->
+                <KeyValuePair key="environment" value="production"/>
+            </JsonLayout>
+        </Http>
+    </Appenders>
+
+<Loggers>
+    <!-- Логи вашего приложения (уровень DEBUG для разработки, для продакшена INFO) -->
+    <Logger name="ru.ayozav" level="info" additivity="false">
+        <AppenderRef ref="Console"/>
+        <AppenderRef ref="RollingFile"/>
+        <AppenderRef ref="OpenObserve"/>
+    </Logger>
+
+    <!-- Логи самого Javalin (использует SLF4J) -->
+    <Logger name="io.javalin" level="info" additivity="false">
+        <AppenderRef ref="Console"/>
+        <AppenderRef ref="RollingFile"/>
+        <AppenderRef ref="OpenObserve"/>
+    </Logger>
+
+    <!-- Логи HTTP-аппендера (помогают отлаживать отправку в OpenObserve) -->
+    <Logger name="org.apache.logging.log4j.core.appender.HttpAppender" level="debug" additivity="false">
+        <AppenderRef ref="Console"/>
+    </Logger>
+
+    <!-- Корневой логгер -->
+    <Root level="info">
+        <AppenderRef ref="Console"/>
+        <AppenderRef ref="RollingFile"/>
+        <AppenderRef ref="OpenObserve"/>
+    </Root>
+</Loggers>
+</Configuration>

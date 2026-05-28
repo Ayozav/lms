@@ -4,8 +4,9 @@ import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import ru.ayozav.kafka.json.JsonSerializer;
 import ru.ayozav.models.Semester;
 
@@ -19,7 +20,7 @@ public class SemesterProducer {
 
     private static final String PRODUCER_ID = "javalin-semester-producer";
 
-    private static final Logger log = LoggerFactory.getLogger(SemesterProducer.class);
+    private static final Logger log = LogManager.getLogger(SemesterProducer.class);
 
 
     private final Producer<String, Semester> producer;

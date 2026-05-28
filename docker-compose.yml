@@ -9,11 +9,12 @@ include:
     -   oauth2-proxy/docker-compose.yml
     -   postgres/docker-compose.yml
     -   dexIdP/docker-compose.yml
+    -   open-observer/docker-compose.yml
 
 
 services:
     students-service:
-        image: ayozav-students-service:0.1.1
+        image: ayozav-students-service:0.1.2
         build:
             context: ./students-service
         container_name: LMS.StudentsService
@@ -37,6 +38,8 @@ services:
         depends_on:
             postgres:
                 condition: service_healthy
+            o2:
+                condition: service_started
             kafka1:
                 condition: service_healthy
 #            kafka2:
