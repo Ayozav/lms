@@ -3,7 +3,7 @@ import {BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import iateLogo from './assets/welkome/iate_logo.svg';
 import { Box, Typography, Button, CardMedia, Stack } from '@mui/material';
-import MainPage from './mainPage/MainPage';
+import MainPage from './MainPage/mainPage.tsx';
 
 const imageModules = import.meta.glob('./assets/welkome/Frame*.png', { eager: true }) as Record<string, { default: string }>;
 const photos = Object.values(imageModules).map(m => m.default);
