@@ -1,0 +1,26 @@
+type: http_request
+model: http_request
+id: rq_EXwDYaLp3F
+createdAt: 2026-05-28T07:05:19.551064700
+updatedAt: 2026-05-28T07:15:07.752576100
+workspaceId: wk_TsG5TkW2Jb
+folderId: null
+authentication: {}
+authenticationType: null
+body: {}
+bodyType: null
+description: ''
+headers: []
+method: GET
+name: /v1/userByOpenId
+sortPriority: 0.001
+url: http://localhost:4040/v1/userByOpenId
+urlParameters:
+- enabled: true
+  name: open_id
+  value: cc47e223-97e8-485c-bb52-0000bd513a24
+  id: PGXiWzgkKP
+- enabled: true
+  name: ''
+  value: ''
+  id: B3cVY5uthX

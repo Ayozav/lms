@@ -84,6 +84,19 @@ public class UsersController extends ControllerSkeleton {
         }
     }
 
+
+    public void getByOpenId(Context ctx) {
+        try {
+            UUID openID = this.parseUIID("open_id", ctx.queryParam("open_id"));
+            Optional<User> user = this.usersEventRepository.getByOpenId(openID);
+            if (user.isEmpty()) throw new ObjectNotFoundInDatabase("Пользователь");
+            new ObjectResponse<>(ctx, user.get());
+        }
+        catch (GreatException exc) {
+            new ErrorResponse(ctx, exc.getCode(), exc.getMessage());
+        }
+    }
+
     public void update(Context ctx) {
         try {
             int id = this.parsePositiveInt(ctx, "id");

@@ -97,6 +97,7 @@ public class JavalinServer {
 
                     // CRUD операции с User
                     javalinConfig.routes.get("/v1/user", usersController::getById);
+                    javalinConfig.routes.get("/v1/userByOpenId", usersController::getByOpenId);
                     javalinConfig.routes.get("/v1/users", usersController::getPage);
                     javalinConfig.routes.post("/v1/user", usersController::add);
                     javalinConfig.routes.delete("/v1/user", usersController::delete);
