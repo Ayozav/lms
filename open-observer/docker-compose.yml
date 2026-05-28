@@ -1,0 +1,17 @@
+networks:
+    lms-network:
+        external: true
+
+services:
+    o2:
+        image: openobserve/openobserve:latest
+        container_name: LMS.OpenObserve
+
+        ports:
+            -   "3000:5080"
+
+        env_file:
+            -   .env
+
+        networks:
+            - lms-network

@@ -3,8 +3,9 @@ package ru.ayozav.database.repositories;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.sqlobject.SqlObjectPlugin;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 import ru.ayozav.database.HikariConnectionFactory;
 import ru.ayozav.database.dao.UsersDAO;
@@ -18,7 +19,7 @@ import java.util.UUID;
 
 public class UsersEventRepository {
 
-    private static final Logger log = LoggerFactory.getLogger(UsersEventRepository.class);
+    private static final Logger log = LogManager.getLogger(UsersEventRepository.class);
     private final UsersDAO dao;
 
     private final int PER_PAGE = 10;

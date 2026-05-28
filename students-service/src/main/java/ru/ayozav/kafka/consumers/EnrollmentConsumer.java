@@ -7,8 +7,9 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.errors.WakeupException;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import ru.ayozav.database.HikariConnectionFactory;
 import ru.ayozav.database.repositories.EnrollmentsEventRepository;
 import ru.ayozav.kafka.json.JsonDeserializer;
@@ -26,7 +27,7 @@ import java.util.concurrent.Executors;
  * Консьюмер Kafka для обработки событий зачислений (добавление, удаление, обновление).
  */
 public class EnrollmentConsumer implements AutoCloseable {
-    private static final Logger log = LoggerFactory.getLogger(EnrollmentConsumer.class);
+    private static final Logger log = LogManager.getLogger(EnrollmentConsumer.class);
 
     private final EnrollmentsEventRepository eventRepository;
 

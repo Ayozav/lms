@@ -2,8 +2,9 @@ package ru.ayozav.database.repositories;
 
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.sqlobject.SqlObjectPlugin;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import ru.ayozav.database.HikariConnectionFactory;
 import ru.ayozav.database.dao.TimetablesGroupsDAO;
 import ru.ayozav.database.exceptions.DatabaseException;
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class TimetablesGroupsEventRepository {
 
-    private static final Logger log = LoggerFactory.getLogger(TimetablesGroupsEventRepository.class);
+    private static final Logger log = LogManager.getLogger(TimetablesGroupsEventRepository.class);
     private final TimetablesGroupsDAO dao;
     public final int LINKS_PER_PAGE = 20;
 

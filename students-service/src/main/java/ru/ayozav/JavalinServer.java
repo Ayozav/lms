@@ -4,8 +4,10 @@ import io.javalin.Javalin;
 
 import io.javalin.http.Context;
 import kotlin.IgnorableReturnValue;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import ru.ayozav.database.DatabaseMigrator;
 import ru.ayozav.database.HikariConnectionFactory;
 import ru.ayozav.javalin.controllers.*;
@@ -27,7 +29,7 @@ public class JavalinServer {
     private static final String DATABASE_USERNAME = System.getenv("DATABASE_USERNAME");
     private static final String DATABASE_PASSWORD = System.getenv("DATABASE_PASSWORD");
     private static final String DATABASE_SCHEMA = System.getenv("DATABASE_SCHEMA");
-    private static final Logger log = LoggerFactory.getLogger(JavalinServer.class);
+    private static final Logger log = LogManager.getLogger(JavalinServer.class);
 
     private final HikariConnectionFactory factory;
     private final Javalin app;
@@ -90,7 +92,6 @@ public class JavalinServer {
 
                 javalinConfig -> {
                     javalinConfig.routes.before(this::preHandler);
-
                     javalinConfig.routes.get(
                             "/echo", OkResponse::new
                     );
