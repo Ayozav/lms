@@ -3,7 +3,7 @@ import Profile from '../student/Profile.tsx';
 import Timetable from '../timetable/Timetable.tsx';
 import { mockTeachers } from '../teachers/Teacher.tsx';
 import TeachersTable from '../teachers/TeachersTable.tsx';
-import PesronalNote from '../pero/PesronalNote.tsx';
+import {PersonalNote} from '../pero/PesronalNote.tsx';
 // import Welcome from './Welcome_component.tsx';
 import StudentImage from '../assets/student_photo.jpg';
 
@@ -148,7 +148,7 @@ function LogOutRedirect() {
 };
 
 function PersonalNoteFrame() {
-    return <PesronalNote />;
+    return <PersonalNote />;
 }
 
 // function Group() {
@@ -262,7 +262,7 @@ function ProfileFrame() {
             firstName={profile.firstName}
             patronymic={profile.patronymic} //ToDo: sPSODKFIJODDJODPSOSKSKDIWU8278374ZBYD-[mino;liqhwckajsnck!OIQNWI!MLdnsdmd]
             // age={calculateAge(profile?.birthDate)}
-            age={0}
+            age={20}
             birthDate={profile.birthDate}
             // course={profile.course} )))))))))))))0
             // emailAddress={'student@example.com'}
