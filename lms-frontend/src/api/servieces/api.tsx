@@ -1,12 +1,8 @@
 // src/api/api.ts (или apiClient.ts)
-const PORTS = {
-    main: 4040,
-    userGrade: 4050
-};
 
 export const BASE_URLS = {
-    main: `http://127.0.0.1:${PORTS.main}/v1`,
-    userGrade: `http://127.0.0.1:${PORTS.userGrade}/v1`
+    main: `/`,
+    userGrade: `/api/v1`
 };
 
 interface RequestOptions extends RequestInit {

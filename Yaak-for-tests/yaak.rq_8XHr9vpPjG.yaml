@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_8XHr9vpPjG
 createdAt: 2026-05-09T08:09:37.612154100
-updatedAt: 2026-05-25T20:09:32.987499200
+updatedAt: 2026-05-28T06:53:22.697926300
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -14,7 +14,7 @@ headers: []
 method: POST
 name: /v1/user
 sortPriority: 4000.0
-url: http://127.0.0.1:4050/v1/user
+url: http://localhost:4040/v1/user
 urlParameters:
 - enabled: true
   name: last_name
@@ -30,13 +30,13 @@ urlParameters:
   id: apWmAB0xGs
 - enabled: true
   name: open_id
-  value: cc47e223-97e8-485c-bb52-bd513a24
+  value: cc47e223-97e8-485c-bb52-bd513a25
   id: ekPWHPQw2Y
 - enabled: true
   name: birth_date
-  value: 01.01.2005
+  value: 03.07.2005
   id: XCcCCu8CEp
 - enabled: true
   name: ''
   value: ''
-  id: qwn0KZPRud
+  id: heJcN0pGS5

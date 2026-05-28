@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_Dw9zom8cMG
 createdAt: 2026-05-09T10:57:05.884469100
-updatedAt: 2026-05-25T20:09:32.962815700
+updatedAt: 2026-05-28T06:54:08.185204300
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -12,15 +12,15 @@ bodyType: null
 description: ''
 headers: []
 method: GET
-name: /v1/user?id=6
+name: /v1/user
 sortPriority: 0.0
-url: http://127.0.0.1:4040/v1/user
+url: http://localhost:4040/v1/user
 urlParameters:
 - enabled: true
   name: id
-  value: '3'
+  value: '1'
   id: PGXiWzgkKP
 - enabled: true
   name: ''
   value: ''
-  id: BXP35f0Xrc
+  id: NhWp43vUwh

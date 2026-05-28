@@ -243,7 +243,7 @@ function ProfileFrame() {
     // const [loading] = useState(true);
 
   useEffect(() => {
-    userService.getById(0)
+    userService.getById(1)
       .then(data => {
         setProfile(data);
       })
