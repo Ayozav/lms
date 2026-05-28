@@ -262,7 +262,7 @@ function ProfileFrame() {
             firstName={profile.firstName}
             patronymic={profile.patronymic} //ToDo: sPSODKFIJODDJODPSOSKSKDIWU8278374ZBYD-[mino;liqhwckajsnck!OIQNWI!MLdnsdmd]
             // age={calculateAge(profile?.birthDate)}
-            age={0}
+            age={20}
             birthDate={profile.birthDate}
             // course={profile.course} )))))))))))))0
             // emailAddress={'student@example.com'}
