@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, BrowserRouter, Routes, Route } from 'react-router-dom';
+import {BrowserRouter, Routes, Route } from 'react-router-dom';
+
 import iateLogo from './assets/welkome/iate_logo.svg';
 import { Box, Typography, Button, CardMedia, Stack } from '@mui/material';
 import MainPage from './mainPage/MainPage';
@@ -9,10 +10,11 @@ const photos = Object.values(imageModules).map(m => m.default);
 
 
 function WelcomePageContent() {
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     const handleLogin = () => {
-        navigate('/mainpage');
+        // navigate('/mainpage');
+        window.open('/mainpage', '_blank');
     };
 
     const handleLmsMore = () => {

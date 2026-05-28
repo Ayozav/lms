@@ -4,12 +4,11 @@ networks:
 
 volumes:
     redis-master-data:
-        name: redis-master-data
+        name: lms-redis-master-data
     redis-replica-data:
-        name: redis-replica-data
+        name: lms-redis-replica-data
     redisinsight-data:
-        name: redisinsight-data
-
+        name: lms-redis-insight-data
 
 services:
     # А этот господин -- помощник нам с аутентификацией и авторизацией.
@@ -18,6 +17,7 @@ services:
     oauth2-proxy:
         image: quay.io/oauth2-proxy/oauth2-proxy:v7.15.2
         restart: no
+        container_name: LMS.OAuth2-Proxy
         # А вот ему порты нужны...
         ports:
             - "${OAUTH2_PROXY_PORT}:4180"
@@ -52,7 +52,7 @@ services:
 
     redis-master:
         image: redis:8.6.0
-        container_name: redis-master
+        container_name: LMS.RedisMaster
         restart: no
         command:
             - redis-server
@@ -83,7 +83,7 @@ services:
 
     redis-replica:
         image: redis:8.6.0
-        container_name: redis-replica
+        container_name: LMS.RedisReplica
         restart: no
         command:
             - redis-server
@@ -119,7 +119,7 @@ services:
 
     redisinsight:
         image: redis/redisinsight:latest
-        container_name: redisinsight
+        container_name: LMS.RedisInsight
         restart: no
         ports:
             - "5540:5540"
