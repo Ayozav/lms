@@ -13,7 +13,7 @@ interface ProfileProps {
     lastName: string;
     firstName: string;
     patronymic: string;
-    // fullName: String;  // фио но одним полем (пошла я нахрен)
+    // fullName: String;  // фио но одним полем
     age: number;  // Возраст
     birthDate: string;  // ДР
     // phoneNumber: string;  // Номер телефона (Считаем, что номер телефона всегда дан нам красиво)
@@ -21,7 +21,7 @@ interface ProfileProps {
     // gradeLevel: string;  // Уровень подготовки: бакалавр, магистр...
     // study_mode: string;  // Очная / Заочная форма обучения (это не предусмотрено начальной моделью)
     // institute: string;  // Отделение / Институт
-    // course: number;  // 1-й, 2-й, 3-й курс ОТКАЗ ОТ КУРСА)))))))))
+    // course: number;  // 1-й, 2-й, 3-й курс 
     // program_code: string;  // Код направления (09.03.02, например)
     // group: string;  // Название группы
 
