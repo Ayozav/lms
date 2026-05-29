@@ -13,6 +13,29 @@ LMS представляет два основных сервиса:
 4. Postgres - РСУБД
 5. Nginx - web server/proxy
 
+```mermaid
+flowchart LR
+    User[Клиент] -->|Запрос| OAuth2Proxy[OAuth2-Proxy :4180]
+
+    OAuth2Proxy -->|Аутентификация| DexIdP[DexIdP]
+    DexIdP -->|SQLite| SQLiteDB[(SQLite)]
+    OAuth2Proxy -->|Кэш сессий| Redis[(Redis)]
+
+    OAuth2Proxy -->|Прокси| Nginx[Nginx]
+
+    Nginx -->|Статика| Frontend[Frontend]
+    Nginx -->|/api/v1/*| Javalin[Javalin:4040]
+
+    Javalin -->|GET| Postgres[(Postgres)]
+    Javalin -->|CUD-операции| Kafka[Kafka]
+    Kafka -->|Доставка команд| Javalin
+    Javalin -->|Запись в БД| Postgres
+
+    %% OpenObserve: продюсер (отправка данных) и консьюмер (получение конфигурации/алертов)
+    Javalin -- "Логи \n (продюсер)" --> OpenObserve[OpenObserve]
+    OpenObserve -- "Логи \n(консьюмер)" --> Javalin
+
+```
 
 ## Полезные ссылки
 - https://github.com/ayozav/lms

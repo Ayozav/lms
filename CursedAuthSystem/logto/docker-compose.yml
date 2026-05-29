@@ -7,14 +7,14 @@ services:
         image: svhd/logto:latest
         entrypoint: [ "sh", "-c", "npm run cli db seed -- --swe && npm start" ]
         ports:
-            - "3001:3001"  # Единая точка авторизации
-            - "3002:3002"  # Админка
+            - "3001:3001"  # Порт для входа (доступен извне)
+            - "3002:3002"  # Админка (доступен извне)
 
         environment:
             TRUST_PROXY_HEADER: 1
-            DB_URL: postgresql://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@postgres:5432/logto
-            ENDPOINT: http://${LOGTO_AUTH_DOMAIN}
-            ADMIN_ENDPOINT: http://${ADMIN_DOMAIN}
+
+        env_file:
+            -   .env
 
         deploy:
             resources:

@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_kyqjf53q8E
 createdAt: 2026-05-09T10:50:52.448784100
-updatedAt: 2026-05-28T06:56:57.963459
+updatedAt: 2026-05-28T12:00:30.803468
 workspaceId: wk_TsG5TkW2Jb
 folderId: null
 authentication: {}
@@ -18,9 +18,9 @@ url: 127.0.0.1:4040/v1/user
 urlParameters:
 - enabled: true
   name: id
-  value: '6'
+  value: '11'
   id: 6JygMqcdNJ
 - enabled: true
   name: ''
   value: ''
-  id: Gfs0nIJvmf
+  id: VaYsGYHBtg

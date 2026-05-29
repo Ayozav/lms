@@ -6,9 +6,9 @@ services:
             # Используем переменные окружения, чтобы при развёртывании своего домена мы не плаки-плаки.
             - ./default.conf.template:/etc/nginx/templates/default.conf.template:ro
             # - ./lms-frontend/dist/:/usr/share/nginx/html:ro
-        depends_on:
-            oauth2-proxy:
-                condition: service_started
+            #        depends_on:
+            #            oauth2-proxy:
+            #                condition: service_started
 
         environment:
             - LMS_DOMAIN=${LMS_DOMAIN}

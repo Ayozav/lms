@@ -20,13 +20,15 @@ services:
 
 
         depends_on:
-            dex:
+#            dex:
+#                condition: service_healthy
+            logto:
                 condition: service_healthy
             postgres:
                 condition: service_healthy
 
         volumes:
-            - ./dex_config.toml:/etc/oauth2-proxy/oauth2-proxy.toml:ro
+            - ./logto_config.toml:/etc/oauth2-proxy/oauth2-proxy.toml:ro
         command:
             - --config=/etc/oauth2-proxy/oauth2-proxy.toml
 
